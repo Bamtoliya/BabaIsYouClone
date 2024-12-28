@@ -13,6 +13,7 @@ void CBlock::Initialize()
 	m_tFrame.iMotion = 1;
 	m_tFrame.ullSpeed = 200;
 	m_tFrame.ullTime = GetTickCount64();
+	m_pImgKey = L"Text_YOU";
 }
 
 void CBlock::Update()
@@ -28,9 +29,32 @@ void CBlock::LateUpdate()
 
 void CBlock::Render(Graphics* graphic)
 {
-	Image* image = CResourceManager::GetInstance()->FindImage(L"Text_You");
-	int tmp = 226 + m_tFrame.iFrameStart * 25;
-	graphic->DrawImage(image, m_tRect, 276, tmp, 24, 24, UnitPixel);
+	Image* image = CResourceManager::GetInstance()->FindImage(m_pImgKey);
+	int x;
+	int y;
+	switch (m_eBlock)
+	{
+	case BLOCKTYPE::TEXT:
+		if (m_bActive)
+		{
+			x = 1 + 25;
+		}
+		else
+		{
+			x = 1;
+		}
+		
+		y = 1 + m_tFrame.iFrameStart * 25;
+		break;
+	case BLOCKTYPE::CHARACTER:
+		break;
+	case BLOCKTYPE::OBJECT:
+		break;
+	default:
+		break;
+	}
+	
+	graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Red);

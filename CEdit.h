@@ -10,6 +10,8 @@ public:
     void Render(HDC hDC) override;
     void Release() override;
 private:
-    void KeyInput();    
+    void KeyInput();
+    int m_iWidth;
+    int m_iHeight;
 };
 

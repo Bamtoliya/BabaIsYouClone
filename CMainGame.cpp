@@ -12,12 +12,46 @@ void CMainGame::Initialize()
 {
 	cout << "CMainGame Initialized\n";
 	CSceneManager::GetInstance()->SetScene(SCENEID::Edit);
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsCharacter-export.png", L"Character");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsText-export.png", L"Text");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsStatic-export.png", L"Static");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjecttsTiled-export.png", L"Tiled");	
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WorldMap");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"text_you_sheet.bmp", L"Text_You");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"BABA.png", L"BABA");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"KEKE.png", L"KEKE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"BOX.png", L"BOX");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CIRCLE.png", L"CIRCLE");	
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CURSOR.png", L"CURSOR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"DOOR.png", L"DOOR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"DUST.png", L"DUST");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"FLAG.png", L"FLAG");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"FLOWER.png", L"FLOWER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"KEY.png", L"KEY");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"LOVE.png", L"LOVE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ROCK.png", L"ROCK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"STAR.png", L"STAR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_AND.png", L"Text_AND");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_DEFEAT.png", L"Text_DEFEAT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_END.png", L"Text_END");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_FLOAT.png", L"Text_FLOAT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_HOT.png", L"Text_HOT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_IS.png", L"Text_IS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_MELT.png", L"Text_MELT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_MOVE.png", L"Text_MOVE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_OPEN.png", L"Text_OPEN");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_PULL.png", L"Text_PULL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_PUSH.png", L"Text_PUSH");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SELECT.png", L"Text_SELECT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SHUT.png", L"Text_SHUT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SINK.png", L"Text_SINK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_STOP.png", L"Text_STOP");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_WIN.png", L"Text_WIN");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_YOU.png", L"Text_YOU");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_BRICK.png", L"Tile_BRICK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_FORT.png", L"Tile_FORT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_GRASS.png", L"Tile_GRASS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_HEDGE.png", L"Tile_HEDGE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_LAVA.png", L"Tile_LAVA");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_ROAD.png", L"Tile_ROAD");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_RUBBLE.png", L"Tile_RUBBLE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_WALL.png", L"Tile_WALL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_WATER.png", L"Tile_WATER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WORLDMAP");
 }
 
 void CMainGame::Update()

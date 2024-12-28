@@ -8,6 +8,8 @@ void CEdit::Initialize()
 	CGameObjectManager::GetInstance()->AddObject(OBJID::BLOCK, CAbstractFactory<CPlayer>().Create());
 	CGameObjectManager::GetInstance()->AddObject(OBJID::BLOCK, CAbstractFactory<CBlock>().Create());
 	CBlockManager::GetInstance()->Initialize();
+	m_iWidth = 10;
+	m_iHeight = 10;
 }
 
 void CEdit::Update()
@@ -23,17 +25,31 @@ void CEdit::LateUpdate()
 
 void CEdit::Render(Graphics* g)
 {
-	CBlockManager::GetInstance()->Render(g);
-	//Pen pen(Color::White);
-	////g->DrawLine(&pen, Point(100, 100), Point(100, WINCY));
-	//for (int i = 0; i < WINCY; i+=TILECY)
-	//{
-	//	for (int j = 0; j < WINCX; j+=TILECX)
-	//	{
-	//		g->DrawLine(&pen, Point(j, 0), Point(j, WINCY));
-	//	}
-	//	g->DrawLine(&pen, Point(0, i), Point(WINCX, i));
-	//}
+	//CBlockManager::GetInstance()->Render(g);
+	Pen pen(Color::White);
+	int hW = m_iWidth / 2;
+	int hH = m_iHeight / 2;
+	for (int i = -hW; i < hW; ++i)
+	{
+		for (int j = -hH; j < hH; ++j)
+		{
+			g->DrawRectangle(&pen, Rect(OCX / 2 + TILECX * i, OCY / 2 + TILECY*j, TILECX, TILECY));
+		}
+	}
+	/*g->DrawRectangle(&pen, Rect(OCX / 2 - TILECX, OCY / 2, TILECX, TILECY));
+	g->DrawRectangle(&pen, Rect(OCX / 2, OCY / 2, TILECX, TILECY));
+	g->DrawRectangle(&pen, Rect(OCX / 2 - TILECX, OCY / 2, TILECX, TILECY));
+	g->DrawRectangle(&pen, Rect(OCX / 2, OCY / 2, TILECX, TILECY));*/
+
+	//g->DrawLine(&pen, Point(100, 100), Point(100, WINCY));
+	/*for (int j = 0; j < OCY; j += TILECX)
+	{
+		g->DrawLine(&pen, Point(j, 0), Point(j, WINCY));
+	}
+	for (int i = 0; i < OCX; i+=TILECY)
+	{	
+		g->DrawLine(&pen, Point(0, i), Point(WINCX, i));
+	}*/
 }
 
 void CEdit::Release()
@@ -44,22 +60,20 @@ void CEdit::KeyInput()
 {
 	if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
 	{
-		CScrollManager::GetInstance()->SetScrollX(5.f);
+		m_iWidth -= 2;
 	}
-
 	if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 	{
-		CScrollManager::GetInstance()->SetScrollX(-5.f);
+		m_iWidth += 2;
 	}
 
 	if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 	{
-		CScrollManager::GetInstance()->SetScrollY(5.f);
+		m_iHeight += 2;
 	}
-
 	if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 	{
-		CScrollManager::GetInstance()->SetScrollY(-5.f);
+		m_iHeight -= 2;
 	}
 	if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
 	{
