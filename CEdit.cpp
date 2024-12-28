@@ -88,4 +88,23 @@ void CEdit::KeyInput()
 
 void CEdit::Render(HDC hDC)
 {
+	HPEN pen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	HPEN oldPen = (HPEN)SelectObject(hDC, pen);
+	for (int j = 1; j < TILEX - 1; ++j)
+	{
+		MoveToEx(hDC, j * TILECX, TILECY, NULL);
+		LineTo(hDC, j * TILECX, WINCY);
+	}
+	for (int i = 1; i < TILEY - 1; ++i)
+	{
+		MoveToEx(hDC, TILECX, i * TILECY, NULL);
+		LineTo(hDC, TILECX, WINCY);
+	}
+	//DrawGrid
+	if (g_bDevmode)
+	{
+		
+	}
+	CBlockManager::GetInstance()->Render(hDC);
+	CGameObjectManager::GetInstance()->Render(hDC);
 }

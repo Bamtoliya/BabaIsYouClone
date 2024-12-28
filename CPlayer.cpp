@@ -36,7 +36,7 @@ void CPlayer::Render(Graphics* graphic)
 {
     SolidBrush brush(Color::Red);
     Image* image = CResourceManager::GetInstance()->FindImage(L"Character");
-    int startX;
+    int startX = 0;
     switch (m_eDir)
     {
     case DIRECTION::LEFT:

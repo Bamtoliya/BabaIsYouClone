@@ -40,11 +40,31 @@ void CTestScene::Render(Graphics* g)
 	CGameObjectManager::GetInstance()->Render(g);
 }
 
+void CTestScene::Render(HDC hDC)
+{
+	
+	//DrawGrid
+	if (g_bDevmode)
+	{
+		HPEN pen = CreatePen(PS_SOLID, 1, RGB(255, 255,255));
+		HPEN oldPen = (HPEN)SelectObject(hDC, pen);
+		for (int j = 1; j < TILEX - 1; ++j)
+		{
+			MoveToEx(hDC, j * TILECX, TILECY, NULL);
+			LineTo(hDC, j * TILECX, WINCY);
+		}
+		for (int i = 1; i < TILEY - 1; ++i)
+		{
+			MoveToEx(hDC, TILECX, i * TILECY, NULL);
+			LineTo(hDC, TILECX, WINCY);
+		}
+	}
+	CGameObjectManager::GetInstance()->Render(hDC);
+}
+
 void CTestScene::Release()
 {
 
 }
 
-void CTestScene::Render(HDC hDC)
-{
-}
+

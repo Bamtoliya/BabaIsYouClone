@@ -79,6 +79,12 @@
     <Filter Include="99. Managers\SceneManager\Scene\Game\Levels\Level1">
       <UniqueIdentifier>{cab5b48d-9d0f-4c03-97c1-2d317dc67258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Managers\BitmapManager">
+      <UniqueIdentifier>{304f2429-61bf-46f5-a973-0b30e24fc094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\BitmapManager\Bitmap">
+      <UniqueIdentifier>{f476ab0e-0357-4f26-aa1e-b785314e2677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -180,6 +186,12 @@
     <ClInclude Include="CTextBlock.h">
       <Filter>01. GameObject\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CBmpMgr.h">
+      <Filter>99. Managers\BitmapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMyBmp.h">
+      <Filter>99. Managers\BitmapManager\Bitmap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -241,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="CTextBlock.cpp">
       <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CBmpMgr.cpp">
+      <Filter>99. Managers\BitmapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMyBmp.cpp">
+      <Filter>99. Managers\BitmapManager\Bitmap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

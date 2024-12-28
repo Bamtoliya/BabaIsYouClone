@@ -67,6 +67,15 @@ void CGameObjectManager::Render(Graphics* g)
 	}
 }
 
+void CGameObjectManager::Render(HDC hDC)
+{
+	for (size_t i = 0; i < OBJID::END; ++i)
+	{
+		for (auto& pObj : m_list[i])
+			pObj->Render(hDC);
+	}
+}
+
 void CGameObjectManager::Release()
 {
 	for (size_t i = 0; i < OBJID::END; ++i)

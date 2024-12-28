@@ -28,6 +28,7 @@ public:
 	int			Update();
 	void		LateUpdate();
 	void		Render(Graphics* g);
+	void		Render(HDC hDC);
 	void		Release();
 	//void		DeleteID(OBJID eID);
 private:

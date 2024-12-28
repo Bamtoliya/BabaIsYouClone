@@ -17,6 +17,10 @@ void CMainGame::Initialize()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsStatic-export.png", L"Static");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjecttsTiled-export.png", L"Tiled");	
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WorldMap");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"text_you_sheet.bmp", L"Text_You");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"text_you_sheet4.bmp", L"Text_You");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back.bmp", L"Back");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Ground.bmp", L"Ground");
 }
 
 void CMainGame::Update()
@@ -50,14 +54,16 @@ void CMainGame::Render()
 	RECT rect;
 	GetClientRect(g_hWnd, &rect);
 	//HDC 
-	HDC hMemDC = CreateCompatibleDC(m_hDC);
-	/*HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, WINCX, WINCY);
+	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
+	/*HDC hMemDC = CreateCompatibleDC(m_hDC);
+	HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, WINCX, WINCY);
 	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);*/
-	/*Graphics graphics(hMemDC);
-	graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);*/
+	//Graphics graphics(hMemDC);
+	//graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);
 #pragma endregion
 
 	//Render here
+	//Rectangle(hMemDC, 0, 0, 200, 200);
 	CSceneManager::GetInstance()->Render(hMemDC);
 	//CSceneManager::GetInstance()->Render(&graphics);
 

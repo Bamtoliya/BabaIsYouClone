@@ -53,7 +53,25 @@ void CBlockManager::Render(Graphics* g)
 	}
 	for (auto& pTile : m_vecBlock)
 		pTile->Render(g);
+}
 
+void CBlockManager::Render(HDC hDC)
+{
+	//if (g_bDevmode)
+	//{
+	//	Pen pen(Color::White);
+	//	//DrawGrid
+	//	for (int j = 1; j < TILEX - 1; ++j)
+	//	{
+	//		g->DrawLine(&pen, Point(j * TILECX, 0), Point(j * TILECX, WINCY));
+	//	}
+	//	for (int i = 1; i < TILEY - 1; ++i)
+	//	{
+	//		g->DrawLine(&pen, Point(0, i * TILECY), Point(WINCX, i * TILECY));
+	//	}
+	//}
+	for (auto& pTile : m_vecBlock)
+		pTile->Render(hDC);
 }
 
 void CBlockManager::Release()

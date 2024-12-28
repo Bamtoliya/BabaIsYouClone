@@ -28,8 +28,8 @@ void CBlock::LateUpdate()
 
 void CBlock::Render(Graphics* graphic)
 {
-	Image* image = CResourceManager::GetInstance()->FindImage(L"Text");
-	graphic->DrawImage(image, m_tRect, 276, 226 + m_tFrame.iFrameStart * 25, 23, 24, UnitPixel);
+	Image* image = CResourceManager::GetInstance()->FindImage(L"Text_You");
+	graphic->DrawImage(image, m_tRect, 0 + m_tFrame.iFrameStart * 24, 0, 24, 24, UnitPixel);
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Red);
@@ -39,7 +39,15 @@ void CBlock::Render(Graphics* graphic)
 
 void CBlock::Render(HDC hDC)
 {
-
+	HDC	hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Text_You");
+	//BitBlt(hDC, m_tRect.X, m_tRect.Y, m_tRect.Width, m_tRect.Height, hMemDC, 0, 0, 24, 24);
+	StretchBlt(hDC, m_tRect.X, m_tRect.Y, m_tRect.X + m_tRect.Width, m_tRect.Y + m_tRect.Height, hMemDC, 0, 0, 24, 24, SRCCOPY);
+	//BitBlt(hDC, m_tRect.X, m_tRect.Y, m_tRect.Width, m_tRect.Height, hMemDC, 0, 0, SRCCOPY);
+	//GdiTransparentBlt(hDC, m_tRect.X, m_tRect.Y, m_tRect.Width, m_tRect.Height, hMemDC , 0, 0, 24, 24, RGB(255, 255, 255));
+	if (g_bDevmode)
+	{
+		//Rectangle(hDC, m_tRect.X, m_tRect.Y, m_tRect.X + m_tRect.Width, m_tRect.Y + m_tRect.Height);
+	}
 }
 
 void CBlock::Release()

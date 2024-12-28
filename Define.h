@@ -1,4 +1,6 @@
 #pragma once
+#define OCX		860
+#define OCY		480
 #define WINCX		1720
 #define WINCY		960
 #define	PURE		= 0
