@@ -46,7 +46,5 @@ protected:
 	bool			m_bActive;
 	const TCHAR*	m_pImgKey;
 	CGameObject*	m_pTarget;
-	BLOCKTYPE		m_eBlock;
-	list<PROPERTY>	m_eProperty;
 };
 

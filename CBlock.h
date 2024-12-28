@@ -15,12 +15,12 @@ public:
     
 private:
     void ChangeState();
+    BLOCKTYPE		m_eBlock;
     GAMEWORD        m_eWord;
     NOUN            m_eNoun;
     VERB            m_eVerb;
     list<PROPERTY>  m_ePROPERTY;
     const TCHAR*    m_pImgKey;
-
     
 };
 

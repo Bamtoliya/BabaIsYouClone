@@ -7,16 +7,20 @@ CBlockManager* CBlockManager::m_pInstance = nullptr;
 CBlockManager::CBlockManager()
 {
 	m_vecBlock.reserve(TILEX * TILEY);
+	m_iWidth = 10;
+	m_iHeight = 10;
 }
 
 void CBlockManager::Initialize()
 {
-	for (int i = 0; i < TILEY; ++i)
+	int hW = m_iWidth / 2;
+	int hH = m_iHeight / 2;
+	for (int i = -hW; i < hW; ++i)
 	{
-		for (int j = 0; j < TILEX; ++j)
+		for (int j = -hH; j < hH; ++j)
 		{
-			float fX = (float)(j * TILECX) + (TILECX >> 1);
-			float fY = (float)(i * TILECY) + (TILECY >> 1);
+			float fX = OCX / 2 + (float)(i * TILECX);
+			float fY = OCY / 2 + (float)(j * TILECY);
 
 			CGameObject* pTile = CAbstractFactory<CBlock>::Create(fX, fY);
 			m_vecBlock.push_back(pTile);
@@ -27,32 +31,22 @@ void CBlockManager::Initialize()
 void CBlockManager::Update()
 {
 	for (auto& pTile : m_vecBlock)
-		pTile->Update();
+		if(pTile) pTile->Update();
 }
 
 void CBlockManager::LateUpdate()
 {
 	for (auto& pTile : m_vecBlock)
-		pTile->LateUpdate();
+		if(pTile) pTile->LateUpdate();
 }
 
 void CBlockManager::Render(Graphics* g)
 {
-	if (g_bDevmode)
-	{
-		Pen pen(Color::White);
-		//DrawGrid
-		for (int j = 1; j < TILEX - 1; ++j)
-		{
-			g->DrawLine(&pen, Point(j * TILECX, 0), Point(j * TILECX, WINCY));
-		}
-		for (int i = 1; i < TILEY - 1; ++i)
-		{
-			g->DrawLine(&pen, Point(0, i * TILECY), Point(WINCX, i * TILECY));
-		}
-	}
+	//DrawGrid
+	Pen pen(Color::White);
+	
 	for (auto& pTile : m_vecBlock)
-		pTile->Render(g);
+		if(pTile) pTile->Render(g);
 }
 
 void CBlockManager::Render(HDC hDC)
@@ -76,6 +70,8 @@ void CBlockManager::Render(HDC hDC)
 
 void CBlockManager::Release()
 {
+	for_each(m_vecBlock.begin(), m_vecBlock.end(), SafeDelete<CGameObject*>);
+	m_vecBlock.clear();
 }
 
 void CBlockManager::PickBlock(Point pt, PROPERTY pp)
@@ -92,7 +88,7 @@ void CBlockManager::PickBlock(Point pt, PROPERTY pp)
 
 void CBlockManager::SaveBlock()
 {
-	HANDLE hFile = CreateFile(L"../Data/Block.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"../Data/Level.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
@@ -111,12 +107,12 @@ void CBlockManager::SaveBlock()
 	}
 
 	CloseHandle(hFile);
-	MessageBox(g_hWnd, L"Tile Save", L"己傍", MB_OK);
+	MessageBox(g_hWnd, L"Level Save", L"己傍", MB_OK);
 }
 
 void CBlockManager::LoadBlock()
 {
-	HANDLE hFile = CreateFile(L"../Data/Block.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"../Data/Level.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
@@ -144,7 +140,7 @@ void CBlockManager::LoadBlock()
 	}
 
 	CloseHandle(hFile);
-	MessageBox(g_hWnd, L"Load Save", L"己傍", MB_OK);
+	MessageBox(g_hWnd, L"Level Load", L"己傍", MB_OK);
 }
 
 

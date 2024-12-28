@@ -84,16 +84,16 @@ void CBlock::OnCollision(CGameObject* op)
 	switch (op->GetDIRECTION())
 	{
 	case DIRECTION::LEFT:
-		m_tInfo.fX = op->GetInfo().fX - 48;
+		m_tInfo.fX = op->GetInfo().fX - TILECX;
 		break;
 	case DIRECTION::RIGHT:
-		m_tInfo.fX = op->GetInfo().fX + 48;
+		m_tInfo.fX = op->GetInfo().fX + TILECX;
 		break;
 	case DIRECTION::UP:
-		m_tInfo.fY = op->GetInfo().fY - 48;
+		m_tInfo.fY = op->GetInfo().fY - TILECY;
 		break;
 	case DIRECTION::DOWN:
-		m_tInfo.fY = op->GetInfo().fY + 48;
+		m_tInfo.fY = op->GetInfo().fY + TILECY;
 		break;
 	}	
 }

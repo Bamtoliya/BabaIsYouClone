@@ -13,6 +13,9 @@ public:
 	void PickBlock(Point pt, PROPERTY pp);
 	void SaveBlock();
 	void LoadBlock();
+	void SetWidth(int w) { m_iWidth = w; }
+	void SetHeight(int h) { m_iHeight = h; }
+	
 	static CBlockManager* GetInstance()
 	{
 		if (nullptr == m_pInstance)
@@ -34,6 +37,8 @@ private:
 	~CBlockManager() { Release(); }
 	static CBlockManager* m_pInstance;
 	vector<CGameObject*>	m_vecBlock;
+	int m_iWidth;
+	int m_iHeight;
 
 	// 판단을 위해서 필요한 정보
 	// GAMEWORD, NOUN, VERB, PROPERTY, 

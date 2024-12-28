@@ -279,5 +279,6 @@
     <Text Include="블럭.txt">
       <Filter>01. GameObject\Block</Filter>
     </Text>
+    <Text Include="바바이즈유 기획서.txt" />
   </ItemGroup>
 </Project>

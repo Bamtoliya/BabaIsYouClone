@@ -5,8 +5,6 @@
 
 void CEdit::Initialize()
 {
-	CGameObjectManager::GetInstance()->AddObject(OBJID::BLOCK, CAbstractFactory<CPlayer>().Create());
-	CGameObjectManager::GetInstance()->AddObject(OBJID::BLOCK, CAbstractFactory<CBlock>().Create());
 	CBlockManager::GetInstance()->Initialize();
 	m_iWidth = 10;
 	m_iHeight = 10;
@@ -25,7 +23,6 @@ void CEdit::LateUpdate()
 
 void CEdit::Render(Graphics* g)
 {
-	//CBlockManager::GetInstance()->Render(g);
 	Pen pen(Color::White);
 	int hW = m_iWidth / 2;
 	int hH = m_iHeight / 2;
@@ -33,23 +30,10 @@ void CEdit::Render(Graphics* g)
 	{
 		for (int j = -hH; j < hH; ++j)
 		{
-			g->DrawRectangle(&pen, Rect(OCX / 2 + TILECX * i, OCY / 2 + TILECY*j, TILECX, TILECY));
+			g->DrawRectangle(&pen, Rect(OCX / 2 + TILECX * i, OCY / 2 + TILECY * j, TILECX, TILECY));
 		}
 	}
-	/*g->DrawRectangle(&pen, Rect(OCX / 2 - TILECX, OCY / 2, TILECX, TILECY));
-	g->DrawRectangle(&pen, Rect(OCX / 2, OCY / 2, TILECX, TILECY));
-	g->DrawRectangle(&pen, Rect(OCX / 2 - TILECX, OCY / 2, TILECX, TILECY));
-	g->DrawRectangle(&pen, Rect(OCX / 2, OCY / 2, TILECX, TILECY));*/
-
-	//g->DrawLine(&pen, Point(100, 100), Point(100, WINCY));
-	/*for (int j = 0; j < OCY; j += TILECX)
-	{
-		g->DrawLine(&pen, Point(j, 0), Point(j, WINCY));
-	}
-	for (int i = 0; i < OCX; i+=TILECY)
-	{	
-		g->DrawLine(&pen, Point(0, i), Point(WINCX, i));
-	}*/
+	CBlockManager::GetInstance()->Render(g);
 }
 
 void CEdit::Release()
@@ -60,23 +44,42 @@ void CEdit::KeyInput()
 {
 	if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
 	{
-		m_iWidth -= 2;
+		if(m_iWidth > 2) m_iWidth -= 2;
 	}
 	if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 	{
-		m_iWidth += 2;
+		if(m_iWidth < 30) m_iWidth += 2;
 	}
-
 	if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 	{
-		m_iHeight += 2;
+		if(m_iHeight < 16) m_iHeight += 2;
 	}
 	if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 	{
-		m_iHeight -= 2;
+		if (m_iHeight > 2) m_iHeight -= 2;
+		
 	}
+	//PageDown
+	if (CKeyManager::GetInstance()->KeyPressing(VK_NEXT))
+	{
+
+	}
+	//PageUP
+	if (CKeyManager::GetInstance()->KeyPressing(VK_PRIOR))
+	{
+
+	}
+	if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))
+	{
+		CBlockManager::GetInstance()->Release();
+		CBlockManager::GetInstance()->SetWidth(m_iWidth);
+		CBlockManager::GetInstance()->SetHeight(m_iHeight);
+		CBlockManager::GetInstance()->Initialize();
+	}
+
 	if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
 	{
+		cout << "LeftButton in Edit Called\n";
 		POINT	ptMouse{};
 		GetCursorPos(&ptMouse);
 		ScreenToClient(g_hWnd, &ptMouse);
@@ -84,7 +87,7 @@ void CEdit::KeyInput()
 		ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
 		ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
 
-		//CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), 1, 1);
+		//CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y));
 	}
 
 	if (CKeyManager::GetInstance()->KeyDown('S'))
