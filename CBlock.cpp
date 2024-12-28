@@ -4,7 +4,7 @@
 
 void CBlock::Initialize()
 {
-	m_tInfo = { 240, 240, 48, 48 };
+	m_tInfo = { 240, 240, 24, 24 };
 	m_eWord = GAMEWORD::NOUN;
 	m_eNoun = NOUN::BABA;
 
@@ -29,7 +29,8 @@ void CBlock::LateUpdate()
 void CBlock::Render(Graphics* graphic)
 {
 	Image* image = CResourceManager::GetInstance()->FindImage(L"Text_You");
-	graphic->DrawImage(image, m_tRect, 0 + m_tFrame.iFrameStart * 24, 0, 24, 24, UnitPixel);
+	int tmp = 226 + m_tFrame.iFrameStart * 25;
+	graphic->DrawImage(image, m_tRect, 276, tmp, 24, 24, UnitPixel);
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Red);

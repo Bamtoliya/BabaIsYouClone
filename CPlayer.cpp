@@ -4,7 +4,7 @@
 
 void CPlayer::Initialize()
 {
-    m_tInfo = { 0, 0, 48.f, 48.f };
+    m_tInfo = { 0, 0, 24.f, 24.f };
     m_fSpeed = 0.f;
 
     m_eCurState = IDLE;

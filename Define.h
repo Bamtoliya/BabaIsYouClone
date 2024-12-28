@@ -15,8 +15,8 @@
 #define TARGETFPS 60
 #define FRAMETIME 1.0f / TARGETFPS
 
-#define	TILECX				48
-#define	TILECY				48
+#define	TILECX				24
+#define	TILECY				24
 
 #define TILEX				24
 #define TILEY				18

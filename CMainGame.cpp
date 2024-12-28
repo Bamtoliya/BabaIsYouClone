@@ -18,9 +18,6 @@ void CMainGame::Initialize()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjecttsTiled-export.png", L"Tiled");	
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WorldMap");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"text_you_sheet.bmp", L"Text_You");
-	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"text_you_sheet4.bmp", L"Text_You");
-	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back.bmp", L"Back");
-	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Ground.bmp", L"Ground");
 }
 
 void CMainGame::Update()
@@ -54,23 +51,20 @@ void CMainGame::Render()
 	RECT rect;
 	GetClientRect(g_hWnd, &rect);
 	//HDC 
-	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
-	/*HDC hMemDC = CreateCompatibleDC(m_hDC);
-	HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, WINCX, WINCY);
-	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);*/
-	//Graphics graphics(hMemDC);
-	//graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);
+	//HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
+	HDC hMemDC = CreateCompatibleDC(m_hDC);
+	HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, OCX, OCY);
+	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);
+	Graphics graphics(hMemDC);
+	graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);
 #pragma endregion
 
 	//Render here
-	//Rectangle(hMemDC, 0, 0, 200, 200);
-	CSceneManager::GetInstance()->Render(hMemDC);
-	//CSceneManager::GetInstance()->Render(&graphics);
+	CSceneManager::GetInstance()->Render(&graphics);
 
 	//더블 버퍼링 결과물 출력
 	//원본을 해상도에 맞게 확대하여 출력
-	BitBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, SRCCOPY);
-	//StretchBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, WINCX, WINCY, SRCCOPY);
+	StretchBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, OCX, OCY, SRCCOPY);
 
 	//메모리 할당해제
 	/*SelectObject(hMemDC, oldBitmap);
