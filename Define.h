@@ -1,20 +1,23 @@
 #pragma once
-#define WINCX		1280
-#define WINCY		720
+#define WINCX		1720
+#define WINCY		960
 #define	PURE		= 0
 #define PI			3.141592f
 #define VK_MAX		0xff
 #define OBJ_NOEVENT	0
 #define OBJ_DEAD	1
-#define SOUNDPATH	"../../NoitaClone/Sounds/"
-#define	SPRITEPATH	L"../../NoitaClone/Assets"
-#define SAMPLESOUND	L"../../NoitaClone/Sounds/music/00.wav"
-#define PLAYERSPRITE L"../../NoitaClone/Assets/enemies_gfx/player_old"
-#define PLAYERHOTSPOT L"../../NoitaClone/Assets/ragdolls/player/filenames.txt"
+#define SOUNDPATH	L"Assets/Sounds/"
+#define	SPRITEPATH	L"Assets/Temp/"
+#define	CHARACTERPATH	L"Assets/Temp/ObjectsCharacter.png";
 #define PNG_EXTENSION L".png"
 #define TARGETFPS 60
 #define FRAMETIME 1.0f / TARGETFPS
-#define FIXEDUPDATETIME 0.05f
+
+#define	TILECX				48
+#define	TILECY				48
+
+#define TILEX				24
+#define TILEY				18
 
 extern HWND g_hWnd;
 extern bool g_bDevmode;
@@ -24,9 +27,29 @@ enum class SCENEID
 	Menu, Game, Test, Edit, End
 };
 
+enum class LEVELID
+{
+
+};
+
+enum class STAGEID
+{
+
+};
+
 enum OBJID
 {
-	None, Player, Test, Edit, End
+	BLOCK, PARTICLE, END
+};
+
+enum class BLOCKTYPE
+{
+	TEXT, CHARACTER, OBJECT
+};
+
+enum class DIRECTION
+{
+	LEFT, RIGHT, UP, DOWN
 };
 
 typedef struct tagInfo
@@ -36,6 +59,7 @@ typedef struct tagInfo
 
 typedef struct tagFrame
 {
+	int		iFrameAnimation;
 	int		iFrameStart;
 	int		iFrameEnd;
 	int		iMotion;

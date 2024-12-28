@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "CResourceManager.h"
 
-void CResourceManager::InsertImage(const TCHAR* pFIlePath, const TCHAR* pImgKey)
+CResourceManager* CResourceManager::m_pInstance = nullptr;
+
+void CResourceManager::InsertImage(const TCHAR* pFilePath, const TCHAR* pImgKey)
 {
 	auto iter = find_if(m_mapImage.begin(), m_mapImage.end(), FINDER(pImgKey));
 
 	if (iter == m_mapImage.end())
 	{
-		Image* pImage = new Image(pFIlePath);
+		Image* pImage = new Image(pFilePath);
 		m_mapImage.insert({ pImgKey, pImage });
 	}
 }

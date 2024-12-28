@@ -1,10 +1,10 @@
 #pragma once
-#include "CGameObject.h"
+#include "Blocks.h"
 class CGameObjectManager
 {
 public:
 	CGameObjectManager() {};
-	~CGameObjectManager() {};
+	~CGameObjectManager() { Release(); }
 
 	static CGameObjectManager* GetInstance()
 	{
@@ -21,17 +21,17 @@ public:
 		}
 	}
 
-	list<CGameObject*> GetPlayer() { return m_list[OBJID::Player]; }
+	//list<CGameObject*> GetPlayer() { return m_list[OBJID::Player]; }
 	CGameObject* GetTarget(OBJID eID, CGameObject* pDst);
 public:
 	void		AddObject(OBJID eID, CGameObject* pObj);
 	int			Update();
 	void		LateUpdate();
-	void		Render(HDC hDC);
+	void		Render(Graphics* g);
 	void		Release();
-	void		DeleteID(OBJID eID);
+	//void		DeleteID(OBJID eID);
 private:
 	static CGameObjectManager* m_pInstance;
-	list<CGameObject*> m_list[OBJID::End];
+	list<CGameObject*> m_list[OBJID::END];
 };
 

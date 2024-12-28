@@ -73,7 +73,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     QueryPerformanceFrequency(&frequency);
     LARGE_INTEGER startTime;
     QueryPerformanceCounter(&startTime);
-
     while (true)
     {
         // 현재 시간 얻기

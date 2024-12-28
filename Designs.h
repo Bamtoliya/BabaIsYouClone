@@ -5,6 +5,7 @@
 #include "CGameObjectManager.h"
 #include "CCollisionManager.h"
 #include "CResourceManager.h"
+#include "CScrollManager.h"
 #include "CSoundManager.h"
 #include "CSceneManager.h"
-#include "CTileManager.h"
+#include "CBlockManager.h"

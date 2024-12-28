@@ -8,6 +8,7 @@ public:
 	virtual void Update() PURE;
 	virtual void LateUpdate() PURE;
 	virtual void Render(Graphics* graphic) PURE;
+	virtual void Render(HDC hDC) PURE;
 	virtual void Release() PURE;
 
 	INFO		GetInfo() { return m_tInfo; }
@@ -25,31 +26,27 @@ public:
 	bool		GetDead() { return m_bDead; }
 	void		SetDead() { m_bDead = true; }
 	void		SetImgKey(const TCHAR* pImgKey) { m_pImgKey = pImgKey; }
+	void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
 
-	//void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
-	
+	virtual void OnCollision(CGameObject* op) PURE;
+	DIRECTION GetDIRECTION() { return m_eDir; }
 	
 	//void		Set_Angle(float _fAngle) { m_fAngle = _fAngle; }
-
 	//void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
-	
-
-	
 
 	void UpdateRect();
 	void MoveFrame();
 protected:
-	INFO		m_tInfo;
-	Rect		m_tRect;
-	FRAME		m_tFrame;
-	float		m_fSpeed;
-
-	bool		m_bDead;
-	bool		m_bActive;
-
-	const TCHAR* m_pImgKey;
-	CGameObject* m_pTarget;
-	/*DIRECTION	m_eDir;
-	RENDERID	m_eRender;*/
+	INFO			m_tInfo;
+	Rect			m_tRect;
+	FRAME			m_tFrame;
+	DIRECTION		m_eDir;
+	float			m_fSpeed;
+	bool			m_bDead;
+	bool			m_bActive;
+	const TCHAR*	m_pImgKey;
+	CGameObject*	m_pTarget;
+	BLOCKTYPE		m_eBlock;
+	list<PROPERTY>	m_eProperty;
 };
 

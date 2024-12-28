@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "CSceneManager.h"
-#include "CUIManager.h"
-#include "CKeyManager.h"
+#include "Designs.h"
+
 
 CSceneManager* CSceneManager::m_pInstance = nullptr;
 
@@ -16,20 +15,33 @@ CSceneManager::~CSceneManager()
 
 void CSceneManager::SetScene(SCENEID eID)
 {
-	switch (eID)
+	m_eCurScene = eID;
+	if (m_ePreScene != m_eCurScene)
 	{
-	case SCENEID::Menu:
-		break;
-	case SCENEID::Game:
-		break;
-	case SCENEID::Test:
-		break;
-	case SCENEID::Edit:
-		break;
-	case SCENEID::End:
-		break;
-	default:
-		break;
+		SafeDelete(m_pScene);
+		switch (eID)
+		{
+		case SCENEID::Menu:
+			m_pScene = new CMenu;
+			break;
+		case SCENEID::Game:
+			//m_pScene = new CMenu;
+			break;
+		case SCENEID::Test:
+			m_pScene = new CTestScene;
+			break;
+		case SCENEID::Edit:
+			m_pScene = new CEdit;
+			break;
+		case SCENEID::End:
+			break;
+		default:
+			break;
+		}
+
+		m_pScene->Initialize();
+
+		m_ePreScene = m_eCurScene;
 	}
 }
 
@@ -46,6 +58,11 @@ void CSceneManager::LateUpdate()
 void CSceneManager::Render(Graphics* g)
 {
 	m_pScene->Render(g);
+}
+
+void CSceneManager::Render(HDC hDC)
+{
+	m_pScene->Render(hDC);
 }
 
 void CSceneManager::Release()

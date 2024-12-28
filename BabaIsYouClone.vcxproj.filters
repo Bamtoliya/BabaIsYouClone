@@ -37,9 +37,6 @@
     <Filter Include="99. Managers\ResourceManager">
       <UniqueIdentifier>{adcc0a7e-f95c-45fd-977a-b1e76f51e128}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99. Managers\TileManager\CTile">
-      <UniqueIdentifier>{a97a059e-aa85-4b08-8668-fffc6599bca7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. GameObject">
       <UniqueIdentifier>{b3070b4e-b3e0-401c-af5f-2c6f7eccadfc}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,27 @@
     </Filter>
     <Filter Include="99. Managers\ScrollManager">
       <UniqueIdentifier>{bfac9143-4a9c-4214-be65-fd63eb372cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Edit">
+      <UniqueIdentifier>{59b969cf-30b3-4a46-a8d7-bca6f23843da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Game">
+      <UniqueIdentifier>{1891c971-b214-40d4-8e94-cfebafc7f583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Menu">
+      <UniqueIdentifier>{c29d61f9-ec7f-4fe6-a3d6-5d422f74f235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Block">
+      <UniqueIdentifier>{dfaef08b-63ed-483a-88b2-c15f97825300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. GameObject\Block\Words">
+      <UniqueIdentifier>{67028f63-5b57-4cc3-b5f9-5673827b238f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Game\Levels">
+      <UniqueIdentifier>{36580f39-bec0-4aeb-97c3-fd124fc6540f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Game\Levels\Level1">
+      <UniqueIdentifier>{cab5b48d-9d0f-4c03-97c1-2d317dc67258}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +120,7 @@
     <ClInclude Include="CResourceManager.h">
       <Filter>99. Managers\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="CTileManager.h">
+    <ClInclude Include="CBlockManager.h">
       <Filter>99. Managers\TileManager</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
@@ -120,11 +138,47 @@
     <ClInclude Include="CTestScene.h">
       <Filter>99. Managers\SceneManager\Scene\Test</Filter>
     </ClInclude>
+    <ClInclude Include="CScrollManager.h">
+      <Filter>99. Managers\ScrollManager</Filter>
+    </ClInclude>
     <ClInclude Include="Designs.h">
       <Filter>99. Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CScrollManager.h">
-      <Filter>99. Managers\ScrollManager</Filter>
+    <ClInclude Include="CMenu.h">
+      <Filter>99. Managers\SceneManager\Scene\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="CEdit.h">
+      <Filter>99. Managers\SceneManager\Scene\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.h">
+      <Filter>99. Managers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Blocks.h">
+      <Filter>01. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Operators.h">
+      <Filter>01. GameObject\Block\Words</Filter>
+    </ClInclude>
+    <ClInclude Include="Nouns.h">
+      <Filter>01. GameObject\Block\Words</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties.h">
+      <Filter>01. GameObject\Block\Words</Filter>
+    </ClInclude>
+    <ClInclude Include="Words.h">
+      <Filter>01. GameObject\Block\Words</Filter>
+    </ClInclude>
+    <ClInclude Include="CRule.h">
+      <Filter>99. Managers\SceneManager\Scene\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextBlock.h">
+      <Filter>01. GameObject\Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +206,7 @@
     <ClCompile Include="CResourceManager.cpp">
       <Filter>99. Managers\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="CTileManager.cpp">
+    <ClCompile Include="CBlockManager.cpp">
       <Filter>99. Managers\TileManager</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
@@ -170,6 +224,24 @@
     <ClCompile Include="CScrollManager.cpp">
       <Filter>99. Managers\ScrollManager</Filter>
     </ClCompile>
+    <ClCompile Include="CMenu.cpp">
+      <Filter>99. Managers\SceneManager\Scene\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="CEdit.cpp">
+      <Filter>99. Managers\SceneManager\Scene\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CRule.cpp">
+      <Filter>99. Managers\SceneManager\Scene\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BabaIsYouClone.rc">
@@ -183,5 +255,11 @@
     <Image Include="BabaIsYouClone.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Rule.txt" />
+    <Text Include="블럭.txt">
+      <Filter>01. GameObject\Block</Filter>
+    </Text>
   </ItemGroup>
 </Project>

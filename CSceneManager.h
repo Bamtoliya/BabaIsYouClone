@@ -1,5 +1,6 @@
 #pragma once
-#include "CScene.h"
+#include "Scenes.h"
+class CScene;
 class CSceneManager
 {
 public:
@@ -28,6 +29,7 @@ public:
 	void Update();
 	void LateUpdate();
 	void Render(Graphics* g);
+	void Render(HDC hDC);
 	void Release();
 
 private:

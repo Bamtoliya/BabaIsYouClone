@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "Define.h"
+#include "Words.h"
 
 #ifdef _DEBUG
 	#ifdef UNICODE

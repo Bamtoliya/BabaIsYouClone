@@ -6,11 +6,9 @@ class CAbstractFactory
 public:
 	CAbstractFactory() {}
 	~CAbstractFactory() {};
-
-public:
 	static CGameObject* Create()
 	{
-		CGameObject* pObj = new T;
+		CGameObject* pObj = new T();
 		pObj->Initialize();
 		return pObj;
 	}
@@ -19,11 +17,10 @@ public:
 	{
 		CGameObject* pObj = new T;
 		pObj->Initialize();
-		pObj->Set_Pos(_fX, _fY);
+		pObj->SetPos(_fX, _fY);
 
 		if (0.f != _fAngle)
-			pObj->Set_Angle(_fAngle);
-
+			//pObj->SetAngle(_fAngle);
 		return pObj;
 	}
 };

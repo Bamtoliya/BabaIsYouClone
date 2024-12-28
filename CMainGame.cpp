@@ -11,17 +11,22 @@ CMainGame::CMainGame()
 void CMainGame::Initialize()
 {
 	cout << "CMainGame Initialized\n";
-
+	CSceneManager::GetInstance()->SetScene(SCENEID::Edit);
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsCharacter-export.png", L"Character");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsText-export.png", L"Text");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjectsStatic-export.png", L"Static");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ObjecttsTiled-export.png", L"Tiled");	
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WorldMap");
 }
 
 void CMainGame::Update()
 {
-
+	CSceneManager::GetInstance()->Update();
 }
 
 void CMainGame::LateUpdate()
 {
-
+	CSceneManager::GetInstance()->LateUpdate();
 }
 
 void CMainGame::Render()
@@ -46,25 +51,29 @@ void CMainGame::Render()
 	GetClientRect(g_hWnd, &rect);
 	//HDC 
 	HDC hMemDC = CreateCompatibleDC(m_hDC);
-	HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, WINCX, WINCY);
-	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);
-	Graphics graphics(hMemDC);
+	/*HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, WINCX, WINCY);
+	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);*/
+	/*Graphics graphics(hMemDC);
+	graphics.SetInterpolationMode(InterpolationModeNearestNeighbor);*/
 #pragma endregion
+
 	//Render here
+	CSceneManager::GetInstance()->Render(hMemDC);
 	//CSceneManager::GetInstance()->Render(&graphics);
-	//tM->Render(graphics);
 
 	//더블 버퍼링 결과물 출력
 	//원본을 해상도에 맞게 확대하여 출력
-	StretchBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, WINCX, WINCY, SRCCOPY);
+	BitBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, SRCCOPY);
+	//StretchBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, WINCX, WINCY, SRCCOPY);
 
 	//메모리 할당해제
-	SelectObject(hMemDC, oldBitmap);
+	/*SelectObject(hMemDC, oldBitmap);
 	DeleteObject(hMemBitmap);
-	DeleteDC(hMemDC);
+	DeleteDC(hMemDC);*/
 }
 
 void CMainGame::Release()
 {
+	CSceneManager::DestroyInstance();
 	ReleaseDC(g_hWnd, m_hDC);
 }
