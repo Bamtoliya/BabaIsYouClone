@@ -5,5 +5,5 @@
 
 enum class GAMEWORD
 {
-	NOUN, VERB, PROPERTY
+	NONE, NOUN, VERB, PROPERTY
 };

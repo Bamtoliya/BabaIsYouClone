@@ -28,6 +28,7 @@ public:
 	void LateUpdate();
 	void Release();
 	void Render(Graphics* graphic);
+	void Render(HDC hDC);
 	void Clear();
 	
 	void GameStart();
@@ -38,18 +39,19 @@ public:
 	
 	void LoadMainMenuUI();
 	void LoadGameUI();
+	void LoadEditUI();
 	void MainMenu();
 	void InGame();
 	void Edit();
 
-	void OpenInventory();
-	void CloseInventory();
 	void PauseMenu();
 	void TestGame();
 	void SetSceneID(SCENEID id);
 
 	
 private:
+	CUIManager(): m_eSceneID(SCENEID::Menu) {}
+	~CUIManager() {}
 	static CUIManager* m_pInstance;
 	list<CUIElement*> m_UIList;
 	SCENEID m_eSceneID;

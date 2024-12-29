@@ -9,4 +9,5 @@
 #include "CSoundManager.h"
 #include "CSceneManager.h"
 #include "CBlockManager.h"
+#include "CUIManager.h"
 #include "CBmpMgr.h"

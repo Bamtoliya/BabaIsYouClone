@@ -1,8 +1,8 @@
 #pragma once
-#define OCX		860
+#define OCX		854
 #define OCY		480
-#define WINCX		1720
-#define WINCY		960
+#define WINCX		860
+#define WINCY		480
 #define	PURE		= 0
 #define PI			3.141592f
 #define VK_MAX		0xff
@@ -12,7 +12,7 @@
 #define	SPRITEPATH	L"Assets/Temp/"
 #define	CHARACTERPATH	L"Assets/Temp/ObjectsCharacter.png";
 #define PNG_EXTENSION L".png"
-#define TARGETFPS 60
+#define TARGETFPS 144
 #define FRAMETIME 1.0f / TARGETFPS
 
 #define	TILECX				24
@@ -21,8 +21,12 @@
 #define TILEX				24
 #define TILEY				18
 
+#define BORDERCOLOR Color(255, 78, 98, 192)
+#define FILLCOLOR Color(255, 43, 51, 92)
+
 extern HWND g_hWnd;
 extern bool g_bDevmode;
+extern bool g_bAnimate;
 
 enum class SCENEID
 {
@@ -39,6 +43,16 @@ enum class STAGEID
 
 };
 
+enum class UITYPE
+{
+	None, Button, Panel, End
+};
+
+enum class CHANNELID
+{
+	SOUND_BGM, SOUND_EFFECT, END
+};
+
 enum OBJID
 {
 	BLOCK, PARTICLE, END
@@ -46,7 +60,7 @@ enum OBJID
 
 enum class BLOCKTYPE
 {
-	TEXT, CHARACTER, OBJECT
+	NONE, TEXT, CHARACTER, OBJECT
 };
 
 enum class DIRECTION
@@ -118,6 +132,76 @@ public:
 
 static float Lerp(float start, float end, float t) {
 	return start + (end - start) * t;
+}
+
+static void DrawRoundedRect(Gdiplus::Graphics* graphics, Gdiplus::Rect rect, int radius) {
+	// GraphicsPath 객체 생성
+	Gdiplus::GraphicsPath path;
+
+	// 좌상단 모서리
+	path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+	// 우상단 모서리
+	path.AddArc(rect.X + rect.Width - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
+	// 우하단 모서리
+	path.AddArc(rect.X + rect.Width - radius * 2, rect.Y + rect.Height - radius * 2, radius * 2, radius * 2, 0, 90);
+	// 좌하단 모서리
+	path.AddArc(rect.X, rect.Y + rect.Height - radius * 2, radius * 2, radius * 2, 90, 90);
+	// 경로 닫기
+	path.CloseFigure();
+
+	// 펜 생성 (색상 및 두께 설정)
+	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 2);
+
+	// 라운드 렉트 그리기
+	graphics->DrawPath(&pen, &path);
+}
+
+static void HitBox(HDC hDC, Gdiplus::Rect& rect)
+{
+	//내부색
+	HBRUSH hBrush = CreateSolidBrush(RGB(0, 255, 0));
+	HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+	//외곽선
+	HPEN hPen = CreatePen(PS_SOLID, 1, RGB(0, 255, 0));
+	HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
+
+	RECT rc{};
+	rc.left = rect.X;
+	rc.top = rect.Y;
+	rc.right = rect.Width;
+	rc.bottom = rect.Height;
+
+	FrameRect(hDC, &rc, hBrush);
+
+	SelectObject(hDC, hOldPen);
+	SelectObject(hDC, hOldBrush);
+
+	DeleteObject(hPen);
+	DeleteObject(hBrush);
+}
+
+static void FillRoundedRect(Gdiplus::Graphics* graphics, Gdiplus::Rect rect, int radius, Gdiplus::Color PenColor, Gdiplus::Color BrushColor) {
+	// GraphicsPath 객체 생성
+	Gdiplus::GraphicsPath path;
+
+	// 좌상단 모서리
+	path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+	// 우상단 모서리
+	path.AddArc(rect.X + rect.Width - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
+	// 우하단 모서리
+	path.AddArc(rect.X + rect.Width - radius * 2, rect.Y + rect.Height - radius * 2, radius * 2, radius * 2, 0, 90);
+	// 좌하단 모서리
+	path.AddArc(rect.X, rect.Y + rect.Height - radius * 2, radius * 2, radius * 2, 90, 90);
+	// 경로 닫기
+	path.CloseFigure();
+
+	Gdiplus::SolidBrush brush(BrushColor);
+	// 펜 생성 (색상 및 두께 설정)
+	Gdiplus::Pen pen(Gdiplus::Color(PenColor), 2);
+
+	graphics->FillPath(&brush, &path);
+	// 라운드 렉트 그리기
+	graphics->DrawPath(&pen, &path);
 }
 
 static void ChangeImageColor(Gdiplus::Image*& image, Gdiplus::Color color)

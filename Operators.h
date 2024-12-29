@@ -1,15 +1,16 @@
 #pragma once
 enum class VERB
 {
-	IS, HAS, MAKE, WRITE
+
+	NONE = 0, IS, HAS, MAKE, WRITE
 };
 
 enum class CONDITION
 {
-	ON, CONDITION_NEAR, FACING, LONELY
+	NONE = 0, ON, CONDITION_NEAR, FACING, LONELY
 };
 
 enum class ADJUNCT
 {
-	AND, NOT
+	NONE = 0, AND, NOT
 };

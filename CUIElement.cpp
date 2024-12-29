@@ -3,10 +3,10 @@
 
 void CUIElement::UpdateRect()
 {
-	m_tRect.X = INT(m_position.x);
-	m_tRect.Y = INT(m_position.y);
-	m_tRect.Width = INT(m_size.x);
-	m_tRect.Height = INT(m_size.y);
+	m_tRect.X = INT(m_tInfo.fX);
+	m_tRect.Y = INT(m_tInfo.fY);
+	m_tRect.Width = INT(m_tInfo.fCX);
+	m_tRect.Height = INT(m_tInfo.fCY);
 }
 
 void CUIElement::UpdateChild()
@@ -27,6 +27,17 @@ void CUIElement::RenderChild(Graphics* graphic)
 		for (auto& c : m_child)
 		{
 			c.second->Render(graphic);
+		}
+	}
+}
+
+void CUIElement::RenderChild(HDC hDC)
+{
+	if (!m_child.empty())
+	{
+		for (auto& c : m_child)
+		{
+			c.second->Render(hDC);
 		}
 	}
 }

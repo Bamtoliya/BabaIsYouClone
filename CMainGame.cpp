@@ -2,56 +2,21 @@
 #include "CMainGame.h"
 #include "Designs.h"
 
+bool g_bAnimate;
+
 CMainGame::CMainGame()
 	: m_hDC(GetDC(g_hWnd)), m_ullTime(GetTickCount64()), m_iFPS(0)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
+	SetICMMode(m_hDC, ICM_ON);
 }
 
 void CMainGame::Initialize()
 {
+	g_bAnimate = false;
+	InsertResources();
 	cout << "CMainGame Initialized\n";
 	CSceneManager::GetInstance()->SetScene(SCENEID::Edit);
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"BABA.png", L"BABA");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"KEKE.png", L"KEKE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"BOX.png", L"BOX");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CIRCLE.png", L"CIRCLE");	
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CURSOR.png", L"CURSOR");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"DOOR.png", L"DOOR");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"DUST.png", L"DUST");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"FLAG.png", L"FLAG");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"FLOWER.png", L"FLOWER");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"KEY.png", L"KEY");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"LOVE.png", L"LOVE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"ROCK.png", L"ROCK");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"STAR.png", L"STAR");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_AND.png", L"Text_AND");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_DEFEAT.png", L"Text_DEFEAT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_END.png", L"Text_END");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_FLOAT.png", L"Text_FLOAT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_HOT.png", L"Text_HOT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_IS.png", L"Text_IS");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_MELT.png", L"Text_MELT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_MOVE.png", L"Text_MOVE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_OPEN.png", L"Text_OPEN");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_PULL.png", L"Text_PULL");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_PUSH.png", L"Text_PUSH");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SELECT.png", L"Text_SELECT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SHUT.png", L"Text_SHUT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_SINK.png", L"Text_SINK");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_STOP.png", L"Text_STOP");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_WIN.png", L"Text_WIN");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Text_YOU.png", L"Text_YOU");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_BRICK.png", L"Tile_BRICK");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_FORT.png", L"Tile_FORT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_GRASS.png", L"Tile_GRASS");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_HEDGE.png", L"Tile_HEDGE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_LAVA.png", L"Tile_LAVA");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_ROAD.png", L"Tile_ROAD");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_RUBBLE.png", L"Tile_RUBBLE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_WALL.png", L"Tile_WALL");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Tile_WATER.png", L"Tile_WATER");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WORLDMAP");
 }
 
 void CMainGame::Update()
@@ -62,6 +27,7 @@ void CMainGame::Update()
 void CMainGame::LateUpdate()
 {
 	CSceneManager::GetInstance()->LateUpdate();
+	CKeyManager::GetInstance()->LateUpdate();
 }
 
 void CMainGame::Render()
@@ -85,7 +51,7 @@ void CMainGame::Render()
 	RECT rect;
 	GetClientRect(g_hWnd, &rect);
 	//HDC 
-	//HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
+	//HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Back");
 	HDC hMemDC = CreateCompatibleDC(m_hDC);
 	HBITMAP hMemBitmap = CreateCompatibleBitmap(m_hDC, OCX, OCY);
 	HBITMAP oldBitmap = (HBITMAP)SelectObject(hMemDC, hMemBitmap);
@@ -94,6 +60,7 @@ void CMainGame::Render()
 #pragma endregion
 
 	//Render here
+	//CSceneManager::GetInstance()->Render(hMemDC);
 	CSceneManager::GetInstance()->Render(&graphics);
 
 	//더블 버퍼링 결과물 출력
@@ -101,13 +68,72 @@ void CMainGame::Render()
 	StretchBlt(m_hDC, 0, 0, rect.right, rect.bottom, hMemDC, 0, 0, OCX, OCY, SRCCOPY);
 
 	//메모리 할당해제
-	/*SelectObject(hMemDC, oldBitmap);
+	SelectObject(hMemDC, oldBitmap);
 	DeleteObject(hMemBitmap);
-	DeleteDC(hMemDC);*/
+	DeleteDC(hMemDC);
 }
 
 void CMainGame::Release()
 {
 	CSceneManager::DestroyInstance();
 	ReleaseDC(g_hWnd, m_hDC);
+}
+
+void CMainGame::InsertResources()
+{
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_CHARACTER_BABA.png", L"TEXT_CHARACTER_BABA");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_CHARACTER_KEKE.png", L"TEXT_CHARACTER_KEKE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_BOX.png", L"TEXT_OBJECT_BOX");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CIRCLE.png", L"CIRCLE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CURSOR.png", L"CURSOR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_DOOR.png", L"TEXT_OBJECT_DOOR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_DUST.png", L"TEXT_OBJECT_DUST");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_FLAG.png", L"TEXT_OBJECT_FLAG");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_FLOWER.png", L"TEXT_OBJECT_FLOWER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"FOCUS.png", L"FOCUS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_FOLIAGE.png", L"TEXT_OBJECT_FOLIAGE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_JELLY.png", L"TEXT_OBJECT_JELLY");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_KEY.png", L"TEXT_OBJECT_KEY");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_LOVE.png", L"TEXT_OBJECT_LOVE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_PILLAR.png", L"TEXT_OBJECT_PILLAR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_ROCK.png", L"TEXT_OBJECT_ROCK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_SKULL.png", L"TEXT_OBJECT_SKULL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_STAR.png", L"TEXT_OBJECT_STAR");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OBJECT_STAR2.png", L"TEXT_OBJECT_STAR2");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_AND.png", L"TEXT_AND");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_DEFEAT.png", L"TEXT_DEFEAT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_END.png", L"TEXT_END");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_FLOAT.png", L"TEXT_FLOAT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_HOT.png", L"TEXT_HOT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_IS.png", L"TEXT_IS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_MELT.png", L"TEXT_MELT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_MOVE.png", L"TEXT_MOVE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_OPEN.png", L"TEXT_OPEN");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_PULL.png", L"TEXT_PULL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_PUSH.png", L"TEXT_PUSH");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_SELECT.png", L"TEXT_SELECT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_SHUT.png", L"TEXT_SHUT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_SINK.png", L"TEXT_SINK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_STOP.png", L"TEXT_STOP");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_WIN.png", L"TEXT_WIN");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_YOU.png", L"TEXT_YOU");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_BRICK.png", L"TILE_BRICK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_CLOUDW.png", L"TILE_CLOUDW");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_FORT.png", L"TILE_FORT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_GRASS.png", L"TILE_GRASS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_HEDGE.png", L"TILE_HEDGE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_LAVA.png", L"TILE_LAVA");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_ROAD.png", L"TILE_ROAD");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_RUBBLE.png", L"TILE_RUBBLE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_WALL.png", L"TILE_WALL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_WATER.png", L"TILE_WATER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WORLDMAP");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_LINE.png", L"TILE_LINE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_ALPHABET.png", L"TEXT_ALPHABET");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_NUMBER.png", L"TEXT_NUMBER");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back2.bmp", L"Back");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Ground.bmp", L"Ground");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"TEXT_YOU.bmp", L"TEXT_YOU");
+	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"ObjectsText-export.bmp", L"TEXT");
+	//CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Back2.bmp", L"Back");
 }

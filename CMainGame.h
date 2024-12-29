@@ -12,6 +12,7 @@ public:
 	void Release();
 protected:
 private:
+	void InsertResources();
 	HDC m_hDC;
 #pragma region FPSÀç±â
 	ULONG64		m_ullTime;

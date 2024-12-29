@@ -16,7 +16,7 @@ public:
 			m_pInstance = nullptr;
 		}
 	}
-
+	map<const TCHAR*, Image*> GetMap() { return m_mapImage; }
 	void InsertImage(const TCHAR* pFIlePath, const TCHAR* pImgKey);
 	Image* FindImage(const TCHAR* pImgKey);
 	void Release();

@@ -147,14 +147,19 @@
     <ClInclude Include="Blocks.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBlock.h" />
+    <ClInclude Include="CBlockButton.h" />
+    <ClInclude Include="CBlocksPanel.h" />
     <ClInclude Include="CBmpMgr.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CEdit.h" />
     <ClInclude Include="CGameObjectManager.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CMainGame.h" />
+    <ClInclude Include="CMainMenuUI.h" />
     <ClInclude Include="CMenu.h" />
     <ClInclude Include="CMyBmp.h" />
+    <ClInclude Include="CPanel.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CRule.h" />
@@ -166,6 +171,8 @@
     <ClInclude Include="CBlockManager.h" />
     <ClInclude Include="CTextBlock.h" />
     <ClInclude Include="CTileBlock.h" />
+    <ClInclude Include="CUIElement.h" />
+    <ClInclude Include="CUIManager.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Designs.h" />
     <ClInclude Include="framework.h" />
@@ -177,19 +184,25 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UIElements.h" />
     <ClInclude Include="Words.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp" />
     <ClCompile Include="CBlock.cpp" />
+    <ClCompile Include="CBlockButton.cpp" />
+    <ClCompile Include="CBlocksPanel.cpp" />
     <ClCompile Include="CBmpMgr.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CEdit.cpp" />
     <ClCompile Include="CGameObjectManager.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="CMainGame.cpp" />
+    <ClCompile Include="CMainMenuUI.cpp" />
     <ClCompile Include="CMenu.cpp" />
     <ClCompile Include="CMyBmp.cpp" />
+    <ClCompile Include="CPanel.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CRule.cpp" />
@@ -201,6 +214,8 @@
     <ClCompile Include="CBlockManager.cpp" />
     <ClCompile Include="CTextBlock.cpp" />
     <ClCompile Include="CTileBlock.cpp" />
+    <ClCompile Include="CUIElement.cpp" />
+    <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

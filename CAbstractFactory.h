@@ -13,6 +13,15 @@ public:
 		return pObj;
 	}
 
+	static CGameObject* Create(float pX, float pY, float w, float h)
+	{
+		CGameObject* pObj = new T();
+		pObj->Initialize();
+		pObj->SetPos(pX, pY);
+		pObj->SetSize(w, h);
+		return pObj;
+	}
+
 	static CGameObject* Create(float _fX, float _fY, float _fAngle = 0.f)
 	{
 		CGameObject* pObj = new T;

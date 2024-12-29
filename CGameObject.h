@@ -20,6 +20,11 @@ public:
 		m_tInfo.fX = _fX;
 		m_tInfo.fY = _fY;
 	}
+	void		SetSize(float w, float h)
+	{
+		m_tInfo.fCX = w;
+		m_tInfo.fCY = h;
+	}
 
 	void		SetPosX(float _fX) { m_tInfo.fX += _fX; }
 	void		SetPosY(float _fY) { m_tInfo.fY += _fY; }
@@ -42,6 +47,7 @@ protected:
 	FRAME			m_tFrame;
 	DIRECTION		m_eDir;
 	float			m_fSpeed;
+	bool			m_bAnimate;
 	bool			m_bDead;
 	bool			m_bActive;
 	const TCHAR*	m_pImgKey;
