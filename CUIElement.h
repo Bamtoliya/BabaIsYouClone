@@ -7,7 +7,7 @@ public:
 		ZeroMemory(&m_tInfo, sizeof(INFO));
 		ZeroMemory(&m_tRect, sizeof(Rect));
 	}
-    CUIElement(CUIElement* m_parent, const unordered_map<const TCHAR*, CUIElement*>& m_child, const INFO& m_tInfo, const Rect& m_tRect, const TCHAR*& m_text, bool m_bActive, bool m_bFocus, bool m_bShow, const UITYPE& m_eID, Image* m_pImage)
+    CUIElement(CUIElement* m_parent, const vector<CUIElement*>& m_child, const INFO& m_tInfo, const Rect& m_tRect, const TCHAR*& m_text, bool m_bActive, bool m_bFocus, bool m_bShow, const UITYPE& m_eID, Image* m_pImage)
 		: m_parent(m_parent), m_child(m_child), m_tInfo(m_tInfo), m_tRect(m_tRect), m_text(m_text), m_bActive(m_bActive), m_bFocus(m_bFocus), m_bShow(m_bShow), m_eID(m_eID), m_pImage(m_pImage)
 	{
 	}
@@ -22,9 +22,9 @@ public:
 	CUIElement* GetParent() { return m_parent; }
 	void SetParent(CUIElement* p) { m_parent = p; }
 
-	unordered_map<const TCHAR*, CUIElement*> GetChild() { return m_child; }
-	void AddChild(CUIElement* c) { m_child.emplace(c->m_text, c); }
-	void AddChild(const TCHAR* sz, CUIElement* c) { m_child.emplace(sz, c); }
+	vector<CUIElement*> GetChilds() { return m_child; }
+	void AddChild(CUIElement* c) { m_child.emplace_back(c); }
+	//void AddChild(const TCHAR* sz, CUIElement* c) { m_child.emplace(c); }
 
 	INFO GetInfo() { return m_tInfo; }
 	const INFO* GetInfoPointer() { return &m_tInfo; }
@@ -57,7 +57,7 @@ public:
 protected:
 	
 	CUIElement* m_parent;
-	unordered_map<const TCHAR*, CUIElement*> m_child;
+	vector<CUIElement*> m_child;
 	INFO m_tInfo;
 	Rect m_tRect;
 	const TCHAR* m_text;

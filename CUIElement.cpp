@@ -15,7 +15,7 @@ void CUIElement::UpdateChild()
 	{
 		for (auto& c : m_child)
 		{
-			c.second->Update();
+			c->Update();
 		}
 	}
 }
@@ -26,7 +26,7 @@ void CUIElement::RenderChild(Graphics* graphic)
 	{
 		for (auto& c : m_child)
 		{
-			c.second->Render(graphic);
+			c->Render(graphic);
 		}
 	}
 }
@@ -37,7 +37,7 @@ void CUIElement::RenderChild(HDC hDC)
 	{
 		for (auto& c : m_child)
 		{
-			c.second->Render(hDC);
+			c->Render(hDC);
 		}
 	}
 }

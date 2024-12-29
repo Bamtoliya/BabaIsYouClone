@@ -30,11 +30,24 @@ public:
 	void		SetPosY(float _fY) { m_tInfo.fY += _fY; }
 	bool		GetDead() { return m_bDead; }
 	void		SetDead() { m_bDead = true; }
-	void		SetImgKey(const TCHAR* pImgKey) { m_pImgKey = pImgKey; }
-	void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
+	//void		SetImgKey(const TCHAR* pImgKey) {
+	//	if (m_pImgKey) {
+	//		delete[] m_pImgKey;
+	//		m_pImgKey = nullptr;
+	//	}
+	//	size_t len = _tcslen(pImgKey);
+
+	//	// 2. 메모리 할당
+	//	m_pImgKey = new TCHAR[len + 1];
+
+	//	// 3. 문자열 복사
+	//	wcscpy_s(m_pImgKey, len + 1, pImgKey);
+	//	//_tcscpy_s(m_pImgKey, pImgKey);
+	//}
+	void		SetDirection(DIRECTION eDir) { m_eDir = eDir; }
 
 	virtual void OnCollision(CGameObject* op) PURE;
-	DIRECTION GetDIRECTION() { return m_eDir; }
+	DIRECTION GetDirection() { return m_eDir; }
 	
 	//void		Set_Angle(float _fAngle) { m_fAngle = _fAngle; }
 	//void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }

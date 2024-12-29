@@ -26,22 +26,43 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 		}
 		if (_tcsstr(t.first, L"TEXT") != NULL)
 		{
-			new CBlockButton(i * 24, j * 24, 24, 24, t.first, this, true);
+			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::TEXT, this, true);
 			i++;
 		}
 	}
-	
-
-	/*for (int i = 0; i < 20; ++i)
+	i = 0;
+	j++;
+	for (auto& t : CResourceManager::GetInstance()->GetMap())
 	{
-
+		if (i > 20)
+		{
+			i = 0;
+			j++;
+		}
+		if (_tcsstr(t.first, L"OBJECT") != NULL)
+		{
+			//_tc
+			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::OBJECT, this, true);
+			i++;
+		}
 	}
-	new CBlockButton(0, 0, 24, 24, L"TEXT_YOU", this, true);
-	new CBlockButton(24, 0, 24, 24, L"BABA", this, true);
-	new CBlockButton(48, 0, 24, 24, L"BOX", this, true);
-	new CBlockButton(72, 0, 24, 24, L"STAR", this, true);
-	new CBlockButton(96, 0, 24, 24, L"STAR2", this, true);
-	new CBlockButton(120, 0, 24, 24, L"TEXT_IS", this, true);*/
+
+	i = 0;
+	j++;
+	for (auto& t : CResourceManager::GetInstance()->GetMap())
+	{
+		if (i > 20)
+		{
+			i = 0;
+			j++;
+		}
+		if (_tcsstr(t.first, L"CHARACTER") != NULL)
+		{
+			//_tc
+			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::CHARACTER, this, true);
+			i++;
+		}
+	}
 }
 
 void CBlocksPanel::Update()
@@ -69,7 +90,7 @@ void CBlocksPanel::SetFocus(CUIElement* c)
 		m_pCurFocus = c;
 		for (auto& e : m_child)
 		{
-			e.second->SetFocus(false);
+			e->SetFocus(false);
 		}
 		m_pCurFocus->SetFocus(true);
 	}

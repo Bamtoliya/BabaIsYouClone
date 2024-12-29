@@ -4,6 +4,7 @@ class CBlock : public CGameObject
 {
 public:
     CBlock() : m_pImgKey(nullptr), m_eBlock(BLOCKTYPE::NONE), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE) {}
+    CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b); 
     virtual ~CBlock() {};
     void Initialize() override;
     void Update() override;
@@ -12,6 +13,15 @@ public:
     void Render(HDC hDC) override;
     void Release() override;
     void OnCollision(CGameObject* op) override;
+    void SetBlockType(BLOCKTYPE b) { m_eBlock = b; }
+    void SetNoun(NOUN n) { m_eNoun = n; }
+    void SetVerb(VERB v) { m_eVerb = v; }
+    void AddProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
+    //void RemoveProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
+    BLOCKTYPE GetBlockType() { return m_eBlock; }
+    NOUN GetNoun() { return m_eNoun; }
+    VERB GetVerb() { return m_eVerb; }
+    list<PROPERTY> GetProperties() { return m_ePROPERTY; }
 private:
     void ChangeState();
     BLOCKTYPE		m_eBlock;

@@ -2,6 +2,13 @@
 #include "CBlock.h"
 #include "Designs.h"
 
+CBlock::CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b) :
+	m_pImgKey(pImgKey), m_eBlock(b), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE)
+{
+	m_tInfo = { fX, fY, 24, 24 };
+	m_tRect = { (INT)fX, (INT)fY, 24, 24 };
+}
+
 void CBlock::Initialize()
 {
 	m_tInfo = { 240, 240, 24, 24 };
@@ -41,13 +48,14 @@ void CBlock::Render(Graphics* graphic)
 		y = 1 + m_tFrame.iFrameStart * 25;
 		break;
 	case BLOCKTYPE::CHARACTER:
+		x = 51;
+		y = 1;
 		break;
 	case BLOCKTYPE::OBJECT:
+		x = 51;
+		y = 1;
 		break;
-	default:
-		break;
-	}
-	
+	}	
 	graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
 	if (g_bDevmode)
 	{
@@ -92,7 +100,7 @@ void CBlock::Release()
 
 void CBlock::OnCollision(CGameObject* op)
 {
-	switch (op->GetDIRECTION())
+	switch (op->GetDirection())
 	{
 	case DIRECTION::LEFT:
 		m_tInfo.fX = op->GetInfo().fX - TILECX;

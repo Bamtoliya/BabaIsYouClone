@@ -14,12 +14,26 @@ CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz
 	m_text = sz;
 	if (m_parent)
 	{
+		m_tInfo = { m_parent->GetInfo().fX + fX, m_parent->GetInfo().fY + fY, w, h };
+		m_parent->AddChild(this);
+	}
+	else m_tInfo = { fX, fY, w, h };
+
+	m_bShow = show;
+}
+CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz, BLOCKTYPE type, CUIElement* parent, bool show)
+{
+	
+	m_parent = parent;
+	m_text = sz;
+	if (m_parent)
+	{
 		m_tInfo = { m_parent->GetInfo().fX + fX, m_parent->GetInfo().fY + fY, w, h};
 		m_parent->AddChild(this);
 	}
 	else m_tInfo = { fX, fY, w, h };
-	
 	m_bShow = show;
+	m_target = new CBlock(fX, fY, sz, type);
 }
 
 void CBlockButton::Update()
@@ -37,9 +51,12 @@ void CBlockButton::Update()
 
 void CBlockButton::Render(Graphics* graphic)
 {
+	//Background
 	FillRoundedRect(graphic, m_tRect, 4, BORDERCOLOR, FILLCOLOR);
+	//Load Image
 	Image* image = CResourceManager::GetInstance()->FindImage(m_text);
-	graphic->DrawImage(image, m_tRect, 1, 1, 24, 24, UnitPixel);
+	m_target->Render(graphic);
+	
 	if (m_bFocus)
 	{
 		Image* image = CResourceManager::GetInstance()->FindImage(L"FOCUS");
@@ -50,7 +67,7 @@ void CBlockButton::Render(Graphics* graphic)
 		Pen pen(Color::Green);
 		graphic->DrawRectangle(&pen, m_tRect);
 	}
-	//target.Render(graphic);
+	//
 	__super::RenderChild(graphic);
 }
 

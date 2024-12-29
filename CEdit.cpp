@@ -94,6 +94,12 @@ void CEdit::KeyInput()
 		ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
 		ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
 
+		//만약 마우스버튼이 그리드 위치라면
+		/*if ()
+		{
+
+		}*/
+
 		//CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y));
 	}
 

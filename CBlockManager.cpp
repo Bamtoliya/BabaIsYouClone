@@ -22,8 +22,8 @@ void CBlockManager::Initialize()
 			float fX = OCX / 2 + (float)(i * TILECX);
 			float fY = OCY / 2 + (float)(j * TILECY);
 
-			CGameObject* pTile = CAbstractFactory<CBlock>::Create(fX, fY);
-			m_vecBlock.push_back(pTile);
+			/*CGameObject* pTile = CAbstractFactory<CBlock>::Create(fX, fY);
+			m_vecBlock.push_back(pTile);*/
 		}
 	}
 }
