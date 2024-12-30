@@ -3,7 +3,7 @@
 class CBlock : public CGameObject
 {
 public:
-    CBlock() : m_pImgKey(nullptr), m_eBlock(BLOCKTYPE::NONE), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE) {}
+    CBlock() : m_eBlock(BLOCKTYPE::NONE), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE) { m_tInfo = { 0, 0, 24, 24 }; }
     CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b); 
     virtual ~CBlock() {};
     void Initialize() override;
@@ -22,6 +22,8 @@ public:
     NOUN GetNoun() { return m_eNoun; }
     VERB GetVerb() { return m_eVerb; }
     list<PROPERTY> GetProperties() { return m_ePROPERTY; }
+    void Clone(CBlock& dst);
+    
 private:
     void ChangeState();
     BLOCKTYPE		m_eBlock;
@@ -29,6 +31,5 @@ private:
     NOUN            m_eNoun;
     VERB            m_eVerb;
     list<PROPERTY>  m_ePROPERTY;
-    const TCHAR*    m_pImgKey;
 };
 

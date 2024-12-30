@@ -10,7 +10,7 @@ public:
 	void Render(Graphics* g);
 	void Render(HDC hDC);
 	void Release();
-	void PickBlock(Point pt, PROPERTY pp);
+	void PickBlock(Point pt, CBlock b);
 	void SaveBlock();
 	void LoadBlock();
 	void SetWidth(int w) { m_iWidth = w; }

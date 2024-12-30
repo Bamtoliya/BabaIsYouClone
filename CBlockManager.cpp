@@ -15,15 +15,15 @@ void CBlockManager::Initialize()
 {
 	int hW = m_iWidth / 2;
 	int hH = m_iHeight / 2;
-	for (int i = -hW; i < hW; ++i)
+	for (int i = -hH; i < hH; ++i)
 	{
-		for (int j = -hH; j < hH; ++j)
+		for (int j = -hW; j < hW; ++j)
 		{
-			float fX = OCX / 2 + (float)(i * TILECX);
-			float fY = OCY / 2 + (float)(j * TILECY);
+			float fX = OCX / 2 + (float)(j * TILECX);
+			float fY = OCY / 2 + (float)(i * TILECY);
 
-			/*CGameObject* pTile = CAbstractFactory<CBlock>::Create(fX, fY);
-			m_vecBlock.push_back(pTile);*/
+			CGameObject* pBlock = CAbstractFactory<CBlock>::Create(fX, fY);
+			m_vecBlock.push_back(pBlock);
 		}
 	}
 }
@@ -51,19 +51,6 @@ void CBlockManager::Render(Graphics* g)
 
 void CBlockManager::Render(HDC hDC)
 {
-	//if (g_bDevmode)
-	//{
-	//	Pen pen(Color::White);
-	//	//DrawGrid
-	//	for (int j = 1; j < TILEX - 1; ++j)
-	//	{
-	//		g->DrawLine(&pen, Point(j * TILECX, 0), Point(j * TILECX, WINCY));
-	//	}
-	//	for (int i = 1; i < TILEY - 1; ++i)
-	//	{
-	//		g->DrawLine(&pen, Point(0, i * TILECY), Point(WINCX, i * TILECY));
-	//	}
-	//}
 	for (auto& pTile : m_vecBlock)
 		pTile->Render(hDC);
 }
@@ -74,15 +61,24 @@ void CBlockManager::Release()
 	m_vecBlock.clear();
 }
 
-void CBlockManager::PickBlock(Point pt, PROPERTY pp)
+void CBlockManager::PickBlock(Point pt, CBlock b)
 {
-	int		x = pt.X / TILECX;
-	int		y = pt.Y / TILECY;
+	//그리드 시작좌표
+	int startX	= OCX / 2 - m_iWidth / 2 * TILECX;
+	int startY	= OCY / 2 - m_iHeight / 2 * TILECY;
 
-	int	iIndex = y * TILEX + x;
+	int	x = (pt.X - startX) / TILECX;
+	int	y = (pt.Y - startY) / TILECY;
+	int	iIndex = y * m_iWidth + x;
+	printf("X: %d Y: %d\n", x, y);
+	cout << iIndex << endl;
 
 	if (0 > iIndex || (size_t)iIndex >= m_vecBlock.size())
 		return;
+	m_vecBlock[iIndex]->SetImgKey(b.GetImgKey());
+	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetBlockType(b.GetBlockType());
+	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetNoun(b.GetNoun());
+	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetVerb(b.GetVerb());
 	//m_vecBlock[iIndex]->SetDrawID(iDrawID);
 }
 
@@ -98,8 +94,8 @@ void CBlockManager::SaveBlock()
 
 	for (auto& pTile : m_vecBlock)
 	{
-		iDrawID = dynamic_cast<CTile*>(pTile)->GetDrawID();
-		iOption = dynamic_cast<CTile*>(pTile)->GetOption();
+		//iDrawID = dynamic_cast<CBlock*>(pTile)->GetDrawID();
+		//iOption = dynamic_cast<CBlock*>(pTile)->GetOption();
 
 		WriteFile(hFile, pTile->GetInfoPointer(), sizeof(INFO), &dwByte, NULL);
 		WriteFile(hFile, &iDrawID, sizeof(int), &dwByte, NULL);
@@ -132,11 +128,11 @@ void CBlockManager::LoadBlock()
 		if (0 == dwByte)
 			break;
 
-		CGameObject* pBlcok = CAbstractFactory<CBlock>::Create(tInfo.fX, tInfo.fY);
+		//CBlock* pBlcok = CAbstractFactory<CBlock>::Create(tInfo.fX, tInfo.fY);
 		/*dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
 		dynamic_cast<CTile*>(pTile)->SetOption(iOption);*/
 
-		m_vecBlock.push_back(pBlcok);
+		//m_vecBlock.push_back(pBlcok);
 	}
 
 	CloseHandle(hFile);

@@ -9,6 +9,7 @@ public:
     void Render(Graphics* graphic) override;
     void Render(HDC hDC) override;
     void SetFocus(CUIElement* c);
+    CUIElement* GetCurBlock() { return m_pCurFocus; }
 private:
     CUIElement* m_pCurFocus;
     CUIElement* m_pPreFocus;

@@ -11,7 +11,9 @@ public:
     void Release() override;
 private:
     void KeyInput();
+    void UpdateGridRect();
     int m_iWidth;
     int m_iHeight;
+    Rect gridRect;
 };
 

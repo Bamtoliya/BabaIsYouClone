@@ -46,6 +46,7 @@ public:
 	bool IsShow() { return m_bShow; }
 
 	UITYPE GetUIType() { return m_eID; }
+	const TCHAR* GetText() { return m_text; }
 
 	void Dump()
 	{

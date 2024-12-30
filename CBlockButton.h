@@ -11,9 +11,10 @@ public:
 	void Update() override;
 	void Render(Graphics* graphic) override;
 	void Render(HDC hDC) override;
+	CBlock GetTarget() { return m_target; }
 private:
 	void KeyInput();
 	void OnClick();
-	CBlock* m_target;
+	CBlock m_target;
 };
 

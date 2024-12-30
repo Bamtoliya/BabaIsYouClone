@@ -33,7 +33,11 @@ CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz
 	}
 	else m_tInfo = { fX, fY, w, h };
 	m_bShow = show;
-	m_target = new CBlock(fX, fY, sz, type);
+	//m_target = new CBlock(fX, fY, sz, type);
+	m_target.SetPos(fX, fY);
+	m_target.SetBlockType(type);
+	m_target.SetImgKey(sz);
+	m_target.UpdateRect();
 }
 
 void CBlockButton::Update()
@@ -55,7 +59,7 @@ void CBlockButton::Render(Graphics* graphic)
 	FillRoundedRect(graphic, m_tRect, 4, BORDERCOLOR, FILLCOLOR);
 	//Load Image
 	Image* image = CResourceManager::GetInstance()->FindImage(m_text);
-	m_target->Render(graphic);
+	m_target.Render(graphic);
 	
 	if (m_bFocus)
 	{

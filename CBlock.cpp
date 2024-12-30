@@ -3,10 +3,11 @@
 #include "Designs.h"
 
 CBlock::CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b) :
-	m_pImgKey(pImgKey), m_eBlock(b), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE)
+	m_eBlock(b), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE)
 {
 	m_tInfo = { fX, fY, 24, 24 };
 	m_tRect = { (INT)fX, (INT)fY, 24, 24 };
+	this->SetImgKey(pImgKey);
 }
 
 void CBlock::Initialize()
@@ -21,7 +22,7 @@ void CBlock::Initialize()
 	m_tFrame.iMotion = 1;
 	m_tFrame.ullSpeed = 200;
 	m_tFrame.ullTime = GetTickCount64();
-	m_pImgKey = L"TEXT_YOU";
+	//m_pImgKey = L"TEXT_YOU";
 }
 
 void CBlock::Update()
@@ -115,6 +116,10 @@ void CBlock::OnCollision(CGameObject* op)
 		m_tInfo.fY = op->GetInfo().fY + TILECY;
 		break;
 	}	
+}
+
+void CBlock::Clone(CBlock& dst)
+{
 }
 
 void CBlock::ChangeState()

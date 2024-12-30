@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CEdit.h"
 #include "Designs.h"
-#include "CPlayer.h"
+#include "UIElements.h"
 
 void CEdit::Initialize()
 {
@@ -9,13 +9,16 @@ void CEdit::Initialize()
 	CUIManager::GetInstance()->SetSceneID(SCENEID::Edit);
 	m_iWidth = 10;
 	m_iHeight = 10;
+	int hW = m_iWidth / 2;
+	int hH = m_iHeight / 2;
 }
 
 void CEdit::Update()
 {
 	KeyInput();
-	CBlockManager::GetInstance()->Update();
+	UpdateGridRect();
 	CUIManager::GetInstance()->Update();
+	CBlockManager::GetInstance()->Update();
 }
 
 void CEdit::LateUpdate()
@@ -83,25 +86,35 @@ void CEdit::KeyInput()
 		CBlockManager::GetInstance()->SetHeight(m_iHeight);
 		CBlockManager::GetInstance()->Initialize();
 	}
-
-	if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
+	POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	if (gridRect.Contains(Point(ptMouse.x, ptMouse.y)))
 	{
-		cout << "LeftButton in Edit Called\n";
-		POINT	ptMouse{};
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse);
-
-		ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
-		ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
-
-		//만약 마우스버튼이 그리드 위치라면
-		/*if ()
+		//printf("GridRect: X: %d Y: %d WIDTH: %d HEIGHT: %d\n", gridRect.X, gridRect.Y, gridRect.Width, gridRect.Height);
+		if (CKeyManager::GetInstance()->KeyDown(VK_LBUTTON))
 		{
+			list<CUIElement*> UIList = CUIManager::GetInstance()->GetList();
 
-		}*/
+			const TCHAR* targetText = L"BlocksPanel";
+			auto it = find_if(UIList.begin(), UIList.end(), [&targetText](CUIElement* e) { return e->GetText() == targetText; });
+			if (it != UIList.end())
+			{
+				dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock()->Dump();
+			}
 
-		//CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y));
+			CBlock curBlock = dynamic_cast<CBlockButton*>(dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())->GetTarget();
+
+			cout << "LeftButton in Edit Called\n";
+
+
+			ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
+			ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
+			CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), curBlock);
+		}
 	}
+
+	
 
 	if (CKeyManager::GetInstance()->KeyDown('S'))
 	{
@@ -114,6 +127,18 @@ void CEdit::KeyInput()
 		CBlockManager::GetInstance()->LoadBlock();
 		return;
 	}
+}
+
+void CEdit::UpdateGridRect()
+{
+	int hW = m_iWidth / 2;
+	int hH = m_iHeight / 2;
+	gridRect = {
+		OCX / 2 - hW * TILECX,
+		OCY / 2 - hH * TILECY,
+		m_iWidth * TILECX,
+		m_iHeight * TILECX,
+	};
 }
 
 void CEdit::Render(HDC hDC)
