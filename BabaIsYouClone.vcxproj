@@ -154,6 +154,7 @@
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CEdit.h" />
     <ClInclude Include="CGameObjectManager.h" />
+    <ClInclude Include="CGrid.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMainMenuUI.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CScrollManager.h" />
     <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CTabButton.h" />
     <ClInclude Include="CTestScene.h" />
     <ClInclude Include="CBlockManager.h" />
     <ClInclude Include="CTextBlock.h" />
@@ -197,6 +199,7 @@
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CEdit.cpp" />
     <ClCompile Include="CGameObjectManager.cpp" />
+    <ClCompile Include="CGrid.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMainMenuUI.cpp" />
@@ -210,6 +213,7 @@
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CScrollManager.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CTabButton.cpp" />
     <ClCompile Include="CTestScene.cpp" />
     <ClCompile Include="CBlockManager.cpp" />
     <ClCompile Include="CTextBlock.cpp" />

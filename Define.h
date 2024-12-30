@@ -68,6 +68,21 @@ enum class DIRECTION
 	LEFT, RIGHT, UP, DOWN
 };
 
+enum class TileState {
+	NONE,
+	LEFT,
+	RIGHT,
+	TOP,
+	BOTTOM,
+	LEFT_RIGHT,
+	LEFT_TOP,
+	LEFT_BOTTOM,
+	RIGHT_TOP,
+	RIGHT_BOTTOM,
+	TOP_BOTTOM,
+	ALL
+};
+
 typedef struct tagInfo
 {
 	float fX, fY, fCX, fCY;

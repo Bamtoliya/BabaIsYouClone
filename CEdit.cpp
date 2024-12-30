@@ -67,7 +67,6 @@ void CEdit::KeyInput()
 	if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 	{
 		if (m_iHeight > 2) m_iHeight -= 2;
-		
 	}
 	//PageDown
 	if (CKeyManager::GetInstance()->KeyPressing(VK_NEXT))
@@ -92,8 +91,9 @@ void CEdit::KeyInput()
 	if (gridRect.Contains(Point(ptMouse.x, ptMouse.y)))
 	{
 		//printf("GridRect: X: %d Y: %d WIDTH: %d HEIGHT: %d\n", gridRect.X, gridRect.Y, gridRect.Width, gridRect.Height);
-		if (CKeyManager::GetInstance()->KeyDown(VK_LBUTTON))
+		if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
 		{
+			cout << "LeftButton in Edit Called\n";
 			list<CUIElement*> UIList = CUIManager::GetInstance()->GetList();
 
 			const TCHAR* targetText = L"BlocksPanel";
@@ -101,16 +101,15 @@ void CEdit::KeyInput()
 			if (it != UIList.end())
 			{
 				dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock()->Dump();
+				CBlock curBlock = dynamic_cast<CBlockButton*>(dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())->GetTarget();
+				ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
+				ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
+				CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), curBlock);
 			}
+			else
+			{
 
-			CBlock curBlock = dynamic_cast<CBlockButton*>(dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())->GetTarget();
-
-			cout << "LeftButton in Edit Called\n";
-
-
-			ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
-			ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
-			CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), curBlock);
+			}
 		}
 	}
 

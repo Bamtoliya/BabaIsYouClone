@@ -11,7 +11,9 @@ public:
     void SetFocus(CUIElement* c);
     CUIElement* GetCurBlock() { return m_pCurFocus; }
 private:
+    void UpdateList();
     CUIElement* m_pCurFocus;
     CUIElement* m_pPreFocus;
+    BLOCKTYPE   m_eType;
 };
 

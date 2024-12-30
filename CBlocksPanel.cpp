@@ -26,7 +26,7 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 		}
 		if (_tcsstr(t.first, L"TEXT") != NULL)
 		{
-			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::TEXT, this, true);
+			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::TEXT, this, true);
 			i++;
 		}
 	}
@@ -42,7 +42,7 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 		if (_tcsstr(t.first, L"OBJECT") != NULL)
 		{
 			//_tc
-			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::OBJECT, this, true);
+			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::OBJECT, this, true);
 			i++;
 		}
 	}
@@ -59,7 +59,7 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 		if (_tcsstr(t.first, L"CHARACTER") != NULL)
 		{
 			//_tc
-			new CBlockButton(i * 24, j * 24, 24, 24, t.first, BLOCKTYPE::CHARACTER, this, true);
+			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::CHARACTER, this, true);
 			i++;
 		}
 	}
@@ -90,9 +90,15 @@ void CBlocksPanel::SetFocus(CUIElement* c)
 		m_pCurFocus = c;
 		for (auto& e : m_child)
 		{
+			//dynamic_cast<CBlockButton*>(e)->GetTarget().
 			e->SetFocus(false);
 		}
 		m_pCurFocus->SetFocus(true);
 	}
 	m_pPreFocus = c;
+}
+
+void CBlocksPanel::UpdateList()
+{
+	//if(m_eType)
 }

@@ -76,8 +76,6 @@ void CUIManager::LoadGameUI()
 void CUIManager::LoadEditUI()
 {
 	m_UIList.push_back(new CBlocksPanel(0, 0, OCX, 72, L"BlocksPanel", nullptr, true));
-	/*m_UIList.push_back(new CPanel(0, 0, OCX, 80, L"Panel", nullptr, true));
-	m_UIList.push_back(new CPanel(OCX-130, 0, 130, OCY, L"Panel", nullptr, true));*/
 }
 
 void CUIManager::SetSceneID(SCENEID id)

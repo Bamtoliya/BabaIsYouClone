@@ -31,9 +31,6 @@
     <Filter Include="99. Managers\GameObjectManager">
       <UniqueIdentifier>{567a9cee-2337-4b8e-913e-332c2ed8ee4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99. Managers\TileManager">
-      <UniqueIdentifier>{9ef42db3-0f1c-4af2-8662-5470e7324e28}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Managers\ResourceManager">
       <UniqueIdentifier>{adcc0a7e-f95c-45fd-977a-b1e76f51e128}</UniqueIdentifier>
     </Filter>
@@ -112,6 +109,15 @@
     <Filter Include="99. Managers\UIManager\Editor\BlocksPanel">
       <UniqueIdentifier>{44b00519-d7c2-410a-a844-7af9d0ab421a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\Edit\TabButton">
+      <UniqueIdentifier>{868c8d5d-bbae-47e4-ac32-263eafee9cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\BlockManager">
+      <UniqueIdentifier>{9ef42db3-0f1c-4af2-8662-5470e7324e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\BlockManager\Grid">
+      <UniqueIdentifier>{7f5563c3-d43e-4aed-8ed6-f60b2747eeec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -154,7 +160,7 @@
       <Filter>99. Managers\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="CBlockManager.h">
-      <Filter>99. Managers\TileManager</Filter>
+      <Filter>99. Managers\BlockManager</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>01. GameObject\Player</Filter>
@@ -243,6 +249,12 @@
     <ClInclude Include="CBlockButton.h">
       <Filter>99. Managers\UIManager\Editor\BlockButton</Filter>
     </ClInclude>
+    <ClInclude Include="CTabButton.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CGrid.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -270,7 +282,7 @@
       <Filter>99. Managers\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="CBlockManager.cpp">
-      <Filter>99. Managers\TileManager</Filter>
+      <Filter>99. Managers\BlockManager</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>01. GameObject\Player</Filter>
@@ -331,6 +343,12 @@
     </ClCompile>
     <ClCompile Include="CBlockButton.cpp">
       <Filter>99. Managers\UIManager\Editor\BlockButton</Filter>
+    </ClCompile>
+    <ClCompile Include="CTabButton.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CGrid.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
