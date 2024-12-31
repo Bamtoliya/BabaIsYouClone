@@ -21,7 +21,6 @@ void CUIManager::Exit()
 }
 void CUIManager::Update()
 {
-	for (auto& e : m_UIList) { e->Update(); }
 	switch (m_eSceneID)
 	{
 	case SCENEID::Menu:
@@ -67,20 +66,22 @@ void CUIManager::Render(HDC hDC)
 }
 void CUIManager::LoadMainMenuUI()
 {
+	m_UIList.push_back(new CMainMenuUI);
 }
 
 void CUIManager::LoadGameUI()
 {
+	
 }
 
 void CUIManager::LoadEditUI()
 {
 	m_UIList.push_back(new CBlocksPanel(0, 0, OCX, 72, L"BlocksPanel", nullptr, true));
+	m_UIList.push_back(new CButton(600, OCY-100, 200, 40, L"RETURN", nullptr, true));
 }
 
 void CUIManager::SetSceneID(SCENEID id)
 {
-	Clear();
 	m_eSceneID = id;
 	switch (id)
 	{
@@ -105,16 +106,35 @@ void CUIManager::SetSceneID(SCENEID id)
 
 void CUIManager::MainMenu()
 {
-
+	for (auto& e : m_UIList)
+	{ 
+		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+			break;
+		else 
+			e->Update(); 
+	}
 }
 
 void CUIManager::InGame()
 {
-
+	for (auto& e : m_UIList)
+	{
+		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+			break;
+		else 
+			e->Update(); 
+	}
 }
 
 void CUIManager::Edit()
 {
+	for (auto& e : m_UIList) 
+	{ 
+		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+			break;
+		else 
+			e->Update(); 
+	}
 	if (CKeyManager::GetInstance()->KeyDown(VK_TAB))
 	{
 

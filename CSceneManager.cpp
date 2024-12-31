@@ -25,7 +25,7 @@ void CSceneManager::SetScene(SCENEID eID)
 			m_pScene = new CMenu;
 			break;
 		case SCENEID::Game:
-			//m_pScene = new CMenu;
+			m_pScene = new CInGame;
 			break;
 		case SCENEID::Test:
 			m_pScene = new CTestScene;

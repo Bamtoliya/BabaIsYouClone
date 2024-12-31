@@ -58,9 +58,6 @@
     <Filter Include="99. Managers\SceneManager\Scene\Edit">
       <UniqueIdentifier>{59b969cf-30b3-4a46-a8d7-bca6f23843da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99. Managers\SceneManager\Scene\Game">
-      <UniqueIdentifier>{1891c971-b214-40d4-8e94-cfebafc7f583}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Managers\SceneManager\Scene\Menu">
       <UniqueIdentifier>{c29d61f9-ec7f-4fe6-a3d6-5d422f74f235}</UniqueIdentifier>
     </Filter>
@@ -69,12 +66,6 @@
     </Filter>
     <Filter Include="01. GameObject\Block\Words">
       <UniqueIdentifier>{67028f63-5b57-4cc3-b5f9-5673827b238f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Managers\SceneManager\Scene\Game\Levels">
-      <UniqueIdentifier>{36580f39-bec0-4aeb-97c3-fd124fc6540f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Managers\SceneManager\Scene\Game\Levels\Level1">
-      <UniqueIdentifier>{cab5b48d-9d0f-4c03-97c1-2d317dc67258}</UniqueIdentifier>
     </Filter>
     <Filter Include="99. Managers\BitmapManager">
       <UniqueIdentifier>{304f2429-61bf-46f5-a973-0b30e24fc094}</UniqueIdentifier>
@@ -117,6 +108,15 @@
     </Filter>
     <Filter Include="99. Managers\BlockManager\Grid">
       <UniqueIdentifier>{7f5563c3-d43e-4aed-8ed6-f60b2747eeec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\InGame">
+      <UniqueIdentifier>{1891c971-b214-40d4-8e94-cfebafc7f583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\InGame\Levels">
+      <UniqueIdentifier>{36580f39-bec0-4aeb-97c3-fd124fc6540f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Managers\SceneManager\Scene\InGame\Levels\Level1">
+      <UniqueIdentifier>{cab5b48d-9d0f-4c03-97c1-2d317dc67258}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +211,7 @@
       <Filter>01. GameObject\Block\Words</Filter>
     </ClInclude>
     <ClInclude Include="CRule.h">
-      <Filter>99. Managers\SceneManager\Scene\Game</Filter>
+      <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
     </ClInclude>
     <ClInclude Include="CTileBlock.h">
       <Filter>01. GameObject\Block</Filter>
@@ -243,17 +243,23 @@
     <ClInclude Include="CBlocksPanel.h">
       <Filter>99. Managers\UIManager\Editor\BlocksPanel</Filter>
     </ClInclude>
-    <ClInclude Include="CMainMenuUI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CBlockButton.h">
       <Filter>99. Managers\UIManager\Editor\BlockButton</Filter>
     </ClInclude>
     <ClInclude Include="CTabButton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CTitle.h">
+      <Filter>99. Managers\UIManager\MainMenu\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuUI.h">
+      <Filter>99. Managers\UIManager\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="CInGame.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
+    </ClInclude>
     <ClInclude Include="CGrid.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>99. Managers\BlockManager\Grid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -309,7 +315,7 @@
       <Filter>01. GameObject\Block</Filter>
     </ClCompile>
     <ClCompile Include="CRule.cpp">
-      <Filter>99. Managers\SceneManager\Scene\Game</Filter>
+      <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
     </ClCompile>
     <ClCompile Include="CTileBlock.cpp">
       <Filter>01. GameObject\Block</Filter>
@@ -338,17 +344,23 @@
     <ClCompile Include="CBlocksPanel.cpp">
       <Filter>99. Managers\UIManager\Editor\BlocksPanel</Filter>
     </ClCompile>
-    <ClCompile Include="CMainMenuUI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CBlockButton.cpp">
       <Filter>99. Managers\UIManager\Editor\BlockButton</Filter>
     </ClCompile>
     <ClCompile Include="CTabButton.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CTitle.cpp">
+      <Filter>99. Managers\UIManager\MainMenu\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainMenuUI.cpp">
+      <Filter>99. Managers\UIManager\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="CInGame.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
+    </ClCompile>
     <ClCompile Include="CGrid.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>99. Managers\BlockManager\Grid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

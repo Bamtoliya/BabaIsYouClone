@@ -11,33 +11,33 @@ void CUIElement::UpdateRect()
 
 void CUIElement::UpdateChild()
 {
-	if (!m_child.empty())
+	if (!m_child.size() == 0)
 	{
 		for (auto& c : m_child)
 		{
-			c->Update();
+			if(c) c->Update();
 		}
 	}
 }
 
 void CUIElement::RenderChild(Graphics* graphic)
 {
-	if (!m_child.empty())
+	if (!m_child.size() == 0)
 	{
 		for (auto& c : m_child)
 		{
-			c->Render(graphic);
+			if(c) c->Render(graphic);
 		}
 	}
 }
 
 void CUIElement::RenderChild(HDC hDC)
 {
-	if (!m_child.empty())
+	if (!m_child.size() == 0)
 	{
 		for (auto& c : m_child)
 		{
-			c->Render(hDC);
+			if(c) c->Render(hDC);
 		}
 	}
 }

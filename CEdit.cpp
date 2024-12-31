@@ -5,6 +5,7 @@
 
 void CEdit::Initialize()
 {
+	CUIManager::DestroyInstance();
 	CBlockManager::GetInstance()->Initialize();
 	CUIManager::GetInstance()->SetSceneID(SCENEID::Edit);
 	m_iWidth = 10;
@@ -100,11 +101,14 @@ void CEdit::KeyInput()
 			auto it = find_if(UIList.begin(), UIList.end(), [&targetText](CUIElement* e) { return e->GetText() == targetText; });
 			if (it != UIList.end())
 			{
-				dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock()->Dump();
-				CBlock curBlock = dynamic_cast<CBlockButton*>(dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())->GetTarget();
-				ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
-				ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
-				CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), curBlock);
+				if (dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())
+				{
+					dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock()->Dump();
+					CBlock curBlock = dynamic_cast<CBlockButton*>(dynamic_cast<CBlocksPanel*>(*it)->GetCurBlock())->GetTarget();
+					ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
+					ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
+					CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), curBlock);
+				}
 			}
 			else
 			{

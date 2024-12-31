@@ -19,9 +19,13 @@ public:
 	map<const TCHAR*, Image*> GetMap() { return m_mapImage; }
 	void InsertImage(const TCHAR* pFIlePath, const TCHAR* pImgKey);
 	Image* FindImage(const TCHAR* pImgKey);
+	Vector2 FindText(const TCHAR pTextKey);
 	void Release();
 private:
+	CResourceManager();
+
 	static CResourceManager* m_pInstance;
 	map<const TCHAR*, Image*>	m_mapImage;
+	map<const TCHAR, Vector2>	m_mapText;
 };
 

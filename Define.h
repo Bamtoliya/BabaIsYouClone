@@ -101,7 +101,7 @@ typedef struct tagFrame
 typedef struct tagFinder
 {
 public:
-	tagFinder(const TCHAR* pString) : m_pString(pString) {}
+	tagFinder(const TCHAR* pString) : m_pString(pString){}
 
 public:
 	template<typename T>
@@ -112,12 +112,37 @@ public:
 
 private:
 	const TCHAR* m_pString;
+	
 } FINDER;
+
+typedef struct tagCharFinder
+{
+public:
+	tagCharFinder(const TCHAR c) : m_Char(c) {}
+	template<typename T>
+	bool	operator()(T& rObj)
+	{
+		return (m_Char == rObj.first);
+	}
+private:
+	const TCHAR m_Char;
+} CHARFINDER;
+
+
+// tagVector zero를 static 멤버로 선언하고 외부에서 초기화
+#define Vector2_zero  Vector2(0, 0)
+//const Vector2 Vector2::zero = Vector2(0, 0);
 
 typedef struct tagVector
 {
-	#define Vector2_zero Vector2(0, 0);
 	float x, y;
+	tagVector() : x(0.f), y(0.f) {}
+	tagVector(float x, float y) : x(x), y(y) {}
+
+	tagVector operator()(float x, float y) const
+	{
+		return tagVector(x, y);
+	}
 } Vector2;
 
 template<typename T>

@@ -5,29 +5,31 @@
 
 void CMenu::Initialize()
 {
-
+	CUIManager::GetInstance()->DestroyInstance();
+	CUIManager::GetInstance()->SetSceneID(SCENEID::Menu);
 }
 
 void CMenu::Update()
 {
-
+	CUIManager::GetInstance()->Update();
 }
 
 void CMenu::LateUpdate()
 {
-
+	CUIManager::GetInstance()->LateUpdate();
 }
 
 void CMenu::Render(Graphics* g)
 {
-	Image* image = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
-	//image
+	CUIManager::GetInstance()->Render(g);
 }
 
 void CMenu::Release()
 {
+	CUIManager::DestroyInstance();
 }
 
 void CMenu::Render(HDC hDC)
 {
+	CUIManager::GetInstance()->Render(hDC);
 }

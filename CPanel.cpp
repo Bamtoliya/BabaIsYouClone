@@ -16,7 +16,6 @@ CPanel::CPanel(float fX, float fY, float w, float h, const TCHAR* sz, CUIElement
 
 void CPanel::Update()
 {
-	
 	__super::UpdateRect();
 	__super::UpdateChild();
 }

@@ -16,7 +16,7 @@ void CMainGame::Initialize()
 	g_bAnimate = false;
 	InsertResources();
 	cout << "CMainGame Initialized\n";
-	CSceneManager::GetInstance()->SetScene(SCENEID::Edit);
+	CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
 }
 
 void CMainGame::Update()
@@ -117,23 +117,25 @@ void CMainGame::InsertResources()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_STOP.png", L"TEXT_STOP");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_WIN.png", L"TEXT_WIN");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_YOU.png", L"TEXT_YOU");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_BRICK.png", L"TILE_BRICK");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_CLOUDW.png", L"TILE_CLOUDW");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_FORT.png", L"TILE_FORT");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_GRASS.png", L"TILE_GRASS");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_HEDGE.png", L"TILE_HEDGE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_LAVA.png", L"TILE_LAVA");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_ROAD.png", L"TILE_ROAD");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_RUBBLE.png", L"TILE_RUBBLE");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_WALL.png", L"TILE_WALL");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_WATER.png", L"TILE_WATER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_BRICK.png", L"TEXT_TILE_BRICK");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_CLOUDW.png", L"TEXT_TILE_CLOUDW");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_FORT.png", L"TEXT_TILE_FORT");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_GRASS.png", L"TEXT_TILE_GRASS");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_HEDGE.png", L"TEXT_TILE_HEDGE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_LAVA.png", L"TEXT_TILE_LAVA");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_ROAD.png", L"TEXT_TILE_ROAD");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_RUBBLE.png", L"TEXT_TILE_RUBBLE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_WALL.png", L"TEXT_TILE_WALL");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_WATER.png", L"TEXT_TILE_WATER");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap.png", L"WORLDMAP");
-	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TILE_LINE.png", L"TILE_LINE");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"WorldMap1.png", L"WORLDMAP1");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_LINE.png", L"TEXT_TILE_LINE");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_ALPHABET.png", L"TEXT_ALPHABET");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_NUMBER.png", L"TEXT_NUMBER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Title.png", L"Title");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"logo.png", L"LOGO");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back2.bmp", L"Back");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Ground.bmp", L"Ground");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"TEXT_YOU.bmp", L"TEXT_YOU");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"ObjectsText-export.bmp", L"TEXT");
-	//CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Back2.bmp", L"Back");
 }

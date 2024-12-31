@@ -55,6 +55,25 @@ void CButton::Render(Graphics* graphic)
 
 		}
 	}
+
+	//TEXT 출력	
+	StringFormat format;
+	format.SetAlignment(StringAlignmentCenter); // 가로 중앙 정렬
+	format.SetLineAlignment(StringAlignmentCenter);
+	FontFamily fontFamily(L"Arial");
+	Font font(&fontFamily, 20, FontStyleRegular, UnitPoint);
+	SolidBrush brush(Color(255, 255, 255, 255));
+	Image* textImage = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
+	// 1. 인덱스를 이용한 반복문
+	float startX = m_tRect.X + (m_tRect.Width - lstrlenW(m_text) * 16) / 2;
+	float startY = m_tRect.Y + (m_tRect.Height - 24) / 2;
+	for (int i = 0; m_text[i] != _T('\0'); ++i) {
+		Vector2 pos = CResourceManager::GetInstance()->FindText(m_text[i]);
+		graphic->DrawImage(textImage, Rect(startX+ 16 * i, startY, 24, 24), pos.x, pos.y, 24, 24, UnitPixel);
+	}
+
+	/*const WCHAR* tmp = m_text;
+    graphic->DrawString(tmp, lstrlenW(tmp), &font, PointF(m_tRect.X + m_tRect.Width /2, m_tRect.Y + m_tRect.Height / 2), &format, &brush);*/
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Green);
@@ -82,29 +101,33 @@ void CButton::KeyInput()
 
 void CButton::OnClick()
 {
-	if (m_text == L"StartGame")
+	if (m_text == L"START")
+	{
+		CSceneManager::GetInstance()->SetScene(SCENEID::Game);
+		return;
+	}
+	if (m_text == L"EXIT")
+	{
+		PostQuitMessage(0);
+		return;
+	}
+	if (m_text == L"EDIT")
+	{
+		CSceneManager::GetInstance()->SetScene(SCENEID::Edit);
+		return;
+	}
+	if (m_text == L"SAVE")
 	{
 
 	}
-	if (m_text == L"Exit")
+	if (m_text == L"LOAD")
 	{
 
 	}
-	if (m_text == L"")
+	if (m_text == L"RETURN")
 	{
-
-	}
-	if (m_text == L"")
-	{
-
-	}
-	if (m_text == L"")
-	{
-
-	}
-	if (m_text == L"")
-	{
-
+		CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
+		return;
 	}
 	if (m_text == L"")
 	{

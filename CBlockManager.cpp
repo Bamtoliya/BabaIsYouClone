@@ -42,7 +42,6 @@ void CBlockManager::LateUpdate()
 
 void CBlockManager::Render(Graphics* g)
 {
-	//DrawGrid
 	Pen pen(Color::White);
 	
 	for (auto& pTile : m_vecBlock)

@@ -84,13 +84,12 @@ void CBlocksPanel::Render(HDC hDC)
 
 void CBlocksPanel::SetFocus(CUIElement* c)
 {
-	c->Dump();
+	if(c) c->Dump();
 	if (m_pPreFocus != c)
 	{
 		m_pCurFocus = c;
 		for (auto& e : m_child)
 		{
-			//dynamic_cast<CBlockButton*>(e)->GetTarget().
 			e->SetFocus(false);
 		}
 		m_pCurFocus->SetFocus(true);
