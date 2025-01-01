@@ -216,6 +216,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case VK_F2:
             g_bDevmode = !g_bDevmode;
             break;
+        case VK_F3:
+            g_bAnimate = !g_bAnimate;
+            break;
         }
         break;
     case WM_DESTROY:

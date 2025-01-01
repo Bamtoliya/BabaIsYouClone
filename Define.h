@@ -65,7 +65,7 @@ enum class BLOCKTYPE
 
 enum class DIRECTION
 {
-	LEFT, RIGHT, UP, DOWN
+	NONE, LEFT, RIGHT, UP, DOWN
 };
 
 enum class TileState {

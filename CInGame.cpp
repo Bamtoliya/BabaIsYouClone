@@ -13,11 +13,12 @@ void CInGame::Initialize()
 
 void CInGame::Update()
 {
-	
+	m_grid.Update();
 }
 
 void CInGame::LateUpdate()
 {
+	m_grid.LateUpdate();
 	MoveFrame();
 }
 

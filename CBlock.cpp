@@ -8,14 +8,20 @@ CBlock::CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b) :
 	m_tInfo = { fX, fY, 24, 24 };
 	m_tRect = { (INT)fX, (INT)fY, 24, 24 };
 	this->SetImgKey(pImgKey);
+
+	m_tFrame.iFrameStart = 0;
+	m_tFrame.iFrameEnd = 2;
+	m_tFrame.iMotion = 1;
+	m_tFrame.ullSpeed = 200;
+	m_tFrame.ullTime = GetTickCount64();
 }
 
 void CBlock::Initialize()
 {
 	m_tInfo = { 240, 240, 24, 24 };
-	m_eBlock = BLOCKTYPE::TEXT;
-	m_eWord = GAMEWORD::NOUN;
-	m_eNoun = NOUN::BABA;
+	m_eBlock = BLOCKTYPE::NONE;
+	m_eWord = GAMEWORD::NONE;
+	m_eNoun = NOUN::NONE;
 
 	m_tFrame.iFrameStart = 0;
 	m_tFrame.iFrameEnd = 2;
@@ -39,25 +45,28 @@ void CBlock::LateUpdate()
 void CBlock::Render(Graphics* graphic)
 {
 	Image* image = CResourceManager::GetInstance()->FindImage(m_pImgKey);
-	int x;
-	int y;
-	switch (m_eBlock)
+	if (image)
 	{
-	case BLOCKTYPE::TEXT:
-		if (m_bActive) x = 26;
-		else x = 1;
-		y = 1 + m_tFrame.iFrameStart * 25;
-		break;
-	case BLOCKTYPE::CHARACTER:
-		x = 51;
-		y = 1;
-		break;
-	case BLOCKTYPE::OBJECT:
-		x = 51;
-		y = 1;
-		break;
-	}	
-	graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
+		int x;
+		int y;
+		switch (m_eBlock)
+		{
+		case BLOCKTYPE::TEXT:
+			if (m_bActive) x = 26;
+			else x = 1;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
+		case BLOCKTYPE::CHARACTER:
+			x = 51;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
+		case BLOCKTYPE::OBJECT:
+			x = 51;
+			y = 1;
+			break;
+		}
+		graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
+	}
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Red);

@@ -153,6 +153,7 @@
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CEdit.h" />
+    <ClInclude Include="CCell.h" />
     <ClInclude Include="CGameObjectManager.h" />
     <ClInclude Include="CGrid.h" />
     <ClInclude Include="CInGame.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CEdit.cpp" />
+    <ClCompile Include="CCell.cpp" />
     <ClCompile Include="CGameObjectManager.cpp" />
     <ClCompile Include="CGrid.cpp" />
     <ClCompile Include="CInGame.cpp" />

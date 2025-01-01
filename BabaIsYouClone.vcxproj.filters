@@ -118,6 +118,9 @@
     <Filter Include="99. Managers\SceneManager\Scene\InGame\Levels\Level1">
       <UniqueIdentifier>{cab5b48d-9d0f-4c03-97c1-2d317dc67258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Managers\BlockManager\Grid\Cell">
+      <UniqueIdentifier>{d7ccb35c-1321-423d-94e4-c78c9cbdaafd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -261,6 +264,9 @@
     <ClInclude Include="CGrid.h">
       <Filter>99. Managers\BlockManager\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="CCell.h">
+      <Filter>99. Managers\BlockManager\Grid\Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -361,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="CGrid.cpp">
       <Filter>99. Managers\BlockManager\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="CCell.cpp">
+      <Filter>99. Managers\BlockManager\Grid\Cell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
