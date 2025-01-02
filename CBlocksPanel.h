@@ -10,8 +10,10 @@ public:
     void Render(HDC hDC) override;
     void SetFocus(CUIElement* c);
     CUIElement* GetCurBlock() { return m_pCurFocus; }
+    void UpdateList(const TCHAR* sz);
+    void ChangeType(BLOCKTYPE b);
+    BLOCKTYPE GetType() { return m_eType; }
 private:
-    void UpdateList();
     CUIElement* m_pCurFocus;
     CUIElement* m_pPreFocus;
     BLOCKTYPE   m_eType;

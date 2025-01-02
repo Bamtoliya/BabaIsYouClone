@@ -31,5 +31,7 @@ public:
 private:
 	static	CKeyManager* m_pInstance;
 	bool	m_bKeyState[VK_MAX];
+	ULONG64 m_ullDelay;
+	ULONG64 m_ullLastTime;
 };
 

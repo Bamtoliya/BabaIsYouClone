@@ -10,8 +10,6 @@ void CEdit::Initialize()
 	CUIManager::GetInstance()->SetSceneID(SCENEID::Edit);
 	m_iWidth = 10;
 	m_iHeight = 10;
-	int hW = m_iWidth / 2;
-	int hH = m_iHeight / 2;
 }
 
 void CEdit::Update()
@@ -31,17 +29,18 @@ void CEdit::LateUpdate()
 void CEdit::Render(Graphics* g)
 {
 	Pen pen(Color::White);
-	int hW = m_iWidth / 2;
-	int hH = m_iHeight / 2;
-	for (int j = -hH; j < hH; ++j)
+	int startX = OCX/2 - TILECX * m_iWidth / 2.f;
+	int startY = OCY/2 - TILECY * m_iHeight / 2.f;
+	int endX = OCX/2 + TILECX * m_iWidth / 2.f;
+	int endY = OCY/2 + TILECY * m_iHeight / 2.f;
+	for (int i = 0; i <= m_iWidth; ++i)
 	{
-		g->DrawLine(&pen, Point(OCX / 2 - hW * TILECX, OCY / 2 - j * TILECY), Point(OCX / 2 + hW * TILECX, OCY / 2 - j * TILECY));
-		g->DrawLine(&pen, Point(OCX / 2 - hW * TILECX, OCY / 2 + j * TILECY), Point(OCX / 2 + hW * TILECX, OCY / 2 + j * TILECY));
+		g->DrawLine(&pen, Point(startX + i * TILECX, startY), Point(startX + i * TILECX, endY));
 	}
-	for (int i = -hW; i < hW; ++i)
+	//°¡·Î¼±
+	for (int i = 0; i <= m_iHeight; ++i)
 	{
-		g->DrawLine(&pen, Point(OCX / 2 - i * TILECX, OCY / 2 - hH * TILECY), Point(OCX / 2 - i * TILECX, OCY / 2 + hH * TILECY));
-		g->DrawLine(&pen, Point(OCX / 2 + i * TILECX, OCY / 2 - hH * TILECY), Point(OCX / 2 + i * TILECX, OCY / 2 + hH * TILECY));
+		g->DrawLine(&pen, Point(startX, startY + i * TILECY), Point(endX, startY + i * TILECY));
 	}
 	CBlockManager::GetInstance()->Render(g);
 	CUIManager::GetInstance()->Render(g);
@@ -53,33 +52,47 @@ void CEdit::Release()
 
 void CEdit::KeyInput()
 {
-	if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
+	if (KEYIN->KeyDown(VK_LEFT))
 	{
-		if(m_iWidth > 2) m_iWidth -= 2;
+		if(m_iWidth > 2) m_iWidth -= 1;
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
+	if (KEYIN->KeyDown(VK_RIGHT))
 	{
-		if(m_iWidth < 30) m_iWidth += 2;
+		if(m_iWidth < 33) m_iWidth += 1;
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
+	if (KEYIN->KeyDown(VK_UP))
 	{
-		if(m_iHeight < 16) m_iHeight += 2;
+		if(m_iHeight < 18) m_iHeight += 1;
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
+	if (KEYIN->KeyDown(VK_DOWN))
 	{
-		if (m_iHeight > 2) m_iHeight -= 2;
+		if (m_iHeight > 2) m_iHeight -= 1;
 	}
 	//PageDown
-	if (CKeyManager::GetInstance()->KeyPressing(VK_NEXT))
+	if (KEYIN->KeyDown(VK_NEXT))
 	{
-
+		vector<CUIElement*> UIList = CUIManager::GetInstance()->GetVector();
+		const TCHAR* targetText = L"BlocksPanel";
+		auto it = find_if(UIList.begin(), UIList.end(), [&targetText](CUIElement* e) { return e->GetText() == targetText; });
+		if (it != UIList.end())
+		{
+			BLOCKTYPE currentType = dynamic_cast<CBlocksPanel*>(*it)->GetType();
+			dynamic_cast<CBlocksPanel*>(*it)->ChangeType(static_cast<BLOCKTYPE>(static_cast<int>(currentType) + 1));
+		}
 	}
 	//PageUP
-	if (CKeyManager::GetInstance()->KeyPressing(VK_PRIOR))
+	if (KEYIN->KeyDown(VK_PRIOR))
 	{
-
+		vector<CUIElement*> UIList = CUIManager::GetInstance()->GetVector();
+		const TCHAR* targetText = L"BlocksPanel";
+		auto it = find_if(UIList.begin(), UIList.end(), [&targetText](CUIElement* e) { return e->GetText() == targetText; });
+		if (it != UIList.end())
+		{
+			BLOCKTYPE currentType = dynamic_cast<CBlocksPanel*>(*it)->GetType();
+			dynamic_cast<CBlocksPanel*>(*it)->ChangeType(static_cast<BLOCKTYPE>(static_cast<int>(currentType) - 1));
+		}
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))
+	if (KEYIN->KeyPressing(VK_RETURN))
 	{
 		CBlockManager::GetInstance()->Release();
 		CBlockManager::GetInstance()->SetWidth(m_iWidth);
@@ -92,7 +105,7 @@ void CEdit::KeyInput()
 	if (gridRect.Contains(Point(ptMouse.x, ptMouse.y)))
 	{
 		//printf("GridRect: X: %d Y: %d WIDTH: %d HEIGHT: %d\n", gridRect.X, gridRect.Y, gridRect.Width, gridRect.Height);
-		if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
+		if (KEYIN->KeyPressing(VK_LBUTTON))
 		{
 			cout << "LeftButton in Edit Called\n";
 			vector<CUIElement*> UIList = CUIManager::GetInstance()->GetVector();
@@ -115,19 +128,30 @@ void CEdit::KeyInput()
 
 			}
 		}
+		if (KEYIN->KeyPressing(VK_RBUTTON))
+		{
+			cout << "RightButton in Edit Called\n";
+			vector<CUIElement*> UIList = CUIManager::GetInstance()->GetVector();
+
+			ptMouse.x -= (int)CScrollManager::GetInstance()->GetScrollX();
+			ptMouse.y -= (int)CScrollManager::GetInstance()->GetScrollY();
+			CBlockManager::GetInstance()->PickBlock(Point(ptMouse.x, ptMouse.y), CBlock());
+		}
 	}
 
 	
 
-	if (CKeyManager::GetInstance()->KeyDown('S'))
+	if (KEYIN->KeyDown('S'))
 	{
 		CBlockManager::GetInstance()->SaveBlock();
 		return;
 	}
 
-	if (CKeyManager::GetInstance()->KeyDown('L'))
+	if (KEYIN->KeyDown('L'))
 	{
 		CBlockManager::GetInstance()->LoadBlock();
+		m_iWidth = CBlockManager::GetInstance()->GetWidth();
+		m_iHeight = CBlockManager::GetInstance()->GetHeight();
 		return;
 	}
 }

@@ -15,6 +15,8 @@ public:
 	void SetHeight(int h) { m_iHeight = h; }
 	int GetWidth() { return m_iWidth; }
 	int GetHeight() { return m_iHeight; }
+	int GetSize();
+	vector<vector<CCell*>> GetGrid() { return m_grid; }
 	void SetCenter(Vector2 c) { m_vCenter = c; }
 	void Move(DIRECTION dir);
 	void MoveBlock(CBlock* b, int x, int y);
@@ -22,8 +24,9 @@ public:
 	void Open();
 	void CheckSentence();
 	void EnterLevel(CBlock* cursor);
+	void EditBlock(CBlock b, int x, int y);
 private:
-	vector<vector<CCell>> m_grid;
+	vector<vector<CCell*>> m_grid;
 	int m_iWidth;
 	int m_iHeight;
 	int m_TileCX;

@@ -6,134 +6,149 @@ CBlockManager* CBlockManager::m_pInstance = nullptr;
 
 CBlockManager::CBlockManager()
 {
-	m_vecBlock.reserve(TILEX * TILEY);
 	m_iWidth = 10;
 	m_iHeight = 10;
+	m_levelGrid.SetWidth(m_iWidth);
+	m_levelGrid.SetHeight(m_iHeight);
+	m_levelGrid.Initialize();
 }
 
 void CBlockManager::Initialize()
 {
-	int hW = m_iWidth / 2;
-	int hH = m_iHeight / 2;
-	for (int i = -hH; i < hH; ++i)
-	{
-		for (int j = -hW; j < hW; ++j)
-		{
-			float fX = OCX / 2 + (float)(j * TILECX);
-			float fY = OCY / 2 + (float)(i * TILECY);
-
-			CGameObject* pBlock = CAbstractFactory<CBlock>::Create(fX, fY);
-			m_vecBlock.push_back(pBlock);
-		}
-	}
+	m_levelGrid.SetWidth(m_iWidth);
+	m_levelGrid.SetHeight(m_iHeight);
+	m_levelGrid.Initialize();
 }
 
 void CBlockManager::Update()
 {
-	for (auto& pTile : m_vecBlock)
-		if(pTile) pTile->Update();
+	m_levelGrid.Update();
 }
 
 void CBlockManager::LateUpdate()
 {
-	for (auto& pTile : m_vecBlock)
-		if(pTile) pTile->LateUpdate();
+	m_levelGrid.LateUpdate();
 }
 
 void CBlockManager::Render(Graphics* g)
 {
-	Pen pen(Color::White);
-	
-	for (auto& pTile : m_vecBlock)
-		if(pTile) pTile->Render(g);
+	m_levelGrid.Render(g);
 }
 
 void CBlockManager::Render(HDC hDC)
 {
-	for (auto& pTile : m_vecBlock)
-		pTile->Render(hDC);
+
 }
 
 void CBlockManager::Release()
 {
-	for_each(m_vecBlock.begin(), m_vecBlock.end(), SafeDelete<CGameObject*>);
-	m_vecBlock.clear();
+	
 }
 
 void CBlockManager::PickBlock(Point pt, CBlock b)
 {
-	//그리드 시작좌표
-	int startX	= OCX / 2 - m_iWidth / 2 * TILECX;
-	int startY	= OCY / 2 - m_iHeight / 2 * TILECY;
+	float startX = startX = OCX / 2.f - m_iWidth / 2.f * TILECX;
+	float startY = startY = OCY / 2.f - m_iHeight / 2.f * TILECY;
 
 	int	x = (pt.X - startX) / TILECX;
 	int	y = (pt.Y - startY) / TILECY;
-	int	iIndex = y * m_iWidth + x;
-	printf("X: %d Y: %d\n", x, y);
-	cout << iIndex << endl;
 
-	if (0 > iIndex || (size_t)iIndex >= m_vecBlock.size())
+	if (0 > x || (size_t)x >= m_levelGrid.GetWidth())
 		return;
-	m_vecBlock[iIndex]->SetImgKey(b.GetImgKey());
-	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetBlockType(b.GetBlockType());
-	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetNoun(b.GetNoun());
-	dynamic_cast<CBlock*>(m_vecBlock[iIndex])->SetVerb(b.GetVerb());
-	//m_vecBlock[iIndex]->SetDrawID(iDrawID);
+	if (0 > y || (size_t)y >= m_levelGrid.GetHeight())
+		return;
+	m_levelGrid.EditBlock(b, x, y);
 }
 
 void CBlockManager::SaveBlock()
 {
-	HANDLE hFile = CreateFile(L"../Data/Level.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	
+	HANDLE hFile = CreateFile(L"Data/Level.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
 
-	int		iDrawID(0), iOption(0);
+	int		iWidth(0), iHeight(0);
 	DWORD	dwByte(0);
-
-	for (auto& pTile : m_vecBlock)
+	iWidth = m_levelGrid.GetWidth();
+	iHeight = m_levelGrid.GetHeight();
+	WriteFile(hFile, &iWidth, sizeof(int), &dwByte, NULL);
+	WriteFile(hFile, &iHeight, sizeof(int), &dwByte, NULL);
+	for (int i = 0; i < iHeight; ++i)
 	{
-		//iDrawID = dynamic_cast<CBlock*>(pTile)->GetDrawID();
-		//iOption = dynamic_cast<CBlock*>(pTile)->GetOption();
+		for (int j = 0; j < iWidth; ++j)
+		{
+			for (auto& g : m_levelGrid.GetGrid()[i][j]->GetList())
+			{
+				BLOCKTYPE eType = g->GetBlockType();
+				const TCHAR* szImgKey = g->GetImgKey();
+				int nLen = _tcslen(szImgKey);
+				NOUN n = g->GetNoun();
+				VERB v = g->GetVerb();
+				INFO info = g->GetInfo();
 
-		WriteFile(hFile, pTile->GetInfoPointer(), sizeof(INFO), &dwByte, NULL);
-		WriteFile(hFile, &iDrawID, sizeof(int), &dwByte, NULL);
-		WriteFile(hFile, &iOption, sizeof(int), &dwByte, NULL);
+
+				WriteFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
+				WriteFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
+				WriteFile(hFile, &nLen, sizeof(int), &dwByte, NULL);
+				WriteFile(hFile, &szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
+				WriteFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
+				WriteFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
+			}
+		}
 	}
-
+	//WriteFile(hFile, &m_levelGrid, sizeof(CGrid), &dwByte, NULL);
 	CloseHandle(hFile);
 	MessageBox(g_hWnd, L"Level Save", L"성공", MB_OK);
 }
 
 void CBlockManager::LoadBlock()
 {
-	HANDLE hFile = CreateFile(L"../Data/Level.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"Data/Level.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
 
-	int		iDrawID(0), iOption(0);
 	DWORD	dwByte(0);
-	INFO	tInfo{};
 
 	Release();
 
-	while (true)
+	ReadFile(hFile, &m_iWidth, sizeof(int), &dwByte, NULL);
+	ReadFile(hFile, &m_iHeight, sizeof(int), &dwByte, NULL);
+	m_levelGrid.SetWidth(m_iWidth);
+	m_levelGrid.SetHeight(m_iHeight);
+	m_levelGrid.Initialize();
+
+	for (int i = 0; i < m_iHeight; ++i)
 	{
-		ReadFile(hFile, &tInfo, sizeof(INFO), &dwByte, NULL);
-		ReadFile(hFile, &iDrawID, sizeof(int), &dwByte, NULL);
-		ReadFile(hFile, &iOption, sizeof(int), &dwByte, NULL);
-
-		if (0 == dwByte)
-			break;
-
-		//CBlock* pBlcok = CAbstractFactory<CBlock>::Create(tInfo.fX, tInfo.fY);
-		/*dynamic_cast<CTile*>(pTile)->SetDrawID(iDrawID);
-		dynamic_cast<CTile*>(pTile)->SetOption(iOption);*/
-
-		//m_vecBlock.push_back(pBlcok);
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& g : m_levelGrid.GetGrid()[i][j]->GetList())
+			{
+				BLOCKTYPE eType;
+				
+				NOUN n;
+				VERB v;
+				INFO info;
+				int nLen;
+				ReadFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
+				ReadFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
+				ReadFile(hFile, &nLen, sizeof(int), &dwByte, NULL); // 길이 읽기
+				TCHAR* szImgKey = new TCHAR[nLen+1];
+				ReadFile(hFile, &szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
+				ReadFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
+				ReadFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
+				g->SetPos(info.fX, info.fY);
+				g->SetSize(info.fCX, info.fCY);
+				g->SetImgKey(szImgKey);
+				g->SetBlockType(eType);
+				g->SetNoun(n);
+				g->SetVerb(v);
+				if (0 == dwByte)
+					break;
+			}
+		}
 	}
-
 	CloseHandle(hFile);
 	MessageBox(g_hWnd, L"Level Load", L"성공", MB_OK);
 }

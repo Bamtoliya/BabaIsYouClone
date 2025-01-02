@@ -28,7 +28,6 @@ bool CKeyManager::KeyDown(int _iKey)
 {
 	if (IsWindowActive(g_hWnd) && (!m_bKeyState[_iKey]) && (GetAsyncKeyState(_iKey) & 0x8000))
 	{
-		cout << "Key DownEvent\n";
 		m_bKeyState[_iKey] = !m_bKeyState[_iKey];
 		return true;
 	}

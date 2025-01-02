@@ -42,7 +42,7 @@ void CInGame::Render(Graphics* g)
 	}
 	else if (m_bLevel)
 	{
-		//m_WorldMap->Render(g);
+		
 	}
 	
 }
@@ -55,7 +55,7 @@ void CInGame::Render(HDC hDC)
 	}
 	else if (m_bLevel)
 	{
-		//m_WorldMap->Render(g);
+		
 	}
 }
 

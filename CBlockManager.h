@@ -16,6 +16,8 @@ public:
 	void LoadBlock();
 	void SetWidth(int w) { m_iWidth = w; }
 	void SetHeight(int h) { m_iHeight = h; }
+	int GetWidth() { return m_iWidth; }
+	int GetHeight() { return m_iHeight; }
 	
 	static CBlockManager* GetInstance()
 	{
@@ -38,7 +40,6 @@ private:
 	~CBlockManager() { Release(); }
 	static CBlockManager* m_pInstance;
 	CGrid m_levelGrid;
-	vector<CGameObject*>	m_vecBlock;
 	int m_iWidth;
 	int m_iHeight;
 };

@@ -19,7 +19,7 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 	int j = 0;
 	for (auto& t : CResourceManager::GetInstance()->GetMap())
 	{
-		if (i > 20)
+		if (i > 34)
 		{
 			i = 0;
 			j++;
@@ -27,39 +27,6 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 		if (_tcsstr(t.first, L"TEXT") != NULL)
 		{
 			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::TEXT, this, true);
-			i++;
-		}
-	}
-	i = 0;
-	j++;
-	for (auto& t : CResourceManager::GetInstance()->GetMap())
-	{
-		if (i > 20)
-		{
-			i = 0;
-			j++;
-		}
-		if (_tcsstr(t.first, L"OBJECT") != NULL)
-		{
-			//_tc
-			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::OBJECT, this, true);
-			i++;
-		}
-	}
-
-	i = 0;
-	j++;
-	for (auto& t : CResourceManager::GetInstance()->GetMap())
-	{
-		if (i > 20)
-		{
-			i = 0;
-			j++;
-		}
-		if (_tcsstr(t.first, L"CHARACTER") != NULL)
-		{
-			//_tc
-			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::CHARACTER, this, true);
 			i++;
 		}
 	}
@@ -97,7 +64,49 @@ void CBlocksPanel::SetFocus(CUIElement* c)
 	m_pPreFocus = c;
 }
 
-void CBlocksPanel::UpdateList()
+
+void CBlocksPanel::ChangeType(BLOCKTYPE b)
 {
-	//if(m_eType)
+	if (static_cast<int>(b) > 0 && static_cast<int>(b) < 5)
+	{
+		m_eType = b;
+		for_each(m_child.begin(), m_child.end(), SafeDelete<CUIElement*>);
+		m_child.clear();
+
+		switch (b)
+		{
+		case BLOCKTYPE::TEXT:
+			UpdateList(L"TEXT");
+			break;
+		case BLOCKTYPE::CHARACTER:
+			UpdateList(L"CHARACTER");
+			break;
+		case BLOCKTYPE::OBJECT:
+			UpdateList(L"OBJECT");
+			break;
+		case BLOCKTYPE::LEVEL:
+			//UpdateList(L"TEXT");
+			break;
+		}
+	}
+}
+
+void CBlocksPanel::UpdateList(const TCHAR* sz)
+{
+	int i = 0;
+	int j = 0;
+	for (auto& t : CResourceManager::GetInstance()->GetMap())
+	{
+		if (i > 34)
+		{
+			i = 0;
+			j++;
+		}
+		if (_tcsstr(t.first, sz) != NULL)
+		{
+			//_tc
+			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, m_eType, this, true);
+			i++;
+		}
+	}
 }

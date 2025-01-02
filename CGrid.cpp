@@ -5,23 +5,36 @@
 
 CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 {
-	m_grid = vector<vector<CCell>>(m_iHeight, vector<CCell>(m_iWidth));
+	m_grid = vector<vector<CCell*>>(m_iHeight, vector<CCell*>(m_iWidth));
 	int startX = m_vCenter.x - TILECX * m_iWidth / 2.f;
 	int startY = m_vCenter.y - TILECY * m_iHeight / 2.f;
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			m_grid[i][j] = CCell();
-			m_grid[i][j].SetInfo(startX + j * TILECX, startY + i * TILECY);
-			m_grid[i][j].SetIndex(i, j);
-			m_grid[i][j].AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
+			m_grid[i][j] = new CCell();
+			m_grid[i][j]->SetInfo(startX + j * TILECX, startY + i * TILECY);
+			m_grid[i][j]->SetIndex(i, j);
+			m_grid[i][j]->AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
 		}
 	}
 }
 
 void CGrid::Initialize()
 {
+	m_grid = vector<vector<CCell*>>(m_iHeight, vector<CCell*>(m_iWidth));
+	int startX = m_vCenter.x - TILECX * m_iWidth / 2.f;
+	int startY = m_vCenter.y - TILECY * m_iHeight / 2.f;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			m_grid[i][j] = new CCell();
+			m_grid[i][j]->SetInfo(startX + j * TILECX, startY + i * TILECY);
+			m_grid[i][j]->SetIndex(i, j);
+			m_grid[i][j]->AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
+		}
+	}
 }
 
 void CGrid::Update()
@@ -30,7 +43,7 @@ void CGrid::Update()
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			m_grid[i][j].Update();
+			m_grid[i][j]->Update();
 		}
 	}
 }
@@ -41,7 +54,7 @@ void CGrid::LateUpdate()
 	{	
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			m_grid[i][j].LateUpdate();
+			m_grid[i][j]->LateUpdate();
 		}
 	}
 }
@@ -73,7 +86,7 @@ void CGrid::Render(Graphics* g)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			m_grid[i][j].Render(g);
+			m_grid[i][j]->Render(g);
 		}
 	}
 }
@@ -91,7 +104,7 @@ void CGrid::Move(DIRECTION dir)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			for (auto& b : m_grid[i][j].GetList())
+			for (auto& b : m_grid[i][j]->GetList())
 			{
 				if (b->GetBlockType() == BLOCKTYPE::CHARACTER)
 				{
@@ -108,20 +121,20 @@ void CGrid::Move(DIRECTION dir)
 		switch (m_eDir)
 		{
 		case DIRECTION::LEFT:
-			m_grid[y][x].RemoveBlock(b);
-			m_grid[y][x - 1].AddBlock(b);
+			m_grid[y][x]->RemoveBlock(b);
+			m_grid[y][x - 1]->AddBlock(b);
 			break;
 		case DIRECTION::RIGHT:
-			m_grid[y][x].RemoveBlock(b);
-			m_grid[y][x + 1].AddBlock(b);
+			m_grid[y][x]->RemoveBlock(b);
+			m_grid[y][x + 1]->AddBlock(b);
 			break;
 		case DIRECTION::UP:
-			m_grid[y][x].RemoveBlock(b);
-			m_grid[y - 1][x].AddBlock(b);
+			m_grid[y][x]->RemoveBlock(b);
+			m_grid[y - 1][x]->AddBlock(b);
 			break;
 		case DIRECTION::DOWN:
-			m_grid[y][x].RemoveBlock(b);
-			m_grid[y + 1][x].AddBlock(b);
+			m_grid[y][x]->RemoveBlock(b);
+			m_grid[y + 1][x]->AddBlock(b);
 			break;
 		}
 	}
@@ -135,7 +148,7 @@ void CGrid::MoveBlock(CBlock* b, int x, int y)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			for (auto& t : m_grid[i][j].GetList())
+			for (auto& t : m_grid[i][j]->GetList())
 			{
 				if (t == b)
 				{
@@ -152,14 +165,14 @@ void CGrid::MoveBlock(CBlock* b, int x, int y)
 	}
 	for (int i = 0; i < toMove.size(); ++i)
 	{
-		m_grid[index[i].first][index[i].second].RemoveBlock(toMove[i]);
-		m_grid[index[i].first + y][index[i].second + x].AddBlock(toMove[i]);
+		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+		m_grid[index[i].first + y][index[i].second + x]->AddBlock(toMove[i]);
 	}
 }
 
 void CGrid::AddBlock(CBlock* b, int x, int y)
 {
-	m_grid[y][x].AddBlock(b);
+	m_grid[y][x]->AddBlock(b);
 }
 
 void CGrid::Open()
@@ -182,11 +195,11 @@ void CGrid::EnterLevel(CBlock* cursor)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			for (auto& t : m_grid[i][j].GetList())
+			for (auto& t : m_grid[i][j]->GetList())
 			{
 				if (t == cursor)
 				{
-					findLevel = m_grid[i][j].GetList();
+					findLevel = m_grid[i][j]->GetList();
 				}
 			}
 		}
@@ -199,4 +212,10 @@ void CGrid::EnterLevel(CBlock* cursor)
 			dynamic_cast<CLevelBlock*>(l)->Enter();
 		}
 	}
+}
+
+void CGrid::EditBlock(CBlock b, int x, int y)
+{
+	m_grid[y][x]->GetList().back()->SetImgKey(b.GetImgKey());
+	m_grid[y][x]->GetList().back()->SetBlockType(b.GetBlockType());
 }
