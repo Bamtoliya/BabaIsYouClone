@@ -1,0 +1,24 @@
+#pragma once
+#include "pch.h"
+#include "CGrid.h"
+class CLevelBlock : public CBlock
+{
+public:
+	CLevelBlock() { m_tInfo = { 0, 0, 24, 24 }; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
+	~CLevelBlock() {}
+	virtual void Initialize();
+	virtual void Update();
+	virtual void LateUpdate();
+	virtual void Render(Graphics* g);
+	virtual void Render(HDC hDC);
+	virtual void Enter();
+	virtual void Exit();
+	virtual void Clear();
+private:
+	virtual void Transition();
+	CGrid m_grid;
+	Color m_color;
+	Image* m_pImage;
+	bool m_bClear;
+};
+

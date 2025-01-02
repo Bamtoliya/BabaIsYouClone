@@ -24,7 +24,7 @@ public:
     list<PROPERTY> GetProperties() { return m_ePROPERTY; }
     void Clone(CBlock& dst);
     
-private:
+protected:
     void ChangeState();
     BLOCKTYPE		m_eBlock;
     GAMEWORD        m_eWord;

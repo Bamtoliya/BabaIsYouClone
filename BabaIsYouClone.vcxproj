@@ -152,12 +152,15 @@
     <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CCollisionManager.h" />
+    <ClInclude Include="CCursor.h" />
     <ClInclude Include="CEdit.h" />
     <ClInclude Include="CCell.h" />
     <ClInclude Include="CGameObjectManager.h" />
     <ClInclude Include="CGrid.h" />
     <ClInclude Include="CInGame.h" />
     <ClInclude Include="CKeyManager.h" />
+    <ClInclude Include="CLevel.h" />
+    <ClInclude Include="CLevelBlock.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMainMenuUI.h" />
     <ClInclude Include="CMenu.h" />
@@ -173,11 +176,11 @@
     <ClInclude Include="CTabButton.h" />
     <ClInclude Include="CTestScene.h" />
     <ClInclude Include="CBlockManager.h" />
-    <ClInclude Include="CTextBlock.h" />
     <ClInclude Include="CTileBlock.h" />
     <ClInclude Include="CTitle.h" />
     <ClInclude Include="CUIElement.h" />
     <ClInclude Include="CUIManager.h" />
+    <ClInclude Include="CWorldMap.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Designs.h" />
     <ClInclude Include="framework.h" />
@@ -200,12 +203,15 @@
     <ClCompile Include="CBmpMgr.cpp" />
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
+    <ClCompile Include="CCursor.cpp" />
     <ClCompile Include="CEdit.cpp" />
     <ClCompile Include="CCell.cpp" />
     <ClCompile Include="CGameObjectManager.cpp" />
     <ClCompile Include="CGrid.cpp" />
     <ClCompile Include="CInGame.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
+    <ClCompile Include="CLevel.cpp" />
+    <ClCompile Include="CLevelBlock.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMainMenuUI.cpp" />
     <ClCompile Include="CMenu.cpp" />
@@ -221,11 +227,11 @@
     <ClCompile Include="CTabButton.cpp" />
     <ClCompile Include="CTestScene.cpp" />
     <ClCompile Include="CBlockManager.cpp" />
-    <ClCompile Include="CTextBlock.cpp" />
     <ClCompile Include="CTileBlock.cpp" />
     <ClCompile Include="CTitle.cpp" />
     <ClCompile Include="CUIElement.cpp" />
     <ClCompile Include="CUIManager.cpp" />
+    <ClCompile Include="CWorldMap.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

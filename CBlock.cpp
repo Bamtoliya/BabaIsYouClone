@@ -64,6 +64,9 @@ void CBlock::Render(Graphics* graphic)
 			x = 51;
 			y = 1;
 			break;
+		case BLOCKTYPE::CURSOR:
+			x = 51;
+			y = 1;
 		}
 		graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
 	}

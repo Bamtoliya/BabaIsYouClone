@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CGrid.h"
 #include "Designs.h"
+#include "CLevelBlock.h"
 
 CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 {
@@ -14,14 +15,7 @@ CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 			m_grid[i][j] = CCell();
 			m_grid[i][j].SetInfo(startX + j * TILECX, startY + i * TILECY);
 			m_grid[i][j].SetIndex(i, j);
-			if (i == 0 && j == 0)
-			{
-				m_grid[i][j].AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"TEXT_CHARACTER_BABA", BLOCKTYPE::CHARACTER));
-			}
-			else {
-				m_grid[i][j].AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
-			}
-			
+			m_grid[i][j].AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
 		}
 	}
 }
@@ -39,7 +33,6 @@ void CGrid::Update()
 			m_grid[i][j].Update();
 		}
 	}
-	KeyInput();
 }
 
 void CGrid::LateUpdate()
@@ -76,7 +69,6 @@ void CGrid::Render(Graphics* g)
 	}
 #pragma endregion
 
-	
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
@@ -84,8 +76,6 @@ void CGrid::Render(Graphics* g)
 			m_grid[i][j].Render(g);
 		}
 	}
-	Image* image = CResourceManager::GetInstance()->FindImage(L"CURSOR");
-	g->DrawImage(image, Rect(startX + 20 , startY + 20, 32, 32), 1, 1, 32, 32, UnitPixel);
 }
 
 void CGrid::Render(HDC hDC)
@@ -97,42 +87,79 @@ void CGrid::Move(DIRECTION dir)
 	vector<CBlock*> toMove;
 	int x = 0;
 	int y = 0;
-	for (auto& e : m_grid)
+	for (int i = 0; i < m_iHeight; ++i)
 	{
-		for (auto& t : e)
+		for (int j = 0; j < m_iWidth; ++j)
 		{
-			for (auto& b : t.GetList())
+			for (auto& b : m_grid[i][j].GetList())
 			{
-				auto l = b->GetBlockType();
-
-				if (l == BLOCKTYPE::CHARACTER)
+				if (b->GetBlockType() == BLOCKTYPE::CHARACTER)
 				{
-					x = t.GetXIndex();
-					y = t.GetYIndex();
-					MoveBlock(b, x, y);
+					x = j;
+					y = i;
+					toMove.push_back(b);
 				}
 			}
+		}
+	}
+
+	for (auto& b : toMove)
+	{
+		switch (m_eDir)
+		{
+		case DIRECTION::LEFT:
+			m_grid[y][x].RemoveBlock(b);
+			m_grid[y][x - 1].AddBlock(b);
+			break;
+		case DIRECTION::RIGHT:
+			m_grid[y][x].RemoveBlock(b);
+			m_grid[y][x + 1].AddBlock(b);
+			break;
+		case DIRECTION::UP:
+			m_grid[y][x].RemoveBlock(b);
+			m_grid[y - 1][x].AddBlock(b);
+			break;
+		case DIRECTION::DOWN:
+			m_grid[y][x].RemoveBlock(b);
+			m_grid[y + 1][x].AddBlock(b);
+			break;
 		}
 	}
 }
 
 void CGrid::MoveBlock(CBlock* b, int x, int y)
 {
-	switch (m_eDir)
+	vector<CBlock*> toMove;
+	vector<pair<int, int>> index;
+	for (int i = 0; i < m_iHeight; ++i)
 	{
-	case DIRECTION::LEFT:
-		m_grid[y][x - 1].AddBlock(b);
-		m_grid[y][x].RemoveBlock(b);
-		break;
-	case DIRECTION::RIGHT:
-		m_grid[y][x + 1].AddBlock(b);
-		m_grid[y][x].RemoveBlock(b);
-		break;
-	case DIRECTION::UP:
-		break;
-	case DIRECTION::DOWN:
-		break;
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j].GetList())
+			{
+				if (t == b)
+				{
+
+					if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
+					{
+						toMove.push_back(t);
+						index.push_back({ i, j });
+						
+					}
+				}
+			}
+		}
 	}
+	for (int i = 0; i < toMove.size(); ++i)
+	{
+		m_grid[index[i].first][index[i].second].RemoveBlock(toMove[i]);
+		m_grid[index[i].first + y][index[i].second + x].AddBlock(toMove[i]);
+	}
+}
+
+void CGrid::AddBlock(CBlock* b, int x, int y)
+{
+	m_grid[y][x].AddBlock(b);
 }
 
 void CGrid::Open()
@@ -144,31 +171,32 @@ void CGrid::CheckSentence()
 {
 	for (auto& e : m_grid)
 	{
-		//if(e.GetList().)
+
 	}
 }
 
-void CGrid::KeyInput()
+void CGrid::EnterLevel(CBlock* cursor)
 {
-	m_eDir = DIRECTION::NONE;
-	if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
+	list<CBlock*> findLevel;
+	for (int i = 0; i < m_iHeight; ++i)
 	{
-		m_eDir = DIRECTION::LEFT;
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j].GetList())
+			{
+				if (t == cursor)
+				{
+					findLevel = m_grid[i][j].GetList();
+				}
+			}
+		}
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
+
+	for (auto& l : findLevel)
 	{
-		m_eDir = DIRECTION::RIGHT;
+		if (l->GetBlockType() == BLOCKTYPE::LEVEL)
+		{
+			dynamic_cast<CLevelBlock*>(l)->Enter();
+		}
 	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
-	{
-		m_eDir = DIRECTION::UP;
-	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
-	{
-		m_eDir = DIRECTION::DOWN;
-	}
-	if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))
-	{
-	}
-	Move(m_eDir);
 }

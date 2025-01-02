@@ -1,4 +1,5 @@
 #pragma once
+#include "CGrid.h"
 #include "CBlock.h"
 class CBlockManager
 {
@@ -36,18 +37,9 @@ private:
 	CBlockManager();
 	~CBlockManager() { Release(); }
 	static CBlockManager* m_pInstance;
+	CGrid m_levelGrid;
 	vector<CGameObject*>	m_vecBlock;
 	int m_iWidth;
 	int m_iHeight;
-
-	// 판단을 위해서 필요한 정보
-	// GAMEWORD, NOUN, VERB, PROPERTY, 
-	// 가져와야할 정보
-	// 시작X좌표
-	// 캐릭터라면 상 하 좌 우 잠 까지
-	// 글자라면 고정된 위치 모션은 두개 활성화 비활성화
-	// TEXT인지 이미지인지 결정
-	// 
-	//map < GAMEWORD, TCHAR* pKEY> mapResource;
 };
 
