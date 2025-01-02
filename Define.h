@@ -15,6 +15,9 @@
 #define TARGETFPS 144
 #define FRAMETIME 1.0f / TARGETFPS
 
+#define SPRITE CResourceManager::GetInstance()
+#define KEYIN CKeyManager::GetInstance()
+
 #define	TILECX				24
 #define	TILECY				24
 

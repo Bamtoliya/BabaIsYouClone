@@ -9,8 +9,8 @@ public:
 	void Update() override;
 	void Render(Graphics* graphic) override;
 	void Render(HDC hDC) override;
+	void OnClick();
 private:
 	void KeyInput();
-	void OnClick();
 };
 

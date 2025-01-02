@@ -5,3 +5,5 @@
 #include "CBlockButton.h"
 #include "CBlocksPanel.h"
 #include "CMainMenuUI.h"
+#include "CMenuButton.h"
+#include "CTabButton.h"

@@ -164,6 +164,7 @@
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMainMenuUI.h" />
     <ClInclude Include="CMenu.h" />
+    <ClInclude Include="CMenuButton.h" />
     <ClInclude Include="CMyBmp.h" />
     <ClInclude Include="CPanel.h" />
     <ClInclude Include="CPlayer.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMainMenuUI.cpp" />
     <ClCompile Include="CMenu.cpp" />
+    <ClCompile Include="CMenuButton.cpp" />
     <ClCompile Include="CMyBmp.cpp" />
     <ClCompile Include="CPanel.cpp" />
     <ClCompile Include="CPlayer.cpp" />

@@ -7,8 +7,8 @@ CUIManager* CUIManager::m_pInstance = nullptr;
 
 void CUIManager::Clear()
 {
-	for_each(m_UIList.begin(), m_UIList.end(), SafeDelete<CUIElement*>);
-	m_UIList.clear();
+	for_each(m_UIVector.begin(), m_UIVector.end(), SafeDelete<CUIElement*>);
+	m_UIVector.clear();
 }
 
 void CUIManager::GameStart() { CSceneManager::GetInstance()->SetScene(SCENEID::Game); }
@@ -47,26 +47,26 @@ void CUIManager::LateUpdate()
 }
 void CUIManager::Release()
 {
-	for_each(m_UIList.begin(), m_UIList.end(), SafeDelete<CUIElement*>);
-	m_UIList.clear();
+	for_each(m_UIVector.begin(), m_UIVector.end(), SafeDelete<CUIElement*>);
+	m_UIVector.clear();
 }
 void CUIManager::Render(Graphics* graphic)
 {
-	for (auto& e : m_UIList)
+	for (auto& e : m_UIVector)
 	{
 		e->Render(graphic);
 	}
 }
 void CUIManager::Render(HDC hDC)
 {
-	for (auto& e : m_UIList)
+	for (auto& e : m_UIVector)
 	{
 		e->Render(hDC);
 	}
 }
 void CUIManager::LoadMainMenuUI()
 {
-	m_UIList.push_back(new CMainMenuUI);
+	m_UIVector.push_back(new CMainMenuUI);
 }
 
 void CUIManager::LoadGameUI()
@@ -76,8 +76,8 @@ void CUIManager::LoadGameUI()
 
 void CUIManager::LoadEditUI()
 {
-	m_UIList.push_back(new CBlocksPanel(0, 0, OCX, 72, L"BlocksPanel", nullptr, true));
-	m_UIList.push_back(new CButton(600, OCY-100, 200, 40, L"RETURN", nullptr, true));
+	m_UIVector.push_back(new CBlocksPanel(0, 0, OCX, 72, L"BlocksPanel", nullptr, true));
+	m_UIVector.push_back(new CButton(600, OCY-100, 200, 40, L"RETURN", nullptr, true));
 }
 
 void CUIManager::SetSceneID(SCENEID id)
@@ -106,20 +106,21 @@ void CUIManager::SetSceneID(SCENEID id)
 
 void CUIManager::MainMenu()
 {
-	for (auto& e : m_UIList)
+	for (auto& e : m_UIVector)
 	{ 
-		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+		if (m_UIVector != CUIManager::GetInstance()->m_UIVector)
 			break;
-		else 
-			e->Update(); 
+		else
+			e->Update();
 	}
+	
 }
 
 void CUIManager::InGame()
 {
-	for (auto& e : m_UIList)
+	for (auto& e : m_UIVector)
 	{
-		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+		if (m_UIVector != CUIManager::GetInstance()->m_UIVector)
 			break;
 		else 
 			e->Update(); 
@@ -128,9 +129,9 @@ void CUIManager::InGame()
 
 void CUIManager::Edit()
 {
-	for (auto& e : m_UIList) 
+	for (auto& e : m_UIVector)
 	{ 
-		if (m_UIList != CUIManager::GetInstance()->m_UIList)
+		if (m_UIVector != CUIManager::GetInstance()->m_UIVector)
 			break;
 		else 
 			e->Update(); 

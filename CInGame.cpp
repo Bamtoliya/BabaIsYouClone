@@ -3,6 +3,8 @@
 
 void CInGame::Initialize()
 {
+	m_bWorld = true;
+	m_bLevel = false;
 	m_WorldMap = new CWorldMap();
 	m_WorldMap->Initialize();
 }
@@ -13,7 +15,7 @@ void CInGame::Update()
 	{
 		m_WorldMap->Update();
 	}
-	else
+	else if(m_bLevel)
 	{
 
 	}
@@ -21,20 +23,44 @@ void CInGame::Update()
 
 void CInGame::LateUpdate()
 {
-	m_WorldMap->LateUpdate();
+	if (m_bWorld)
+	{
+		m_WorldMap->LateUpdate();
+	}
+	else if (m_bLevel)
+	{
+
+	}
+	
 }
 
 void CInGame::Render(Graphics* g)
 {
-	m_WorldMap->Render(g);
+	if (m_bWorld)
+	{
+		m_WorldMap->Render(g);
+	}
+	else if (m_bLevel)
+	{
+		//m_WorldMap->Render(g);
+	}
+	
 }
 
 void CInGame::Render(HDC hDC)
 {
-	m_WorldMap->Render(hDC);	
+	if (m_bWorld)
+	{
+		m_WorldMap->Render(hDC);
+	}
+	else if (m_bLevel)
+	{
+		//m_WorldMap->Render(g);
+	}
 }
 
 void CInGame::Release()
 {
 	SafeDelete<CWorldMap*>(m_WorldMap);
+	SafeDelete<CLevel*>(m_curLevel);
 }

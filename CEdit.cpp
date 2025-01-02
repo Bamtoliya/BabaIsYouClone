@@ -95,7 +95,7 @@ void CEdit::KeyInput()
 		if (CKeyManager::GetInstance()->KeyPressing(VK_LBUTTON))
 		{
 			cout << "LeftButton in Edit Called\n";
-			list<CUIElement*> UIList = CUIManager::GetInstance()->GetList();
+			vector<CUIElement*> UIList = CUIManager::GetInstance()->GetVector();
 
 			const TCHAR* targetText = L"BlocksPanel";
 			auto it = find_if(UIList.begin(), UIList.end(), [&targetText](CUIElement* e) { return e->GetText() == targetText; });

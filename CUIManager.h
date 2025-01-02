@@ -16,13 +16,13 @@ public:
 			m_pInstance = nullptr;
 		}
 	}
-	list<CUIElement*> GetList()
+	vector<CUIElement*> GetVector()
 	{
-		return m_UIList;
+		return m_UIVector;
 	}
 	void AddUIElement(CUIElement* ui)
 	{
-		m_UIList.push_back(ui);
+		m_UIVector.push_back(ui);
 	}
 	void Update();
 	void LateUpdate();
@@ -53,7 +53,7 @@ private:
 	CUIManager(): m_eSceneID(SCENEID::Menu) {}
 	~CUIManager() {}
 	static CUIManager* m_pInstance;
-	list<CUIElement*> m_UIList;
+	vector<CUIElement*> m_UIVector;
 	SCENEID m_eSceneID;
 };
 
