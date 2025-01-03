@@ -18,6 +18,8 @@ void CSceneManager::SetScene(SCENEID eID)
 	m_eCurScene = eID;
 	if (m_ePreScene != m_eCurScene)
 	{
+		m_bInStage = false;
+		
 		SafeDelete(m_pScene);
 		switch (eID)
 		{
@@ -42,6 +44,15 @@ void CSceneManager::SetScene(SCENEID eID)
 		m_pScene->Initialize();
 
 		m_ePreScene = m_eCurScene;
+	}
+}
+
+void CSceneManager::SetStage(STAGEID eID)
+{
+	if (m_eCurScene == SCENEID::Game)
+	{
+		m_bInStage = true;
+		m_bInWorldMap = true;
 	}
 }
 

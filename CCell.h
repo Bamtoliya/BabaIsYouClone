@@ -25,7 +25,6 @@ public:
 	void RemoveBlock(CBlock* b);
 	void ChangeBlock(CBlock* src);
 	list<CBlock*> GetList() { return m_blocks; }
-	
 
 private:
 	list<CBlock*> m_blocks;

@@ -277,10 +277,10 @@
       <Filter>01. GameObject\Block</Filter>
     </ClInclude>
     <ClInclude Include="CLevel.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>99. Managers\SceneManager\Scene</Filter>
     </ClInclude>
     <ClInclude Include="CMenuButton.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>99. Managers\UIManager\MainMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,10 +393,10 @@
       <Filter>01. GameObject\Block</Filter>
     </ClCompile>
     <ClCompile Include="CLevel.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>99. Managers\SceneManager\Scene</Filter>
     </ClCompile>
     <ClCompile Include="CMenuButton.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>99. Managers\UIManager\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

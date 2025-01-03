@@ -82,7 +82,7 @@ void CBlockManager::SaveBlock()
 			{
 				BLOCKTYPE eType = g->GetBlockType();
 				const TCHAR* szImgKey = g->GetImgKey();
-				int nLen = _tcslen(szImgKey);
+				int nLen = _tcslen(szImgKey) + 1;
 				NOUN n = g->GetNoun();
 				VERB v = g->GetVerb();
 				INFO info = g->GetInfo();
@@ -91,7 +91,7 @@ void CBlockManager::SaveBlock()
 				WriteFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
 				WriteFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
 				WriteFile(hFile, &nLen, sizeof(int), &dwByte, NULL);
-				WriteFile(hFile, &szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
+				WriteFile(hFile, szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
 				WriteFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
 				WriteFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
 			}
@@ -135,7 +135,7 @@ void CBlockManager::LoadBlock()
 				ReadFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
 				ReadFile(hFile, &nLen, sizeof(int), &dwByte, NULL); // 길이 읽기
 				TCHAR* szImgKey = new TCHAR[nLen+1];
-				ReadFile(hFile, &szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
+				ReadFile(hFile, szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
 				ReadFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
 				ReadFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
 				g->SetPos(info.fX, info.fY);
@@ -151,6 +151,56 @@ void CBlockManager::LoadBlock()
 	}
 	CloseHandle(hFile);
 	MessageBox(g_hWnd, L"Level Load", L"성공", MB_OK);
+}
+
+void CBlockManager::LoadBlock(CGrid& dst, const TCHAR* filepath)
+{
+	HANDLE hFile = CreateFile(filepath, GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+		return;
+
+	DWORD	dwByte(0);
+
+	Release();
+
+	ReadFile(hFile, &m_iWidth, sizeof(int), &dwByte, NULL);
+	ReadFile(hFile, &m_iHeight, sizeof(int), &dwByte, NULL);
+	dst.SetWidth(m_iWidth);
+	dst.SetHeight(m_iHeight);
+	dst.Initialize();
+
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& g : dst.GetGrid()[i][j]->GetList())
+			{
+				BLOCKTYPE eType;
+
+				NOUN n;
+				VERB v;
+				INFO info;
+				int nLen;
+				ReadFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
+				ReadFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
+				ReadFile(hFile, &nLen, sizeof(int), &dwByte, NULL); // 길이 읽기
+				TCHAR* szImgKey = new TCHAR[nLen + 1];
+				ReadFile(hFile, szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
+				ReadFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
+				ReadFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
+				g->SetPos(info.fX, info.fY);
+				g->SetSize(info.fCX, info.fCY);
+				g->SetImgKey(szImgKey);
+				g->SetBlockType(eType);
+				g->SetNoun(n);
+				g->SetVerb(v);
+				if (0 == dwByte)
+					break;
+			}
+		}
+	}
+	CloseHandle(hFile);
 }
 
 

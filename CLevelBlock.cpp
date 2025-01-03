@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CLevelBlock.h"
+#include "Designs.h"
 
 void CLevelBlock::Initialize()
 {
@@ -27,7 +28,7 @@ void CLevelBlock::Render(HDC hDC)
 
 void CLevelBlock::Enter()
 {
-
+	//CBlockManager::GetInstance()->LoadBlock(L"Data/Level00.dat");
 }
 
 void CLevelBlock::Exit()

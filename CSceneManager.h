@@ -26,6 +26,7 @@ public:
 
 	SCENEID GetCurrentScene() { return m_eCurScene; }
 	void SetScene(SCENEID eID);
+	void SetStage(STAGEID eID);
 	void Update();
 	void LateUpdate();
 	void Render(Graphics* g);
@@ -36,6 +37,9 @@ private:
 	static CSceneManager*	m_pInstance;
 	CScene* m_pScene;
 
+	bool m_bInStage;
+	bool m_bInWorldMap;
+	bool m_bPauseMenu;
 	SCENEID				m_eCurScene;
 	SCENEID				m_ePreScene;
 };

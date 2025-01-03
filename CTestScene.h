@@ -1,5 +1,6 @@
 #pragma once
 #include "CScene.h"
+#include "CGrid.h"
 class CTestScene : public CScene
 {
 public:
@@ -7,12 +8,9 @@ public:
     void Update() override;
     void LateUpdate() override;
     void Render(Graphics* g) override;
+    void Render(HDC hDC) override;
     void Release() override;
 private:
-
-
-    // CScene을(를) 통해 상속됨
-    void Render(HDC hDC) override;
-
+    CGrid m_grid;
 };
 

@@ -14,6 +14,8 @@ public:
 	void PickBlock(Point pt, CBlock b);
 	void SaveBlock();
 	void LoadBlock();
+	void LoadBlock(const TCHAR* filepath);
+	void LoadBlock(CGrid& dst, const TCHAR* filepath);
 	void SetWidth(int w) { m_iWidth = w; }
 	void SetHeight(int h) { m_iHeight = h; }
 	int GetWidth() { return m_iWidth; }

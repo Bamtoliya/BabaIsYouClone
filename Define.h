@@ -33,17 +33,12 @@ extern bool g_bAnimate;
 
 enum class SCENEID
 {
-	Menu, Game, Test, Edit, End
-};
-
-enum class LEVELID
-{
-
+	Menu, Game, Test, Edit, Stage00, Stage01, Stage02, Stage03, Stage04, Stage05, Stage06, Stage07, End
 };
 
 enum class STAGEID
 {
-
+	S00, S01, S02, S03, S04, S05, S06, S07
 };
 
 enum class UITYPE

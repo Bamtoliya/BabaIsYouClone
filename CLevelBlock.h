@@ -14,6 +14,7 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 	virtual void Clear();
+	CGrid GetGrid();
 private:
 	virtual void Transition();
 	CGrid m_grid;
