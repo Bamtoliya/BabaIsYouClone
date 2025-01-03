@@ -86,6 +86,8 @@ void CBlocksPanel::ChangeType(BLOCKTYPE b)
 			break;
 		case BLOCKTYPE::LEVEL:
 			//UpdateList(L"TEXT");
+		case BLOCKTYPE::TILE:
+			UpdateList(L"TILE");
 			break;
 		}
 	}

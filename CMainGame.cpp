@@ -16,7 +16,7 @@ void CMainGame::Initialize()
 	g_bAnimate = false;
 	InsertResources();
 	cout << "CMainGame Initialized\n";
-	CSceneManager::GetInstance()->SetScene(SCENEID::Test);
+	CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
 }
 
 void CMainGame::Update()

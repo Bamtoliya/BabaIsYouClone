@@ -18,6 +18,8 @@ CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 			m_grid[i][j]->AddBlock(new CBlock(startX + j * TILECX, startY + i * TILECY, L"", BLOCKTYPE::NONE));
 		}
 	}
+	m_ullDelay = 200;
+	m_ullLastInput = GetTickCount64();
 }
 
 void CGrid::Initialize()
@@ -39,6 +41,7 @@ void CGrid::Initialize()
 
 void CGrid::Update()
 {
+	KeyInput();
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
@@ -95,48 +98,32 @@ void CGrid::Render(HDC hDC)
 {
 }
 
-void CGrid::Move(DIRECTION dir)
+void CGrid::Move(int x, int y)
 {
 	vector<CBlock*> toMove;
-	int x = 0;
-	int y = 0;
+	vector<pair<int, int>> index;
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
-			for (auto& b : m_grid[i][j]->GetList())
+			for (auto& t : m_grid[i][j]->GetList())
 			{
-				if (b->GetBlockType() == BLOCKTYPE::CHARACTER)
+				if (t->GetBlockType() == BLOCKTYPE::CHARACTER)
 				{
-					x = j;
-					y = i;
-					toMove.push_back(b);
+					if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
+					{
+						toMove.push_back(t);
+						index.push_back({ i, j });
+
+					}
 				}
 			}
 		}
 	}
-
-	for (auto& b : toMove)
+	for (int i = 0; i < toMove.size(); ++i)
 	{
-		switch (m_eDir)
-		{
-		case DIRECTION::LEFT:
-			m_grid[y][x]->RemoveBlock(b);
-			m_grid[y][x - 1]->AddBlock(b);
-			break;
-		case DIRECTION::RIGHT:
-			m_grid[y][x]->RemoveBlock(b);
-			m_grid[y][x + 1]->AddBlock(b);
-			break;
-		case DIRECTION::UP:
-			m_grid[y][x]->RemoveBlock(b);
-			m_grid[y - 1][x]->AddBlock(b);
-			break;
-		case DIRECTION::DOWN:
-			m_grid[y][x]->RemoveBlock(b);
-			m_grid[y + 1][x]->AddBlock(b);
-			break;
-		}
+		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+		m_grid[index[i].first + y][index[i].second + x]->AddBlock(toMove[i]);
 	}
 }
 
@@ -188,6 +175,31 @@ void CGrid::CheckSentence()
 	}
 }
 
+void CGrid::CheckTileNeighbor()
+{
+	vector<CBlock*> toCheck;
+	vector<pair<int, int>> index;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (t->GetBlockType() == BLOCKTYPE::TILE)
+				{
+					toCheck.push_back(t);
+					/*if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
+					{
+						toCheck.push_back(t);
+						index.push_back({ i, j });
+
+					}*/
+				}
+			}
+		}
+	}
+}
+
 void CGrid::EnterLevel(CBlock* cursor)
 {
 	list<CBlock*> findLevel;
@@ -218,4 +230,32 @@ void CGrid::EditBlock(CBlock b, int x, int y)
 {
 	m_grid[y][x]->GetList().back()->SetImgKey(b.GetImgKey());
 	m_grid[y][x]->GetList().back()->SetBlockType(b.GetBlockType());
+}
+
+void CGrid::KeyInput()
+{
+	if (m_ullLastInput + m_ullDelay < GetTickCount64())
+	{
+		if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
+		{
+			Move(- 1, 0);
+		}
+		if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
+		{
+			Move(1, 0);
+		}
+		if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
+		{
+			Move(0, -1);
+		}
+		if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
+		{
+			Move(0, 1);
+		}
+		if (CKeyManager::GetInstance()->KeyPressing(VK_ESCAPE))
+		{
+			//m_grid.EnterLevel(m_Cursor);
+		}
+		m_ullLastInput = GetTickCount64();
+	}
 }

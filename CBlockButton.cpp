@@ -33,10 +33,13 @@ CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz
 	}
 	else m_tInfo = { fX, fY, w, h };
 	m_bShow = show;
-	//m_target = new CBlock(fX, fY, sz, type);
 	m_target.SetPos(fX, fY);
 	m_target.SetBlockType(type);
 	m_target.SetImgKey(sz);
+	if (_tcsstr(sz, L"TEXT") != NULL)
+	{
+
+	}
 	m_target.UpdateRect();
 }
 

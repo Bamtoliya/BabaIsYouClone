@@ -1,6 +1,7 @@
 #pragma once
 #include "CBlock.h"
 #include "CCell.h"
+#include "CRule.h"
 class CGrid
 {
 public:
@@ -19,19 +20,26 @@ public:
 	vector<vector<CCell*>> GetGrid() { return m_grid; }
 	void SetCenter(Vector2 c) { m_vCenter = c; }
 	void Move(DIRECTION dir);
+	void Move(int x, int y);
 	void MoveBlock(CBlock* b, int x, int y);
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
 	void CheckSentence();
+	void CheckTileNeighbor();
 	void EnterLevel(CBlock* cursor);
 	void EditBlock(CBlock b, int x, int y);
 private:
+	void ApplyRule();
+	void KeyInput();
 	vector<vector<CCell*>> m_grid;
+	list<CRule> m_rules;
 	int m_iWidth;
 	int m_iHeight;
 	int m_TileCX;
 	int m_TileCY;
 	Vector2 m_vCenter;
 	DIRECTION m_eDir;
+	ULONG64 m_ullDelay;
+	ULONG64 m_ullLastInput;
 };
 

@@ -28,6 +28,8 @@ void CEdit::LateUpdate()
 
 void CEdit::Render(Graphics* g)
 {
+	SolidBrush brush(Color(255, 21, 24, 31));
+	g->FillRectangle(&brush, 0, 0, OCX, OCY);
 	Pen pen(Color::White);
 	int startX = OCX/2 - TILECX * m_iWidth / 2.f;
 	int startY = OCY/2 - TILECY * m_iHeight / 2.f;

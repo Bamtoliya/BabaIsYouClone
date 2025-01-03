@@ -3,7 +3,7 @@
 #include "Designs.h"
 
 CBlock::CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b) :
-	m_eBlock(b), m_eWord(GAMEWORD::NONE), m_eNoun(NOUN::NONE), m_eVerb(VERB::NONE)
+	m_eBlock(b)
 {
 	m_tInfo = { fX, fY, 24, 24 };
 	m_tRect = { (INT)fX, (INT)fY, 24, 24 };
@@ -20,8 +20,6 @@ void CBlock::Initialize()
 {
 	m_tInfo = { 240, 240, 24, 24 };
 	m_eBlock = BLOCKTYPE::NONE;
-	m_eWord = GAMEWORD::NONE;
-	m_eNoun = NOUN::NONE;
 
 	m_tFrame.iFrameStart = 0;
 	m_tFrame.iFrameEnd = 2;
@@ -64,6 +62,9 @@ void CBlock::Render(Graphics* graphic)
 			x = 51;
 			y = 1;
 			break;
+		case BLOCKTYPE::TILE:
+			x = 51;
+			y = 1;
 		case BLOCKTYPE::CURSOR:
 			x = 51;
 			y = 1;
@@ -143,6 +144,30 @@ void CBlock::ChangeState()
 	else
 	{
 		m_tFrame.iMotion = 1;
+	}
+}
+
+void CBlock::UpdateWord()
+{
+	if (_tcsstr(m_pImgKey, L"TEXT") != NULL)
+	{
+		m_eBlock = BLOCKTYPE::TEXT;
+	}
+	if (_tcsstr(m_pImgKey, L"TILE") != NULL)
+	{
+		m_eBlock = BLOCKTYPE::TILE;
+	}
+	if (_tcsstr(m_pImgKey, L"OBJECT") != NULL)
+	{
+		m_eBlock = BLOCKTYPE::OBJECT;
+	}
+	if (_tcsstr(m_pImgKey, L"CHARACTER") != NULL)
+	{
+		m_eBlock = BLOCKTYPE::CHARACTER;
+	}
+	if (_tcsstr(m_pImgKey, L"CURSOR") != NULL)
+	{
+		m_eBlock = BLOCKTYPE::CURSOR;
 	}
 }
 
