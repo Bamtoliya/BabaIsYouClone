@@ -18,6 +18,16 @@ void CGameObject::UpdateRect()
 	};
 }
 
+void CGameObject::UpdateRectCenter()
+{
+	m_tRect = {
+		INT(m_tInfo.fX - m_tInfo.fCX * 0.5f),
+		INT(m_tInfo.fY - m_tInfo.fCY * 0.5f),
+		INT(m_tInfo.fCX),
+		INT(m_tInfo.fCY)
+	};
+}
+
 void CGameObject::MoveFrame()
 {
 	if (g_bAnimate)

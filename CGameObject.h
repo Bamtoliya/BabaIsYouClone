@@ -43,6 +43,7 @@ public:
 	//void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
 
 	void UpdateRect();
+	void UpdateRectCenter();
 	void MoveFrame();
 protected:
 	INFO			m_tInfo;
@@ -50,6 +51,7 @@ protected:
 	FRAME			m_tFrame;
 	DIRECTION		m_eDir;
 	float			m_fSpeed;
+	bool			m_bCenter;
 	bool			m_bAnimate;
 	bool			m_bDead;
 	bool			m_bActive;

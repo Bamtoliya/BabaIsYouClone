@@ -27,7 +27,12 @@ void CMenuButton::Update()
 		{
 			dynamic_cast<CMainMenuUI*>(m_parent)->SetCurFocus(this);
 		}
-		m_bFocus = true;
+		if (m_bFocus == false)
+		{
+			wstring t = L"BUTTON_" + to_wstring((rand() % 6 + 1)) + L".ogg";
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+			m_bFocus = true;
+		}
 		KeyInput();
 	}
 	else
@@ -99,7 +104,10 @@ void CMenuButton::KeyInput()
 {
 	if (CKeyManager::GetInstance()->KeyDown(VK_LBUTTON))
 	{
-		OnClick();
+		if (m_text != nullptr)
+		{
+			OnClick();
+		}
 	}
 }
 

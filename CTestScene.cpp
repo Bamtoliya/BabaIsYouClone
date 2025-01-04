@@ -7,22 +7,28 @@
 
 void CTestScene::Initialize()
 {
-	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level.dat");
+	//CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level.dat");
 }
 
 void CTestScene::Update()
 {
-	m_grid.Update();
+	KeyInput();
+	//m_grid.Update();
 }
 
 void CTestScene::LateUpdate()
 {
-	m_grid.LateUpdate();
+	//m_grid.LateUpdate();
 }
 
 void CTestScene::Render(Graphics* g)
 {
-	m_grid.Render(g);
+	Rect rc1;
+	Rect rc2;
+	Rect rc3;
+	Rect rc4;
+	//TransitionCloud(g, rc1, SINF)
+	//m_grid.Render(g);
 }
 
 void CTestScene::Render(HDC hDC)
@@ -32,6 +38,14 @@ void CTestScene::Render(HDC hDC)
 void CTestScene::Release()
 {
 
+}
+
+void CTestScene::KeyInput()
+{
+	if (KEYIN->KeyDown(VK_ESCAPE))
+	{
+		CSceneManager::GetInstance()->SetScene(SCENEID::Game);
+	}
 }
 
 

@@ -276,11 +276,14 @@
     <ClInclude Include="CCursor.h">
       <Filter>01. GameObject\Block</Filter>
     </ClInclude>
-    <ClInclude Include="CLevel.h">
-      <Filter>99. Managers\SceneManager\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="CMenuButton.h">
       <Filter>99. Managers\UIManager\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel00.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -392,11 +395,11 @@
     <ClCompile Include="CCursor.cpp">
       <Filter>01. GameObject\Block</Filter>
     </ClCompile>
-    <ClCompile Include="CLevel.cpp">
-      <Filter>99. Managers\SceneManager\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="CMenuButton.cpp">
       <Filter>99. Managers\UIManager\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel00.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ void CInGame::Update()
 	}
 	else if(m_bLevel)
 	{
-
+		m_curLevel->Update();
 	}
 }
 
@@ -29,7 +29,7 @@ void CInGame::LateUpdate()
 	}
 	else if (m_bLevel)
 	{
-
+		m_curLevel->LateUpdate();
 	}
 	
 }
@@ -42,7 +42,7 @@ void CInGame::Render(Graphics* g)
 	}
 	else if (m_bLevel)
 	{
-		
+		m_curLevel->Render(g);
 	}
 	
 }
@@ -55,7 +55,7 @@ void CInGame::Render(HDC hDC)
 	}
 	else if (m_bLevel)
 	{
-		
+		m_curLevel->Render(hDC);
 	}
 }
 
@@ -63,4 +63,22 @@ void CInGame::Release()
 {
 	SafeDelete<CWorldMap*>(m_WorldMap);
 	SafeDelete<CLevel*>(m_curLevel);
+}
+
+void CInGame::SetLevel(CLevel* level)
+{
+	if (level)
+	{
+		m_curLevel = level;
+		m_curLevel->Initialize();
+	}
+}
+
+void CInGame::EnterTransition(Graphics* g)
+{
+
+}
+
+void CInGame::WinTransition(Graphics* g)
+{
 }

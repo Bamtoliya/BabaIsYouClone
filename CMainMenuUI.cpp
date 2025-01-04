@@ -44,10 +44,14 @@ void CMainMenuUI::KeyInput()
 	if (KEYIN->KeyDown(VK_UP))
 	{
 		if (m_iFocusIndex > 1) m_iFocusIndex--;
+		wstring t = L"BUTTON_" + to_wstring((rand() % 6 + 1)) + L".ogg";
+		CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 	}
 	if(KEYIN->KeyDown(VK_DOWN))
 	{ 
 		if(m_iFocusIndex < 3) m_iFocusIndex++;
+		wstring t = L"BUTTON_" + to_wstring((rand() % 6 + 1)) + L".ogg";
+		CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 	}
 	if (KEYIN->KeyDown(VK_RETURN))
 	{

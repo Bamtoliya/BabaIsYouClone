@@ -119,6 +119,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)External Libraries/fmod/fsbank/lib/x64;$(SolutionDir)External Libraries/fmod/studio/lib/x64;$(SolutionDir)External Libraries/fmod/core/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Gdiplus.lib;fmodstudio_vc.lib;fsbank_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)External Libraries\fmod\core\lib\x64\fmod.dll" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -141,6 +144,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)External Libraries/fmod/fsbank/lib/x64;$(SolutionDir)External Libraries/fmod/studio/lib/x64;$(SolutionDir)External Libraries/fmod/core/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Gdiplus.lib;fmodstudio_vc.lib;fsbank_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)External Libraries\fmod\core\lib\x64\fmod.dll" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BabaIsYouClone.h" />
@@ -160,6 +166,7 @@
     <ClInclude Include="CInGame.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CLevel.h" />
+    <ClInclude Include="CLevel00.h" />
     <ClInclude Include="CLevelBlock.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMainMenuUI.h" />
@@ -211,7 +218,7 @@
     <ClCompile Include="CGrid.cpp" />
     <ClCompile Include="CInGame.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
-    <ClCompile Include="CLevel.cpp" />
+    <ClCompile Include="CLevel00.cpp" />
     <ClCompile Include="CLevelBlock.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMainMenuUI.cpp" />

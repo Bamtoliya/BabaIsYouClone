@@ -37,6 +37,7 @@ private:
 	int m_iHeight;
 	int m_TileCX;
 	int m_TileCY;
+	Color m_backgroundColor;
 	Vector2 m_vCenter;
 	DIRECTION m_eDir;
 	ULONG64 m_ullDelay;

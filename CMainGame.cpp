@@ -17,6 +17,7 @@ void CMainGame::Initialize()
 	InsertResources();
 	cout << "CMainGame Initialized\n";
 	CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
+	CSoundManager::GetInstance();
 }
 
 void CMainGame::Update()

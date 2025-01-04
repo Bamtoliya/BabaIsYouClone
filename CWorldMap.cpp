@@ -24,7 +24,7 @@ void CWorldMap::Initialize()
 	m_grid.AddBlock(m_Cursor, 9, 14);
 	m_ullDelay = 100;
 	m_ullLastInput = GetTickCount64();
-	
+	CSoundManager::GetInstance()->PlayBGM(L"map.ogg", 0.8f);
 }
 
 void CWorldMap::Update()

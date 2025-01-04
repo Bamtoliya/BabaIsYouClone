@@ -20,6 +20,9 @@
 #include <array>
 #include <algorithm>
 #include <unordered_map>
+#include <stack>
+#include <io.h>
+#include <string>
 #include "Define.h"
 #include "Words.h"
 

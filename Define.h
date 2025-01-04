@@ -15,6 +15,8 @@
 #define TARGETFPS 144
 #define FRAMETIME 1.0f / TARGETFPS
 
+#define DEGTORAD(degree) ((degree) * PI / 180.0f)
+
 #define SPRITE CResourceManager::GetInstance()
 #define KEYIN CKeyManager::GetInstance()
 
@@ -46,9 +48,9 @@ enum class UITYPE
 	None, Button, Panel, End
 };
 
-enum class CHANNELID
+enum CHANNELID
 {
-	SOUND_BGM, SOUND_EFFECT, END
+	SOUND_EFFECT, SOUND_BGM, SOUND_ENV, SOUND_END
 };
 
 enum OBJID
@@ -240,6 +242,28 @@ static void FillRoundedRect(Gdiplus::Graphics* graphics, Gdiplus::Rect rect, int
 	graphics->FillPath(&brush, &path);
 	// 라운드 렉트 그리기
 	graphics->DrawPath(&pen, &path);
+}
+
+static void TransitionCloud(Gdiplus::Graphics* graphic, Gdiplus::Rect rect, float scale, Gdiplus::Color color)
+{
+	Gdiplus::SolidBrush brush(color);
+	Gdiplus::Rect rect1
+	{
+		rect.X,
+		rect.Y,
+		100,
+		100
+	};
+	Gdiplus::Rect rect2
+	{
+		rect.X,
+		-rect.Y,
+		100,
+		100
+	};
+	graphic->FillEllipse(&brush, rect.X, rect.Y, INT(rect.Width - rect.Width * scale), INT(rect.Height - rect.Height * scale));
+	/*graphic->FillEllipse(&brush, rect1.X, rect1.Y, INT(rect1.Width - rect1.Width * scale), INT(rect1.Height - rect1.Height * scale));
+	graphic->FillEllipse(&brush, rect2.X, rect2.Y, INT(rect2.Width - rect2.Width * scale), INT(rect2.Height - rect2.Height * scale));*/
 }
 
 static void ChangeImageColor(Gdiplus::Image*& image, Gdiplus::Color color)

@@ -9,8 +9,9 @@ public:
     void LateUpdate() override;
     void Render(Graphics* g) override;
     void Render(HDC hDC) override;
-    void Release() override;
+    void Release() override;    
 private:
+    void KeyInput();
     CGrid m_grid;
 };
 

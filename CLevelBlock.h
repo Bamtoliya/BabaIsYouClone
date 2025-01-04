@@ -1,10 +1,12 @@
 #pragma once
 #include "pch.h"
+#include "CLevel.h"
 #include "CGrid.h"
+#include "CLevel00.h"
 class CLevelBlock : public CBlock
 {
 public:
-	CLevelBlock() { m_tInfo = { 0, 0, 24, 24 }; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
+	CLevelBlock() { m_level = new CLevel00; m_tInfo = { 0, 0, 24, 24 }; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
 	~CLevelBlock() {}
 	virtual void Initialize();
 	virtual void Update();
@@ -16,10 +18,11 @@ public:
 	virtual void Clear();
 	CGrid GetGrid();
 private:
-	virtual void Transition();
-	CGrid m_grid;
+	virtual void Transition(Graphics* g);
+	CLevel* m_level;
 	Color m_color;
 	Image* m_pImage;
 	bool m_bClear;
+	const TCHAR* m_szTitle;
 };
 

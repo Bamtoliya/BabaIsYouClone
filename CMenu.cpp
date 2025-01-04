@@ -7,6 +7,7 @@ void CMenu::Initialize()
 {
 	CUIManager::GetInstance()->DestroyInstance();
 	CUIManager::GetInstance()->SetSceneID(SCENEID::Menu);
+	CSoundManager::GetInstance()->PlayBGM(L"menu.ogg", 0.8f);
 }
 
 void CMenu::Update()

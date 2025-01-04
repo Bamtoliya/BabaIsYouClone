@@ -10,6 +10,7 @@ void CEdit::Initialize()
 	CUIManager::GetInstance()->SetSceneID(SCENEID::Edit);
 	m_iWidth = 10;
 	m_iHeight = 10;
+	CSoundManager::GetInstance()->PlayBGM(L"editor.ogg", 0.8f);
 }
 
 void CEdit::Update()

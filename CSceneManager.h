@@ -26,7 +26,7 @@ public:
 
 	SCENEID GetCurrentScene() { return m_eCurScene; }
 	void SetScene(SCENEID eID);
-	void SetStage(STAGEID eID);
+	void SetStage(CLevel* level);
 	void Update();
 	void LateUpdate();
 	void Render(Graphics* g);

@@ -93,7 +93,6 @@ void CBlockManager::SaveBlock()
 			}
 		}
 	}
-	//WriteFile(hFile, &m_levelGrid, sizeof(CGrid), &dwByte, NULL);
 	CloseHandle(hFile);
 	MessageBox(g_hWnd, L"Level Save", L"¼º°ø", MB_OK);
 }

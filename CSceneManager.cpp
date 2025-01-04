@@ -47,12 +47,23 @@ void CSceneManager::SetScene(SCENEID eID)
 	}
 }
 
-void CSceneManager::SetStage(STAGEID eID)
+void CSceneManager::SetStage(CLevel* level)
 {
 	if (m_eCurScene == SCENEID::Game)
 	{
-		m_bInStage = true;
-		m_bInWorldMap = true;
+		if (level)
+		{
+			dynamic_cast<CInGame*>(m_pScene)->SetInLevel(true);
+			dynamic_cast<CInGame*>(m_pScene)->SetInWorld(false);
+			dynamic_cast<CInGame*>(m_pScene)->SetLevel(level);
+		}
+		else
+		{
+			dynamic_cast<CInGame*>(m_pScene)->SetInLevel(false);
+			dynamic_cast<CInGame*>(m_pScene)->SetInWorld(true);
+			dynamic_cast<CInGame*>(m_pScene)->SetLevel(nullptr);
+		}
+		
 	}
 }
 
