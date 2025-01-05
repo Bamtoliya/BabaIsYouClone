@@ -63,7 +63,6 @@ void CSceneManager::SetStage(CLevel* level)
 			dynamic_cast<CInGame*>(m_pScene)->SetInWorld(true);
 			dynamic_cast<CInGame*>(m_pScene)->SetLevel(nullptr);
 		}
-		
 	}
 }
 

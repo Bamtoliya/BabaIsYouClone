@@ -13,12 +13,11 @@ public:
 	virtual void Exit();
 	virtual void Clear();
 private:
-	void Transition();
+	void Transition(Graphics* g);
 	void MoveCursor(int x, int y);
 	void EnterLevel();
 	void KeyInput();
 	void MoveFrame();
-	//list<CLevel> m_levelList;
 	CGrid m_grid;
 	Color m_color;
 	FRAME m_tFrame;
@@ -26,5 +25,7 @@ private:
 	ULONG64 m_ullDelay;
 	ULONG64 m_ullLastInput;
 	Vector2 m_vCursor;
+	float m_fTTime;
+	bool m_bTransition;
 };
 

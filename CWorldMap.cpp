@@ -24,12 +24,20 @@ void CWorldMap::Initialize()
 	m_grid.AddBlock(m_Cursor, 9, 14);
 	m_ullDelay = 100;
 	m_ullLastInput = GetTickCount64();
+	m_fTTime = 0.f;
 	CSoundManager::GetInstance()->PlayBGM(L"map.ogg", 0.8f);
 }
 
 void CWorldMap::Update()
 {
 	KeyInput();
+	if (m_bTransition) m_fTTime += 1.f;
+	
+	if (m_bTransition && m_fTTime >= 225.f)
+	{
+		m_bTransition = false, m_fTTime = 0.f;
+		m_grid.EnterLevel(m_Cursor);
+	}
 	m_grid.Update();
 }
 
@@ -51,6 +59,15 @@ void CWorldMap::Render(Graphics* g)
 	g->FillRectangle(&brush, Rect(0, OCY - 24, OCX, 24));
 #pragma endregion
 	m_grid.Render(g);
+	m_grid.PrintLevel(m_Cursor, g, 0, 0);
+	if (m_bTransition)
+	{
+		Transition(g);
+		if (m_fTTime > 135.f && m_fTTime < 225.f)
+		{
+			m_grid.PrintLevel(m_Cursor, g, OCX/2, OCY/2);
+		}
+	}
 }
 
 void CWorldMap::Render(HDC hDC)
@@ -73,8 +90,9 @@ void CWorldMap::Clear()
 
 }
 
-void CWorldMap::Transition()
+void CWorldMap::Transition(Graphics* g)
 {
+	TransitionCloud(g, cosf(DEGTORAD(m_fTTime)), m_color);
 }
 
 void CWorldMap::MoveCursor(int x, int y)
@@ -84,7 +102,7 @@ void CWorldMap::MoveCursor(int x, int y)
 
 void CWorldMap::EnterLevel()
 {
-	Transition();
+	//Transition(g);
 }
 
 void CWorldMap::KeyInput()
@@ -109,7 +127,15 @@ void CWorldMap::KeyInput()
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))
 		{
-			m_grid.EnterLevel(m_Cursor);
+			if (m_bTransition)
+			{
+				m_grid.EnterLevel(m_Cursor);
+			}
+			else
+			{
+				m_bTransition = true;
+			}
+			
 		}
 		m_ullLastInput = GetTickCount64();
 	}

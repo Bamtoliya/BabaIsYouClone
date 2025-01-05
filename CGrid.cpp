@@ -5,9 +5,11 @@
 
 CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 {
+	
 	m_grid = vector<vector<CCell*>>(m_iHeight, vector<CCell*>(m_iWidth));
 	int startX = m_vCenter.x - TILECX * m_iWidth / 2.f;
 	int startY = m_vCenter.y - TILECY * m_iHeight / 2.f;
+	m_tRect = { startX, startY, TILECX * m_iWidth, TILECY * m_iHeight };
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
@@ -27,6 +29,7 @@ void CGrid::Initialize()
 	m_grid = vector<vector<CCell*>>(m_iHeight, vector<CCell*>(m_iWidth));
 	int startX = m_vCenter.x - TILECX * m_iWidth / 2.f;
 	int startY = m_vCenter.y - TILECY * m_iHeight / 2.f;
+	m_tRect = { startX, startY, TILECX * m_iWidth, TILECY * m_iHeight };
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
@@ -230,6 +233,54 @@ void CGrid::EditBlock(CBlock b, int x, int y)
 {
 	m_grid[y][x]->GetList().back()->SetImgKey(b.GetImgKey());
 	m_grid[y][x]->GetList().back()->SetBlockType(b.GetBlockType());
+}
+
+void CGrid::PrintLevel(CBlock* cursor, Graphics* g, int x, int y)
+{
+	list<CBlock*> findLevel;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (t == cursor)
+				{
+					findLevel = m_grid[i][j]->GetList();
+				}
+			}
+		}
+	}
+
+	for (auto& l : findLevel)
+	{
+		if (l->GetBlockType() == BLOCKTYPE::LEVEL)
+		{
+			const TCHAR* sz = dynamic_cast<CLevelBlock*>(l)->GetTitle();
+			if (sz)
+			{
+				float startX;
+				float startY;
+				if (x != 0 && y != 0)
+				{
+					startX = x + (- lstrlenW(sz) * 16) / 2;
+					startY = y + (- 24) / 2;
+				}
+				else
+				{
+					startX = x;
+					startY = y;
+				}
+				
+				SolidBrush brush(Color(255, 255, 255, 255));
+				Image* textImage = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
+				for (int i = 0; sz[i] != _T('\0'); ++i) {
+					Vector2 pos = CResourceManager::GetInstance()->FindText(sz[i]);
+					g->DrawImage(textImage, Rect(startX + 16 * i, startY, 24, 24), pos.x, pos.y, 24, 24, UnitPixel);
+				}
+			}
+		}
+	}
 }
 
 void CGrid::KeyInput()

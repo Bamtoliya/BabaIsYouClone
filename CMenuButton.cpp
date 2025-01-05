@@ -65,12 +65,6 @@ void CMenuButton::Render(Graphics* graphic)
 		}
 	}
 
-	//TEXT 출력	
-	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter); // 가로 중앙 정렬
-	format.SetLineAlignment(StringAlignmentCenter);
-	FontFamily fontFamily(L"Arial");
-	Font font(&fontFamily, 20, FontStyleRegular, UnitPoint);
 	SolidBrush brush(Color(255, 255, 255, 255));
 	Image* textImage = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
 	// 1. 인덱스를 이용한 반복문
@@ -81,8 +75,6 @@ void CMenuButton::Render(Graphics* graphic)
 		graphic->DrawImage(textImage, Rect(startX + 16 * i, startY, 24, 24), pos.x, pos.y, 24, 24, UnitPixel);
 	}
 
-	/*const WCHAR* tmp = m_text;
-	graphic->DrawString(tmp, lstrlenW(tmp), &font, PointF(m_tRect.X + m_tRect.Width /2, m_tRect.Y + m_tRect.Height / 2), &format, &brush);*/
 	if (g_bDevmode)
 	{
 		Pen pen(Color::Green);

@@ -17,6 +17,7 @@ void CInGame::Update()
 	}
 	else if(m_bLevel)
 	{
+		//if(m_curLevel-)
 		m_curLevel->Update();
 	}
 }
@@ -39,6 +40,7 @@ void CInGame::Render(Graphics* g)
 	if (m_bWorld)
 	{
 		m_WorldMap->Render(g);
+		//if(m_)
 	}
 	else if (m_bLevel)
 	{
@@ -70,15 +72,30 @@ void CInGame::SetLevel(CLevel* level)
 	if (level)
 	{
 		m_curLevel = level;
-		m_curLevel->Initialize();
+		if(m_curLevel)
+			m_curLevel->Initialize();
+	}
+	else
+	{
+		if (m_curLevel) m_curLevel = nullptr;
 	}
 }
 
 void CInGame::EnterTransition(Graphics* g)
 {
 
+	/*TransitionCloud(g, m_tRect1, cosf(DEGTORAD(m_fTransitionTime)), m_color);
+	TransitionCloud(g, m_tRect2, cosf(DEGTORAD(m_fTransitionTime)), m_color);
+	TransitionCloud(g, m_tRect3, cosf(DEGTORAD(m_fTransitionTime)), m_color);
+	TransitionCloud(g, m_tRect4, cosf(DEGTORAD(m_fTransitionTime)), m_color);*/
 }
 
 void CInGame::WinTransition(Graphics* g)
 {
+
+}
+
+void CInGame::ReturnTransition(Graphics* g)
+{
+
 }

@@ -18,5 +18,6 @@ private:
     Rect m_tRect2;
     Rect m_tRect3;
     Rect m_tRect4;
+    
 };
 

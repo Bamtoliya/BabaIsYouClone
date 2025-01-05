@@ -28,6 +28,8 @@ public:
 	void CheckTileNeighbor();
 	void EnterLevel(CBlock* cursor);
 	void EditBlock(CBlock b, int x, int y);
+	void PrintLevel(CBlock* cursor, Graphics* g, int x, int y);
+	Rect GetRect() { return m_tRect; }
 private:
 	void ApplyRule();
 	void KeyInput();
@@ -37,6 +39,7 @@ private:
 	int m_iHeight;
 	int m_TileCX;
 	int m_TileCY;
+	Rect m_tRect;
 	Color m_backgroundColor;
 	Vector2 m_vCenter;
 	DIRECTION m_eDir;

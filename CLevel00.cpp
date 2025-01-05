@@ -30,11 +30,7 @@ void CLevel00::LateUpdate()
 
 void CLevel00::Render(Graphics* g)
 {
-	SolidBrush brush1(m_color);
-	TransitionCloud(g, m_tRect1, cosf(DEGTORAD(m_fTime)), m_color);
-	TransitionCloud(g, m_tRect2, cosf(DEGTORAD(m_fTime)), m_color);
-	TransitionCloud(g, m_tRect3, cosf(DEGTORAD(m_fTime)), m_color);
-	TransitionCloud(g, m_tRect4, cosf(DEGTORAD(m_fTime)), m_color);
+	m_grid.Render(g);
 }
 
 void CLevel00::Render(HDC hDC)

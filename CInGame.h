@@ -21,6 +21,7 @@ public:
     CLevel* GetLevel() { return m_curLevel; }
     void EnterTransition(Graphics* g);
     void WinTransition(Graphics* g);
+    void ReturnTransition(Graphics* g);
 private:
     CWorldMap* m_WorldMap;
     CLevel* m_curLevel;
@@ -28,4 +29,9 @@ private:
     bool m_bWorld;
     ULONG64 m_ullTransitionTime;
     ULONG64 m_ullTransitionDelay;
+    float m_fTransitionTime;
+    Rect m_tRect1;
+    Rect m_tRect2;
+    Rect m_tRect3;
+    Rect m_tRect4;
 };

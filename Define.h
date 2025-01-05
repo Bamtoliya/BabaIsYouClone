@@ -244,24 +244,17 @@ static void FillRoundedRect(Gdiplus::Graphics* graphics, Gdiplus::Rect rect, int
 	graphics->DrawPath(&pen, &path);
 }
 
-static void TransitionCloud(Gdiplus::Graphics* graphic, Gdiplus::Rect rect, float scale, Gdiplus::Color color)
+static void TransitionCloud(Gdiplus::Graphics* graphic, float scale, Gdiplus::Color color)
 {
+	Gdiplus::Rect rect1 = { -OCX / 2, -OCY / 2, OCX, OCY };
+	Gdiplus::Rect rect2 = { OCX + OCX / 2, -OCY / 2, -OCX, OCY };
+	Gdiplus::Rect rect3 = { -OCX / 2, OCY + OCY / 2, OCX, -OCY };
+	Gdiplus::Rect rect4 = { OCX + OCX / 2, OCY + OCY / 2, -OCX, -OCY };
 	Gdiplus::SolidBrush brush(color);
-	Gdiplus::Rect rect1
-	{
-		rect.X,
-		rect.Y,
-		100,
-		100
-	};
-	Gdiplus::Rect rect2
-	{
-		rect.X,
-		-rect.Y,
-		100,
-		100
-	};
-	graphic->FillEllipse(&brush, rect.X, rect.Y, INT(rect.Width - rect.Width * scale), INT(rect.Height - rect.Height * scale));
+	graphic->FillEllipse(&brush, rect1.X, rect1.Y, INT(rect1.Width - rect1.Width * scale), INT(rect1.Height - rect1.Height * scale));
+	graphic->FillEllipse(&brush, rect2.X, rect2.Y, INT(rect2.Width - rect2.Width * scale), INT(rect2.Height - rect2.Height * scale));
+	graphic->FillEllipse(&brush, rect3.X, rect3.Y, INT(rect3.Width - rect3.Width * scale), INT(rect3.Height - rect3.Height * scale));
+	graphic->FillEllipse(&brush, rect4.X, rect4.Y, INT(rect4.Width - rect4.Width * scale), INT(rect4.Height - rect4.Height * scale));
 	/*graphic->FillEllipse(&brush, rect1.X, rect1.Y, INT(rect1.Width - rect1.Width * scale), INT(rect1.Height - rect1.Height * scale));
 	graphic->FillEllipse(&brush, rect2.X, rect2.Y, INT(rect2.Width - rect2.Width * scale), INT(rect2.Height - rect2.Height * scale));*/
 }

@@ -6,6 +6,7 @@
 void CLevelBlock::Initialize()
 {
 	m_level = new CLevel00;
+	m_szTitle = L"BABAISYOU";
 }
 
 void CLevelBlock::Update()

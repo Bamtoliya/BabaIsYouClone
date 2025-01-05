@@ -6,7 +6,7 @@
 class CLevelBlock : public CBlock
 {
 public:
-	CLevelBlock() { m_level = new CLevel00; m_tInfo = { 0, 0, 24, 24 }; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
+	CLevelBlock() { m_level = new CLevel00; m_tInfo = { 0, 0, 24, 24 }; m_szTitle = L"BABAISYOU"; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
 	~CLevelBlock() {}
 	virtual void Initialize();
 	virtual void Update();
@@ -17,6 +17,7 @@ public:
 	virtual void Exit();
 	virtual void Clear();
 	CGrid GetGrid();
+	const TCHAR* GetTitle() { return m_szTitle; }
 private:
 	virtual void Transition(Graphics* g);
 	CLevel* m_level;
