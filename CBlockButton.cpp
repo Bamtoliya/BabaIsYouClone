@@ -2,6 +2,7 @@
 #include "Designs.h"
 #include "CBlocksPanel.h"
 #include "CBlockButton.h"
+#include "Words.h"
 
 
 CBlockButton::CBlockButton()
@@ -36,10 +37,6 @@ CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz
 	m_target.SetPos(fX, fY);
 	m_target.SetBlockType(type);
 	m_target.SetImgKey(sz);
-	if (_tcsstr(sz, L"TEXT") != NULL)
-	{
-
-	}
 	m_target.UpdateRect();
 }
 

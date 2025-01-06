@@ -14,22 +14,6 @@ CBlocksPanel::CBlocksPanel(float fX, float fY, float w, float h, const TCHAR* sz
 	}
 	else m_tInfo = { fX, fY, w, h };
 	m_bShow = show;
-
-	int i = 0;
-	int j = 0;
-	for (auto& t : CResourceManager::GetInstance()->GetMap())
-	{
-		if (i > 34)
-		{
-			i = 0;
-			j++;
-		}
-		if (_tcsstr(t.first, L"TEXT") != NULL)
-		{
-			new CBlockButton((float)i * 24, (float)j * 24, 24, 24, t.first, BLOCKTYPE::TEXT, this, true);
-			i++;
-		}
-	}
 }
 
 void CBlocksPanel::Update()
@@ -42,6 +26,52 @@ void CBlocksPanel::Render(Graphics* graphic)
 {
 	Pen pen(Color::Red);
 	graphic->DrawRectangle(&pen, m_tRect);
+	wstring tmp = L"";
+	switch (m_eType)
+	{
+	case BLOCKTYPE::NONE:
+		tmp = L"NONE";
+		break;
+	case BLOCKTYPE::TEXT:
+		tmp = L"TEXT";
+		break;
+	case BLOCKTYPE::NOUN:
+		tmp = L"NOUN";
+		break;
+	case BLOCKTYPE::VERB:
+		tmp = L"VERB";
+		break;
+	case BLOCKTYPE::PROPERTY:
+		tmp = L"PROPERTY";
+		break;
+	case BLOCKTYPE::CHARACTER:
+		tmp = L"CHRACTER";
+		break;
+	case BLOCKTYPE::OBJECT:
+		tmp = L"OBJECT";
+		break;
+	case BLOCKTYPE::TILE:
+		tmp = L"TILE";
+		break;
+	case BLOCKTYPE::LEVEL:
+		tmp = L"LEVEL";
+		break;
+	case BLOCKTYPE::CURSOR:
+		tmp = L"CURSOR";
+		break;
+	case BLOCKTYPE::END:
+		tmp = L"END";
+		break;
+	default:
+		break;
+	}
+	Image* textImage = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
+	float startX = 200 + (m_tRect.Width - lstrlenW(tmp.c_str()) * 16) / 2;
+	float startY = 100 + (m_tRect.Height - 24) / 2;
+	for (int i = 0; tmp[i] != _T('\0'); ++i) {
+		Vector2 pos = CResourceManager::GetInstance()->FindText(tmp[i]);
+		graphic->DrawImage(textImage, Rect(startX + 16 * i, startY, 24, 24), pos.x, pos.y, 24, 24, UnitPixel);
+	}
 	__super::RenderChild(graphic);
 }
 
@@ -67,7 +97,7 @@ void CBlocksPanel::SetFocus(CUIElement* c)
 
 void CBlocksPanel::ChangeType(BLOCKTYPE b)
 {
-	if (static_cast<int>(b) > 0 && static_cast<int>(b) < 5)
+	if (static_cast<int>(b) > static_cast<int>(BLOCKTYPE::NONE) && static_cast<int>(b) < static_cast < int>(BLOCKTYPE::END))
 	{
 		m_eType = b;
 		for_each(m_child.begin(), m_child.end(), SafeDelete<CUIElement*>);
@@ -85,9 +115,22 @@ void CBlocksPanel::ChangeType(BLOCKTYPE b)
 			UpdateList(L"OBJECT");
 			break;
 		case BLOCKTYPE::LEVEL:
-			//UpdateList(L"TEXT");
+			UpdateList(L"LEVEL");
+			break;
+		case BLOCKTYPE::NOUN:
+			UpdateList(L"NOUN");
+			break;
+		case BLOCKTYPE::VERB:
+			UpdateList(L"VERB");
+			break;
+		case BLOCKTYPE::PROPERTY:
+			UpdateList(L"PROPERTY");
+			break;
 		case BLOCKTYPE::TILE:
 			UpdateList(L"TILE");
+			break;
+		default:
+			UpdateList(L"TEXT");
 			break;
 		}
 	}

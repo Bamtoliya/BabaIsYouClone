@@ -138,6 +138,10 @@ void CWorldMap::KeyInput()
 			}
 			
 		}
+		if (CKeyManager::GetInstance()->KeyDown(VK_ESCAPE))
+		{
+			CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
+		}
 		m_ullLastInput = GetTickCount64();
 	}
 }

@@ -23,6 +23,7 @@
 #include <stack>
 #include <io.h>
 #include <string>
+#include <set>
 #include "Define.h"
 #include "Words.h"
 

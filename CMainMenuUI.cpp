@@ -25,7 +25,7 @@ void CMainMenuUI::Update()
 
 void CMainMenuUI::Render(Graphics* graphic)
 {
-	Image* image = SPRITE->FindImage(L"TEXT_CHARACTER_BABA");
+	Image* image = SPRITE->FindImage(L"NOUN_CHARACTER_BABA");
 	if (m_curFocus && m_iFocusIndex != 0)
 	{
 		graphic->DrawImage(image, Rect(327 - 40, m_curFocus->GetInfo().fY + 8, 24, 24), 51, 1, 24, 24, UnitPixel);

@@ -3,7 +3,7 @@
 class CBlock : public CGameObject
 {
 public:
-    CBlock() : m_eBlock(BLOCKTYPE::NONE), m_Word(nullptr) { m_pImgKey = L"", m_tInfo = {0, 0, 24, 24}; }
+    CBlock() : m_eBlock(BLOCKTYPE::NONE) { m_pImgKey = L"", m_tInfo = {0, 0, 24, 24}; }
     CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b); 
     virtual ~CBlock() {};
     void Initialize() override;
@@ -14,23 +14,30 @@ public:
     void Release() override;
     void OnCollision(CGameObject* op) override;
     void SetBlockType(BLOCKTYPE b) { m_eBlock = b; }
-    void AddProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
+    void AddProperty(PROPERTY p) { m_ePROPERTY.insert(p); }
     //void RemoveProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
     BLOCKTYPE GetBlockType() { return m_eBlock; }
-    list<PROPERTY> GetProperties() { return m_ePROPERTY; }
+    set<PROPERTY> GetProperties() { return m_ePROPERTY; }
     void Clone(CBlock& dst);
     void ChangeState();
     void UpdateWord();
     void Activate() { m_bActive = true; }
-    NOUN GetNoun() { return m_eNoun; }
+    void Apply(CBlock* b);
+    /*NOUN GetNoun() { return m_eNoun; }
     VERB GetVerb() { return m_eVerb; }
     PROPERTY GetProperty() { return m_eProperty; }
+    void SetWordType(GAMEWORD w) { m_eWord = w; }
+    void SetNoun(NOUN n) { m_eNoun = n; }
+    void SetVerb(VERB v) { m_eVerb = v; }
+    void SetProperty(PROPERTY p) { m_eProperty = p; }*/
 protected:
     BLOCKTYPE		m_eBlock;
-    NOUN            m_eNoun;
-    VERB            m_eVerb;
-    PROPERTY        m_eProperty;
-    const TCHAR*    m_Word;
-    list<PROPERTY>  m_ePROPERTY;
+    /*GAMEWORD        m_eWord;
+    union {
+        NOUN m_eNoun;
+        VERB m_eVerb;
+        PROPERTY m_eProperty;
+    } m_WordData;*/
+    set<PROPERTY>  m_ePROPERTY;
 };
 

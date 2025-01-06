@@ -52,6 +52,7 @@ void CGrid::Update()
 			m_grid[i][j]->Update();
 		}
 	}
+	CheckSentence();
 }
 
 void CGrid::LateUpdate()
@@ -111,23 +112,43 @@ void CGrid::Move(int x, int y)
 		{
 			for (auto& t : m_grid[i][j]->GetList())
 			{
-				if (t->GetBlockType() == BLOCKTYPE::CHARACTER)
+				for (auto& p : t->GetProperties())
 				{
-					if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
+					if (p == PROPERTY::YOU)
 					{
-						toMove.push_back(t);
-						index.push_back({ i, j });
+						if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
+						{
+							toMove.push_back(t);
+							index.push_back({ i, j });
 
+						}
 					}
 				}
 			}
 		}
 	}
-	for (int i = 0; i < toMove.size(); ++i)
+	for (int i = 0; i < toMove.size(); ++i) {
+		int newX = index[i].second + x;
+		int newY = index[i].first + y;
+
+		// Check for collision in the destination cell
+		if (m_grid[newY][newX]->GetList().size() > 0) {
+			// Get the first blocking block (you might need more complex logic here)
+			CBlock* blockingBlock = m_grid[newY][newX]->GetList().front();
+
+			// Recursively move the blocking block
+			MoveBlock(blockingBlock, x, y);
+		}
+
+		// Now move the original block (since the path is clear or the blocking block has been pushed)
+		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+		m_grid[newY][newX]->AddBlock(toMove[i]);
+	}
+	/*for (int i = 0; i < toMove.size(); ++i)
 	{
 		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
 		m_grid[index[i].first + y][index[i].second + x]->AddBlock(toMove[i]);
-	}
+	}*/
 }
 
 void CGrid::MoveBlock(CBlock* b, int x, int y)
@@ -147,12 +168,28 @@ void CGrid::MoveBlock(CBlock* b, int x, int y)
 					{
 						toMove.push_back(t);
 						index.push_back({ i, j });
-						
 					}
 				}
 			}
 		}
 	}
+	//for (int i = 0; i < toMove.size(); ++i) {
+	//	int newX = index[i].second + x;
+	//	int newY = index[i].first + y;
+
+	//	// Check for collision in the destination cell
+	//	if (m_grid[newY][newX]->GetList().size() > 0) {
+	//		// Get the first blocking block (you might need more complex logic here)
+	//		CBlock* blockingBlock = m_grid[newY][newX]->GetList().front();
+
+	//		// Recursively move the blocking block
+	//		MoveBlock(blockingBlock, x, y);
+	//	}
+
+	//	// Now move the original block (since the path is clear or the blocking block has been pushed)
+	//	m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+	//	m_grid[newY][newX]->AddBlock(toMove[i]);
+	//}
 	for (int i = 0; i < toMove.size(); ++i)
 	{
 		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
@@ -181,13 +218,10 @@ void CGrid::CheckSentence()
 		{
 			for (auto& t : m_grid[i][j]->GetList())
 			{
-				if (t->GetBlockType() == BLOCKTYPE::TEXT)
+				if (t->GetBlockType() == BLOCKTYPE::NOUN)
 				{
-					if (t->GetNoun() != NOUN::NONE)
-					{
-						foundNouns.push_back(t);
-						index.push_back({ i, j });
-					}
+					foundNouns.push_back(t);
+					index.push_back({ i, j });
 				}
 			}
 		}
@@ -195,14 +229,63 @@ void CGrid::CheckSentence()
 
 	for (int i = 0; i < foundNouns.size(); ++i)
 	{
+		CRule tmp;
+		vector<CBlock*> mayRule;
 		int y = index[i].first;
-		int xx = index[i].second;
-		m_grid[][j]
-	}
+		int x = index[i].second;
+		mayRule.push_back(foundNouns[i]);
+		if (y + 2 < m_iHeight)
+		{
+			for (auto& b : m_grid[y + 1][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y + 2][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN|| b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+		}
 
-	for (auto& e : foundNouns)
-	{
-
+		//Simple case
+		if (mayRule.size() == 3)
+		{
+			tmp.SetSubject(mayRule[0]);
+			tmp.SetVerb(mayRule[1]);
+			tmp.SetObject(mayRule[2]);
+			ApplyRule(tmp);
+			mayRule.pop_back();
+			mayRule.pop_back();
+		}
+		if (x + 2 < m_iHeight)
+		{
+			for (auto& b : m_grid[y][x+1]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y][x+2]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+		}
+		if (mayRule.size() == 3)
+		{
+			tmp.SetSubject(mayRule[0]);
+			tmp.SetVerb(mayRule[1]);
+			tmp.SetObject(mayRule[2]);
+			ApplyRule(tmp);
+		}
 	}
 }
 
@@ -330,6 +413,45 @@ bool CGrid::CheckCanMove(DIRECTION d, int x, int y)
 	}
 	//m_grid[y][x].
 	return false;
+}
+
+void CGrid::ApplyRule(CRule& r)
+{
+	vector<CBlock*> target;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (_tcsstr(t->GetImgKey(), r.GetSubjectBlock()->GetImgKey()) != NULL)
+				{
+					if (t->GetBlockType() != BLOCKTYPE::NOUN)
+					{
+						target.push_back(t);
+					}
+				}
+			}
+		}
+	}
+
+	if (_tcsstr(r.GetVerbBlock()->GetImgKey(), L"IS") != NULL)
+	{
+		for (int i = 0; i < target.size(); ++i)
+		{
+			if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"NOUN") != NULL)
+			{
+				target[i]->Apply(r.GetObjectBlock());
+			}
+			else if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"PROPERTY") != NULL)
+			{
+				target[i]->AddProperty(PROPERTY::YOU);
+			}
+		}
+	}
+	r.GetSubjectBlock()->Activate();
+	r.GetObjectBlock()->Activate();
+	r.GetVerbBlock()->Activate();
 }
 
 void CGrid::KeyInput()

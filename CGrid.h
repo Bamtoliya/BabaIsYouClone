@@ -31,11 +31,11 @@ public:
 	void PrintLevel(CBlock* cursor, Graphics* g, int x, int y);
 	Rect GetRect() { return m_tRect; }
 	bool CheckCanMove(DIRECTION d, int x, int y);
+	void ApplyRule(CRule& r);
 private:
-	void ApplyRule();
 	void KeyInput();
 	vector<vector<CCell*>> m_grid;
-	list<CRule> m_rules;
+	vector<CRule> m_rules;
 	int m_iWidth;
 	int m_iHeight;
 	int m_TileCX;

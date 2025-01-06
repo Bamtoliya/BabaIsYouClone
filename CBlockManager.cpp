@@ -84,6 +84,9 @@ void CBlockManager::SaveBlock()
 				const TCHAR* szImgKey = g->GetImgKey();
 				int nLen = _tcslen(szImgKey) + 1;
 				INFO info = g->GetInfo();
+				/*NOUN n = g->GetNoun();
+				VERB v = g->GetVerb();
+				PROPERTY p = g->GetProperty();*/
 
 
 				WriteFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
@@ -176,8 +179,8 @@ void CBlockManager::LoadBlock(CGrid& dst, const TCHAR* filepath)
 				ReadFile(hFile, &nLen, sizeof(int), &dwByte, NULL); // 길이 읽기
 				TCHAR* szImgKey = new TCHAR[nLen + 1];
 				ReadFile(hFile, szImgKey, nLen * sizeof(TCHAR), &dwByte, NULL);
-				ReadFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
-				ReadFile(hFile, &v, sizeof(VERB), &dwByte, NULL);
+				/*ReadFile(hFile, &n, sizeof(NOUN), &dwByte, NULL);
+				ReadFile(hFile, &v, sizeof(VERB), &dwByte, NULL);*/
 				g->SetPos(info.fX, info.fY);
 				g->SetSize(info.fCX, info.fCY);
 				g->SetImgKey(szImgKey);

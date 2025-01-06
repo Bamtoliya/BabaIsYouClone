@@ -53,6 +53,21 @@ void CBlock::Render(Graphics* graphic)
 			else x = 1;
 			y = 1 + m_tFrame.iFrameStart * 25;
 			break;
+		case BLOCKTYPE::NOUN:
+			if (m_bActive) x = 26;
+			else x = 1;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
+		case BLOCKTYPE::VERB:
+			if (m_bActive) x = 26;
+			else x = 1;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
+		case BLOCKTYPE::PROPERTY:
+			if (m_bActive) x = 26;
+			else x = 1;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
 		case BLOCKTYPE::CHARACTER:
 			x = 51;
 			y = 1 + m_tFrame.iFrameStart * 25;
@@ -63,10 +78,12 @@ void CBlock::Render(Graphics* graphic)
 			break;
 		case BLOCKTYPE::TILE:
 			x = 51;
+			y = 1 + m_tFrame.iFrameStart * 25;
+			break;
+		default:
+			x = 1;
 			y = 1;
-		case BLOCKTYPE::CURSOR:
-			x = 51;
-			y = 1;
+			break;
 		}
 		if (m_pImgKey != L"TEXT_TILE_X")
 		{
@@ -167,6 +184,12 @@ void CBlock::UpdateWord()
 	{
 		m_eBlock = BLOCKTYPE::CURSOR;
 	}
+}
+
+void CBlock::Apply(CBlock* b)
+{
+	m_eBlock = b->m_eBlock;
+	m_pImgKey = b->m_pImgKey;
 }
 
 
