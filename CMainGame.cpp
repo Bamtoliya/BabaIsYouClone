@@ -133,6 +133,7 @@ void CMainGame::InsertResources()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_LINE.png", L"TEXT_TILE_LINE");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_ALPHABET.png", L"TEXT_ALPHABET");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_NUMBER.png", L"TEXT_NUMBER");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_X.png", L"TEXT_TILE_X");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Title.png", L"Title");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"logo.png", L"LOGO");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back2.bmp", L"Back");

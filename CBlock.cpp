@@ -26,7 +26,6 @@ void CBlock::Initialize()
 	m_tFrame.iMotion = 1;
 	m_tFrame.ullSpeed = 200;
 	m_tFrame.ullTime = GetTickCount64();
-	//m_pImgKey = L"TEXT_YOU";
 }
 
 void CBlock::Update()
@@ -60,7 +59,7 @@ void CBlock::Render(Graphics* graphic)
 			break;
 		case BLOCKTYPE::OBJECT:
 			x = 51;
-			y = 1;
+			y = 1 + m_tFrame.iFrameStart * 25;
 			break;
 		case BLOCKTYPE::TILE:
 			x = 51;
@@ -69,7 +68,17 @@ void CBlock::Render(Graphics* graphic)
 			x = 51;
 			y = 1;
 		}
-		graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
+		if (m_pImgKey != L"TEXT_TILE_X")
+		{
+			graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
+		}
+		else 
+		{
+			if (g_bDevmode || (CSceneManager::GetInstance()->GetCurrentScene() == SCENEID::Edit))
+			{
+				graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
+			}
+		}
 	}
 	if (g_bDevmode)
 	{
@@ -80,18 +89,6 @@ void CBlock::Render(Graphics* graphic)
 
 void CBlock::Render(HDC hDC)
 {
-	
-	/*Bitmap* bitmap = new Bitmap(image);
-	HBITMAP hBitmap;
-	HBITMAP hOldmap;
-	bitmap->GetHBITMAP(Color(0,0,0), &hBitmap);*/
-	
-	/*Gdiplus::Image* image = CResourceManager::GetInstance()->FindImage(m_pImgKey);
-	Graphics graphic(hDC);
-	SolidBrush brush(Color(104, 46, 76));
-	graphic.FillRectangle(&brush, m_tRect);
-	graphic.DrawImage(image, m_tRect, 1, 1, 24, 24, UnitPixel);*/
-	
 	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 	//hOldmap = (HBITMAP)SelectObject(hMemDC, &hBitmap);
 	GdiTransparentBlt(hDC, m_tRect.X, m_tRect.Y, m_tRect.Width, m_tRect.Height, hMemDC, 26, 1, 24, 24, RGB(84, 165, 75));
@@ -110,6 +107,7 @@ void CBlock::Render(HDC hDC)
 
 void CBlock::Release()
 {
+
 }
 
 void CBlock::OnCollision(CGameObject* op)

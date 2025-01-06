@@ -283,6 +283,27 @@ void CGrid::PrintLevel(CBlock* cursor, Graphics* g, int x, int y)
 	}
 }
 
+bool CGrid::CheckCanMove(DIRECTION d, int x, int y)
+{
+	switch (d)
+	{
+	case DIRECTION::NONE:
+		break;
+	case DIRECTION::LEFT:
+		break;
+	case DIRECTION::RIGHT:
+		break;
+	case DIRECTION::UP:
+		break;
+	case DIRECTION::DOWN:
+		break;
+	default:
+		break;
+	}
+	//m_grid[y][x].
+	return false;
+}
+
 void CGrid::KeyInput()
 {
 	if (m_ullLastInput + m_ullDelay < GetTickCount64())

@@ -56,15 +56,9 @@ void CButton::Render(Graphics* graphic)
 		}
 	}
 
-	//TEXT 출력	
-	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter); // 가로 중앙 정렬
-	format.SetLineAlignment(StringAlignmentCenter);
-	FontFamily fontFamily(L"Arial");
-	Font font(&fontFamily, 20, FontStyleRegular, UnitPoint);
+	//텍스트 출력
 	SolidBrush brush(Color(255, 255, 255, 255));
 	Image* textImage = CResourceManager::GetInstance()->FindImage(L"TEXT_ALPHABET");
-	// 1. 인덱스를 이용한 반복문
 	float startX = m_tRect.X + (m_tRect.Width - lstrlenW(m_text) * 16) / 2;
 	float startY = m_tRect.Y + (m_tRect.Height - 24) / 2;
 	for (int i = 0; m_text[i] != _T('\0'); ++i) {

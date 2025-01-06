@@ -5,11 +5,8 @@
 void CLevel00::Initialize()
 {
 	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level.dat");
+	CSoundManager::GetInstance()->PlayBGM(L"baba.ogg", 0.8f);
 	m_color = Color(255, 21, 24, 31);
-	m_tRect1 = { -OCX / 2, -OCY /2, OCX, OCY};
-	m_tRect2 = { OCX + OCX/2, -OCY/2, -OCX, OCY };
-	m_tRect3 = { -OCX / 2, OCY + OCY / 2, OCX, -OCY };
-	m_tRect4 = { OCX + OCX /2, OCY + OCY / 2, -OCX, -OCY};
 	m_fTime = 0;
 	m_szTitle = L"BABA IS YOU";
 	m_bTransition = true;
@@ -30,6 +27,12 @@ void CLevel00::LateUpdate()
 
 void CLevel00::Render(Graphics* g)
 {
+	//Border
+	SolidBrush brush(m_color);
+	g->FillRectangle(&brush, Rect(0, 0, 31, OCY));
+	g->FillRectangle(&brush, Rect(OCX - 31, 0, 31, OCY));
+	g->FillRectangle(&brush, Rect(0, 0, OCX, 24));
+	g->FillRectangle(&brush, Rect(0, OCY - 24, OCX, 24));
 	m_grid.Render(g);
 }
 

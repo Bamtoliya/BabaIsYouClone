@@ -133,6 +133,7 @@ void CWorldMap::KeyInput()
 			}
 			else
 			{
+				CSoundManager::GetInstance()->PlaySound(L"TRANSITION_ENTER.ogg", CHANNELID::SOUND_EFFECT, 0.8f);
 				m_bTransition = true;
 			}
 			

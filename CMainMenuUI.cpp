@@ -17,7 +17,6 @@ CMainMenuUI::CMainMenuUI()
 
 void CMainMenuUI::Update()
 {
-
 	KeyInput();
 	m_curFocus = dynamic_cast<CMenuButton*>(m_child[m_iFocusIndex]);
 	__super::UpdateRect();

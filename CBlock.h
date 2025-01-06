@@ -3,7 +3,7 @@
 class CBlock : public CGameObject
 {
 public:
-    CBlock() : m_eBlock(BLOCKTYPE::NONE), m_Word(nullptr) { m_tInfo = { 0, 0, 24, 24 }; }
+    CBlock() : m_eBlock(BLOCKTYPE::NONE), m_Word(nullptr) { m_pImgKey = L"", m_tInfo = {0, 0, 24, 24}; }
     CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b); 
     virtual ~CBlock() {};
     void Initialize() override;

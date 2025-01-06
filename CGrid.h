@@ -30,6 +30,7 @@ public:
 	void EditBlock(CBlock b, int x, int y);
 	void PrintLevel(CBlock* cursor, Graphics* g, int x, int y);
 	Rect GetRect() { return m_tRect; }
+	bool CheckCanMove(DIRECTION d, int x, int y);
 private:
 	void ApplyRule();
 	void KeyInput();

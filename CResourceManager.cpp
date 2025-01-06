@@ -42,6 +42,7 @@ void CResourceManager::Release()
 
 CResourceManager::CResourceManager()
 {
+	
 	m_mapText.emplace('A', Vector2{ 1, 1 });
 	m_mapText.emplace('B', Vector2{51, 1});
 	m_mapText.emplace('C', Vector2{101, 1});
@@ -68,6 +69,7 @@ CResourceManager::CResourceManager()
 	m_mapText.emplace('X', Vector2{101, 226});
 	m_mapText.emplace('Y', Vector2{151, 226});
 	m_mapText.emplace('Z', Vector2{201, 226});
+	m_mapText.emplace(' ', Vector2{251, 226});
 	m_mapText.emplace('0', Vector2{1, 1});
 	m_mapText.emplace('1', Vector2{51, 1});
 	m_mapText.emplace('2', Vector2{101, 1});
