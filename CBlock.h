@@ -21,10 +21,15 @@ public:
     void Clone(CBlock& dst);
     void ChangeState();
     void UpdateWord();
-    void Activate();
+    void Activate() { m_bActive = true; }
+    NOUN GetNoun() { return m_eNoun; }
+    VERB GetVerb() { return m_eVerb; }
+    PROPERTY GetProperty() { return m_eProperty; }
 protected:
-    
     BLOCKTYPE		m_eBlock;
+    NOUN            m_eNoun;
+    VERB            m_eVerb;
+    PROPERTY        m_eProperty;
     const TCHAR*    m_Word;
     list<PROPERTY>  m_ePROPERTY;
 };

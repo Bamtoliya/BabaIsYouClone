@@ -134,6 +134,14 @@ void CMainGame::InsertResources()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_ALPHABET.png", L"TEXT_ALPHABET");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_NUMBER.png", L"TEXT_NUMBER");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_TILE_X.png", L"TEXT_TILE_X");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_00.png", L"TEXT_LEVEL_00");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_01.png", L"TEXT_LEVEL_01");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_02.png", L"TEXT_LEVEL_02");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_03.png", L"TEXT_LEVEL_03");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_04.png", L"TEXT_LEVEL_04");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_05.png", L"TEXT_LEVEL_05");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_06.png", L"TEXT_LEVEL_06");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"TEXT_LEVEL_07.png", L"TEXT_LEVEL_07");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"Title.png", L"Title");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"logo.png", L"LOGO");
 	CBmpMgr::Get_Instance()->Insert_Bmp(SPRITEPATH L"Back2.bmp", L"Back");

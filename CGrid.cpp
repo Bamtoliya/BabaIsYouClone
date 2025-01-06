@@ -172,7 +172,35 @@ void CGrid::Open()
 
 void CGrid::CheckSentence()
 {
-	for (auto& e : m_grid)
+	
+	vector<CBlock*> foundNouns;
+	vector<pair<int, int>> index;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (t->GetBlockType() == BLOCKTYPE::TEXT)
+				{
+					if (t->GetNoun() != NOUN::NONE)
+					{
+						foundNouns.push_back(t);
+						index.push_back({ i, j });
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < foundNouns.size(); ++i)
+	{
+		int y = index[i].first;
+		int xx = index[i].second;
+		m_grid[][j]
+	}
+
+	for (auto& e : foundNouns)
 	{
 
 	}
