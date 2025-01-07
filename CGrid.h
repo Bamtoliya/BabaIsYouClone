@@ -24,6 +24,7 @@ public:
 	void MoveBlock(CBlock* b, int dx, int dy, int x, int y);
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
+	bool CheckMove();
 	void CheckWin();
 	void CheckSentence();
 	void CheckTileNeighbor();

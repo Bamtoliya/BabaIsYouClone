@@ -94,3 +94,8 @@ void CSceneManager::Release()
 		m_pScene = nullptr;
 	}
 }
+
+void CSceneManager::Win()
+{
+	m_bWin = true;
+}

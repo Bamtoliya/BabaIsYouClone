@@ -52,6 +52,7 @@ void CGrid::Update()
 			m_grid[i][j]->Update();
 		}
 	}
+	CheckWin();
 	CheckSentence();
 }
 
@@ -129,6 +130,8 @@ void CGrid::Move(int x, int y)
 	for (int i = 0; i < toMove.size(); ++i) {
 		int newX = index[i].second + x;
 		int newY = index[i].first + y;
+		wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
+		CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
 		m_grid[newY][newX]->AddBlock(toMove[i]);		
 		MoveBlock(toMove[i], x, y, newX, newY);
@@ -171,6 +174,57 @@ void CGrid::AddBlock(CBlock* b, int x, int y)
 void CGrid::Open()
 {
 
+}
+
+bool CGrid::CheckMove()
+{
+
+	return false;
+}
+
+void CGrid::CheckWin()
+{
+	vector<CBlock*> you;
+	vector<pair<int, int>> youIndex;
+	vector<CBlock*> win;
+	vector<pair<int, int>> winIndex;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& b : m_grid[i][j]->GetList())
+			{
+				for (auto& p : b->GetProperties())
+				{
+					if (p == PROPERTY::YOU)
+					{
+						you.push_back(b);
+						youIndex.push_back({ i, j });
+					}
+					if (p == PROPERTY::WIN)
+					{
+						win.push_back(b);
+						winIndex.push_back({ i, j });
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < you.size(); ++i)
+	{
+		for (int j = 0; j < win.size(); ++j)
+		{
+			if (youIndex[i].first == winIndex[j].first)
+			{
+				if (youIndex[i].second == winIndex[j].second)
+				{
+					//dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetInLevel()
+					CSceneManager::GetInstance()->SetStage(nullptr);
+				}
+			}
+		}
+	}
 }
 
 void CGrid::CheckSentence()
@@ -256,6 +310,7 @@ void CGrid::CheckSentence()
 			tmp.SetSubject(mayRule[0]);
 			tmp.SetVerb(mayRule[1]);
 			tmp.SetObject(mayRule[2]);
+			ApplyRule(tmp);
 			tmp.Activate();
 			m_rules.emplace_back(tmp);
 		}
@@ -468,25 +523,20 @@ void CGrid::KeyInput()
 {
 	if (m_ullLastInput + m_ullDelay < GetTickCount64())
 	{
-		wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 		if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
 		{
-			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(-1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 		{
-			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 		{
-			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(0, -1);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 		{
-			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(0, 1);
 		}
 		m_ullLastInput = GetTickCount64();

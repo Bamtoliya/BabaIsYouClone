@@ -25,6 +25,7 @@ public:
 	}
 
 	SCENEID GetCurrentScene() { return m_eCurScene; }
+	CScene* GetCurrentScenePointer() { return m_pScene; }
 	void SetScene(SCENEID eID);
 	void SetStage(CLevel* level);
 	void Update();
@@ -32,6 +33,7 @@ public:
 	void Render(Graphics* g);
 	void Render(HDC hDC);
 	void Release();
+	void Win();
 
 private:
 	static CSceneManager*	m_pInstance;
@@ -40,6 +42,7 @@ private:
 	bool m_bInStage;
 	bool m_bInWorldMap;
 	bool m_bPauseMenu;
+	bool m_bWin;
 	SCENEID				m_eCurScene;
 	SCENEID				m_ePreScene;
 };
