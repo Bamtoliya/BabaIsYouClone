@@ -20,10 +20,15 @@ public:
 	CBlock* GetObjectBlock() { return m_bObject; }
 	void SetType(RULETYPE t) { m_eType = t; }
 	RULETYPE GetType() { return m_eType; }
+	void Activate() { m_bActive = true, m_bSubject->Activate(), m_bVerb->Activate(), m_bObject->Activate(); }
+	void InActive() { m_bActive = false, m_bSubject->InActive(), m_bVerb->InActive(), m_bObject->InActive(); }
+	bool IsActve() { return m_bActive; }
+	bool Find(CRule& c) { return m_bSubject == c.m_bSubject && m_bVerb == c.m_bVerb && m_bObject == m_bObject; }
 private:
 	CBlock* m_bSubject;
 	CBlock* m_bVerb;
 	CBlock* m_bObject;
 	RULETYPE m_eType;
+	bool m_bActive;
 };
 

@@ -21,7 +21,7 @@ public:
 	void SetCenter(Vector2 c) { m_vCenter = c; }
 	void Move(DIRECTION dir);
 	void Move(int x, int y);
-	void MoveBlock(CBlock* b, int x, int y);
+	void MoveBlock(CBlock* b, int dx, int dy, int x, int y);
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
 	void CheckWin();
@@ -33,6 +33,7 @@ public:
 	Rect GetRect() { return m_tRect; }
 	bool CheckCanMove(DIRECTION d, int x, int y);
 	void ApplyRule(CRule& r);
+	void ApplyRule();
 	void MoveCursor(CBlock* cursor, int x, int y);
 private:
 	void KeyInput();

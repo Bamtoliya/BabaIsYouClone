@@ -6,6 +6,23 @@ void CCell::Update()
 	for (auto& e : m_blocks)
 	{
 		e->SetPos(m_tInfo.fX, m_tInfo.fY);
+		for (auto& t : e->GetProperties())
+		{
+			if (t == PROPERTY::STOP)
+			{
+				m_bCanMove = false;
+			}
+			else if (t == PROPERTY::PUSH)
+			{
+				m_bCanPush = true;
+			}
+			else
+			{
+				m_bCanMove = true;
+				m_bCanPush = false;
+			}
+
+		}
 		e->Update();
 	}
 }

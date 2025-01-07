@@ -3,7 +3,7 @@
 class CCell
 {
 public:
-	CCell() {};
+	CCell() : m_bCanMove(true), m_bCanPush(false) {};
 	~CCell() { Release(); }
 
 	void Update();
@@ -25,13 +25,15 @@ public:
 	void RemoveBlock(CBlock* b);
 	void ChangeBlock(CBlock* src);
 	list<CBlock*> GetList() { return m_blocks; }
-	bool GetCanMove() { return m_canMove; }
+	bool GetCanMove() { return m_bCanMove; }
+	bool GetCanPush() { return m_bCanMove; }
 
 private:
 	list<CBlock*> m_blocks;
 	int x;
 	int y;
 	INFO m_tInfo;
-	bool m_canMove;
+	bool m_bCanMove;
+	bool m_bCanPush;
 };
 

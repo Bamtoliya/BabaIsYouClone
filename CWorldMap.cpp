@@ -109,20 +109,25 @@ void CWorldMap::KeyInput()
 {
 	if (m_ullLastInput + m_ullDelay < GetTickCount64())
 	{
+		wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 		if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(-1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(0, -1);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(0, 1);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))

@@ -129,85 +129,37 @@ void CGrid::Move(int x, int y)
 	for (int i = 0; i < toMove.size(); ++i) {
 		int newX = index[i].second + x;
 		int newY = index[i].first + y;
-		MoveBlock(toMove[i], newX, newY);
+		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+		m_grid[newY][newX]->AddBlock(toMove[i]);		
+		MoveBlock(toMove[i], x, y, newX, newY);
 	}
 }
 
-void CGrid::MoveBlock(CBlock* b, int x, int y)
+void CGrid::MoveBlock(CBlock* b, int dx, int dy, int x, int y) 
 {
-	for (auto& b : m_grid[y][x]->GetList())
-	{
-		//CheckBoundary and Recursively call the 
-		if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::VERB || b->GetBlockType() == BLOCKTYPE::PROPERTY)
-		{
-			
-		}
-	}
-	
 	vector<CBlock*> toMove;
 	vector<pair<int, int>> index;
-	for (int i = 0; i < m_iHeight; ++i)
+	for (auto& bl : m_grid[y][x]->GetList())
 	{
-		for (int j = 0; j < m_iWidth; ++j)
+		for (auto& p : bl->GetProperties())
 		{
-			for (auto& t : m_grid[i][j]->GetList())
+			if (p == PROPERTY::PUSH)
 			{
-				if (t == b)
+				if ((y + dy >= 0 && y + dy < m_iHeight) && (x + dx >= 0 && x + dx < m_iWidth))
 				{
-
-					if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
-					{
-						toMove.push_back(t);
-						index.push_back({ i, j });
-					}
+					toMove.push_back(bl);
+					index.push_back({ y, x });
 				}
 			}
 		}
 	}
+
 	for (int i = 0; i < toMove.size(); ++i) {
-		int newX = index[i].second + x;
-		int newY = index[i].first + y;
-
-		// Check if the new position is within the grid bounds
-		if ((newY >= 0 && newY < m_iHeight) && (newX >= 0 && newX < m_iWidth)) {
-			// Check for collision in the destination cell
-			if (m_grid[newY][newX]->GetList().size() > 0) {
-				CBlock* blockingBlock = m_grid[newY][newX]->GetList().front();
-
-				// Check the blocking block's properties to determine if it can be pushed
-				bool canPush = false;
-				set<PROPERTY> properties = blockingBlock->GetProperties();
-				if (properties.find(PROPERTY::PUSH) != properties.end()) { // Assuming you have a PUSHABLE property
-					canPush = true;
-				}
-
-				if (canPush) {
-					// Recursively move the blocking block
-					MoveBlock(blockingBlock, x, y);
-
-					// Check if the blocking block actually moved 
-					// (it might have been blocked by something else)
-					bool didMove = false;
-					for (auto& block : m_grid[newY][newX]->GetList()) {
-						if (block == blockingBlock) {
-							didMove = true;
-							break;
-						}
-					}
-
-					// Only move the original block if the blocking block was successfully pushed
-					if (didMove) {
-						m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
-						m_grid[newY][newX]->AddBlock(toMove[i]);
-					}
-				} // else: the block cannot be pushed, so the original block also stops
-			}
-			else {
-				// No collision, move the block normally
-				m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
-				m_grid[newY][newX]->AddBlock(toMove[i]);
-			}
-		}
+		int newX = index[i].second + dx;
+		int newY = index[i].first + dy;
+		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+		m_grid[newY][newX]->AddBlock(toMove[i]);
+		//MoveBlock(toMove[i], dx, dy, newX, newY);
 	}
 }
 
@@ -304,7 +256,8 @@ void CGrid::CheckSentence()
 			tmp.SetSubject(mayRule[0]);
 			tmp.SetVerb(mayRule[1]);
 			tmp.SetObject(mayRule[2]);
-			ApplyRule(tmp);
+			tmp.Activate();
+			m_rules.emplace_back(tmp);
 		}
 		else
 		{
@@ -438,7 +391,6 @@ bool CGrid::CheckCanMove(DIRECTION d, int x, int y)
 	default:
 		break;
 	}
-	//m_grid[y][x].
 	return false;
 }
 
@@ -479,9 +431,7 @@ void CGrid::ApplyRule(CRule& r)
 			}
 		}
 	}
-	r.GetSubjectBlock()->Activate();
-	r.GetObjectBlock()->Activate();
-	r.GetVerbBlock()->Activate();
+	r.Activate();
 }
 
 void CGrid::MoveCursor(CBlock* cursor, int x, int y)
@@ -518,25 +468,26 @@ void CGrid::KeyInput()
 {
 	if (m_ullLastInput + m_ullDelay < GetTickCount64())
 	{
+		wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 		if (CKeyManager::GetInstance()->KeyPressing(VK_LEFT))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(-1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(1, 0);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(0, -1);
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 		{
+			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			Move(0, 1);
-		}
-		if (CKeyManager::GetInstance()->KeyPressing(VK_ESCAPE))
-		{
-			//m_grid.EnterLevel(m_Cursor);
 		}
 		m_ullLastInput = GetTickCount64();
 	}

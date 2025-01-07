@@ -33,12 +33,7 @@ public:
     void SetProperty(PROPERTY p) { m_eProperty = p; }*/
 protected:
     BLOCKTYPE		m_eBlock;
-    /*GAMEWORD        m_eWord;
-    union {
-        NOUN m_eNoun;
-        VERB m_eVerb;
-        PROPERTY m_eProperty;
-    } m_WordData;*/
-    set<PROPERTY>  m_eProperties;
+    bool            m_bProperty[static_cast<int>(PROPERTY::END)];
+    set<PROPERTY>   m_eProperties;
 };
 
