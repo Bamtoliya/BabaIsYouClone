@@ -97,7 +97,7 @@ void CWorldMap::Transition(Graphics* g)
 
 void CWorldMap::MoveCursor(int x, int y)
 {
-	m_grid.MoveBlock(m_Cursor, x, y);
+	m_grid.MoveCursor(m_Cursor, x, y);
 }
 
 void CWorldMap::EnterLevel()

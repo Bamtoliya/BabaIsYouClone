@@ -24,7 +24,14 @@ CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz
 }
 CBlockButton::CBlockButton(float fX, float fY, float w, float h, const TCHAR* sz, BLOCKTYPE type, CUIElement* parent, bool show)
 {
-	
+	switch (type)
+	{
+	case BLOCKTYPE::NOUN:
+	case BLOCKTYPE::VERB:
+	case BLOCKTYPE::PROPERTY:
+		m_target.AddProperty(PROPERTY::PUSH);
+		break;
+	}
 	m_parent = parent;
 	m_text = sz;
 	if (m_parent)

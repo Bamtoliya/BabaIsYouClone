@@ -14,14 +14,15 @@ public:
     void Release() override;
     void OnCollision(CGameObject* op) override;
     void SetBlockType(BLOCKTYPE b) { m_eBlock = b; }
-    void AddProperty(PROPERTY p) { m_ePROPERTY.insert(p); }
+    void AddProperty(PROPERTY p) { m_eProperties.insert(p); }
     //void RemoveProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
     BLOCKTYPE GetBlockType() { return m_eBlock; }
-    set<PROPERTY> GetProperties() { return m_ePROPERTY; }
+    set<PROPERTY> GetProperties() { return m_eProperties; }
     void Clone(CBlock& dst);
     void ChangeState();
     void UpdateWord();
     void Activate() { m_bActive = true; }
+    void InActive() { m_bActive = false; }
     void Apply(CBlock* b);
     /*NOUN GetNoun() { return m_eNoun; }
     VERB GetVerb() { return m_eVerb; }
@@ -38,6 +39,6 @@ protected:
         VERB m_eVerb;
         PROPERTY m_eProperty;
     } m_WordData;*/
-    set<PROPERTY>  m_ePROPERTY;
+    set<PROPERTY>  m_eProperties;
 };
 

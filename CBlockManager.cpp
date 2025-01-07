@@ -135,6 +135,14 @@ void CBlockManager::LoadBlock()
 				g->SetPos(info.fX, info.fY);
 				g->SetSize(info.fCX, info.fCY);
 				g->SetImgKey(szImgKey);
+				switch (eType)
+				{
+				case BLOCKTYPE::NOUN:
+				case BLOCKTYPE::VERB:
+				case BLOCKTYPE::PROPERTY:
+					g->AddProperty(PROPERTY::PUSH);
+					break;
+				}
 				g->SetBlockType(eType);
 				if (0 == dwByte)
 					break;
@@ -169,7 +177,6 @@ void CBlockManager::LoadBlock(CGrid& dst, const TCHAR* filepath)
 			for (auto& g : dst.GetGrid()[i][j]->GetList())
 			{
 				BLOCKTYPE eType;
-
 				NOUN n;
 				VERB v;
 				INFO info;
@@ -185,6 +192,14 @@ void CBlockManager::LoadBlock(CGrid& dst, const TCHAR* filepath)
 				g->SetSize(info.fCX, info.fCY);
 				g->SetImgKey(szImgKey);
 				g->SetBlockType(eType);
+				switch (eType)
+				{
+				case BLOCKTYPE::NOUN:
+				case BLOCKTYPE::VERB:
+				case BLOCKTYPE::PROPERTY:
+					g->AddProperty(PROPERTY::PUSH);
+					break;
+				}
 				if (0 == dwByte)
 					break;
 			}

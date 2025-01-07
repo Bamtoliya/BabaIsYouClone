@@ -24,6 +24,7 @@ public:
 	void MoveBlock(CBlock* b, int x, int y);
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
+	void CheckWin();
 	void CheckSentence();
 	void CheckTileNeighbor();
 	void EnterLevel(CBlock* cursor);
@@ -32,6 +33,7 @@ public:
 	Rect GetRect() { return m_tRect; }
 	bool CheckCanMove(DIRECTION d, int x, int y);
 	void ApplyRule(CRule& r);
+	void MoveCursor(CBlock* cursor, int x, int y);
 private:
 	void KeyInput();
 	vector<vector<CCell*>> m_grid;

@@ -219,9 +219,6 @@
     <ClInclude Include="CRule.h">
       <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
     </ClInclude>
-    <ClInclude Include="CTileBlock.h">
-      <Filter>01. GameObject\Block</Filter>
-    </ClInclude>
     <ClInclude Include="CBmpMgr.h">
       <Filter>99. Managers\BitmapManager</Filter>
     </ClInclude>
@@ -288,6 +285,18 @@
     <ClInclude Include="CWordBlock.h">
       <Filter>01. GameObject\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CNounBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CVerbBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CPropertyBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjectBlock.h">
+      <Filter>01. GameObject\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -343,9 +352,6 @@
     </ClCompile>
     <ClCompile Include="CRule.cpp">
       <Filter>99. Managers\SceneManager\Scene\InGame</Filter>
-    </ClCompile>
-    <ClCompile Include="CTileBlock.cpp">
-      <Filter>01. GameObject\Block</Filter>
     </ClCompile>
     <ClCompile Include="CBmpMgr.cpp">
       <Filter>99. Managers\BitmapManager</Filter>
@@ -405,6 +411,18 @@
       <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
     </ClCompile>
     <ClCompile Include="CWordBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CNounBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CVerbBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CPropertyBlock.cpp">
+      <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjectBlock.cpp">
       <Filter>01. GameObject\Block</Filter>
     </ClCompile>
   </ItemGroup>

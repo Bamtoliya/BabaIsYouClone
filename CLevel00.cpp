@@ -4,7 +4,7 @@
 
 void CLevel00::Initialize()
 {
-	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level.dat");
+	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level_Test.dat");
 	CSoundManager::GetInstance()->PlayBGM(L"baba.ogg", 0.8f);
 	m_color = Color(255, 21, 24, 31);
 	m_fTime = 0;
