@@ -219,7 +219,7 @@ void CGrid::CheckWin()
 			{
 				if (youIndex[i].second == winIndex[j].second)
 				{
-					//dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetInLevel()
+					CSoundManager::GetInstance()->PlaySound(L"TRANSITION_WIN.ogg", CHANNELID::SOUND_EFFECT, 0.8f);
 					CSceneManager::GetInstance()->SetStage(nullptr);
 				}
 			}
