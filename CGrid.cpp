@@ -322,37 +322,6 @@ bool CGrid::PushBlock(int dx, int dy, int x, int y)
 	return false; // No pushable block found
 }
 
-//void CGrid::PushBlock(int dx, int dy, int x, int y)
-//{
-//	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) return;
-//	CBlock* toPush = nullptr;
-//	for (auto& b : m_grid[y+dy][x+dx]->GetList())
-//	{
-//		for (auto& p : b->GetProperties())
-//		{
-//			if (p == PROPERTY::PUSH)
-//			{
-//				toPush = b;
-//			}
-//		}
-//	}
-//	if (toPush)	
-//	{
-//		if (CheckMove(dx, dy, x + dx, y + dy))
-//		{
-//			if (CheckPush(dx, dy, x + dx, y + dy))
-//			{
-//				cout << "There is PUSH Block After PUSH block\n";
-//				
-//				PushBlock(dx, dy, x + dx, y + dy);
-//			}
-//			m_grid[y + dy][x + dx]->RemoveBlock(toPush);
-//			m_grid[y + dy + dy][x + dx + dx]->AddBlock(toPush);
-//		}
-//		
-//	}
-//}
-
 bool CGrid::CheckMove(int dx, int dy, int x, int y)
 {
 	bool canMove = true;
@@ -440,14 +409,14 @@ void CGrid::CheckSentenceX()
 		}
 	}
 
+	vector<vector<CBlock*>> canRule;;
 	for (int i = 0; i < foundNouns.size(); ++i)
 	{
-		CRule tmp;
 		vector<CBlock*> mayRule;
 		int y = index[i].first;
 		int x = index[i].second;
 		mayRule.push_back(foundNouns[i]);
-		if (x + 2 < m_iHeight)
+		if (x + 2 < m_iWidth)
 		{
 			for (auto& b : m_grid[y][x+1]->GetList())
 			{
@@ -466,19 +435,48 @@ void CGrid::CheckSentenceX()
 		}
 		if (mayRule.size() == 3)
 		{
-			tmp.SetSubject(mayRule[0]);
-			tmp.SetVerb(mayRule[1]);
-			tmp.SetObject(mayRule[2]);
-			ApplyRule(tmp);
-			mayRule.pop_back();
-			mayRule.pop_back();
+			canRule.push_back(mayRule);
+		}
+	}
+
+	for (int i = 0; i < canRule.size(); ++i)
+	{
+		CRule tmp;
+		//Simple case
+		if (canRule[i].size() == 3)
+		{
+			tmp.SetSubject(canRule[i][0]);
+			tmp.SetVerb(canRule[i][1]);
+			tmp.SetObject(canRule[i][2]);
+			wstring ruleKey;
+			for (auto& p : canRule[i])
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
 			tmp.Activate();
+			m_rules.emplace(ruleKey, tmp);
+			ApplyRule(tmp);
 		}
 		else
 		{
-			for (auto& b : mayRule)
+			wstring ruleKey;
+			for (auto& p : canRule[i])
 			{
-				b->InActive();
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
+				if (it->first.find(ruleKey) != wstring::npos) {
+					// it->first 가 ruleKey 를 포함하는 키입니다.
+					it->second.InActive();
+					ApplyRule(it->second);
+					break; // 첫 번째 일치하는 항목만 찾는 경우
+				}
 			}
 		}
 	}
@@ -502,9 +500,9 @@ void CGrid::CheckSentenceY()
 		}
 	}
 
+	vector<vector<CBlock*>> canRule;;
 	for (int i = 0; i < foundNouns.size(); ++i)
 	{
-		CRule tmp;
 		vector<CBlock*> mayRule;
 		int y = index[i].first;
 		int x = index[i].second;
@@ -526,23 +524,50 @@ void CGrid::CheckSentenceY()
 				}
 			}
 		}
-
-		//Simple case
 		if (mayRule.size() == 3)
 		{
-			tmp.SetSubject(mayRule[0]);
-			tmp.SetVerb(mayRule[1]);
-			tmp.SetObject(mayRule[2]);
-			ApplyRule(tmp);
-			mayRule.pop_back();
-			mayRule.pop_back();
-			tmp.Activate();
+			canRule.push_back(mayRule);
 		}
-		else
+	}
+
+	for (int i = 0; i < canRule.size(); ++i)
+	{
+		CRule tmp;
+		//Simple case
+		if (canRule[i].size() == 3)
 		{
-			for (auto& b : mayRule)
+			tmp.SetSubject(canRule[i][0]);
+			tmp.SetVerb(canRule[i][1]);
+			tmp.SetObject(canRule[i][2]);
+			wstring ruleKey;
+			for (auto& p : canRule[i])
 			{
-				b->InActive();
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			tmp.Activate();
+			m_rules.emplace(ruleKey, tmp);
+			ApplyRule(tmp);
+		}
+		else if(canRule[i].size() < 3)
+		{
+			wstring ruleKey;
+			for (auto& p : canRule[i])
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
+				if (it->first.find(ruleKey) != wstring::npos) {
+					// it->first 가 ruleKey 를 포함하는 키입니다.
+					it->second.InActive();
+					ApplyRule(it->second);
+					break; // 첫 번째 일치하는 항목만 찾는 경우
+				}
 			}
 		}
 	}
@@ -708,28 +733,62 @@ void CGrid::ApplyRule(CRule& r)
 		}
 	}
 
-	if (_tcsstr(r.GetVerbBlock()->GetImgKey(), L"IS") != NULL)
+	if (r.IsActve())
 	{
-		for (int i = 0; i < target.size(); ++i)
+		if (_tcsstr(r.GetVerbBlock()->GetImgKey(), L"IS") != NULL)
 		{
-			if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"NOUN") != NULL)
+			for (int i = 0; i < target.size(); ++i)
 			{
-				target[i]->Apply(r.GetObjectBlock());
+				if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"NOUN") != NULL)
+				{
+					target[i]->Apply(r.GetObjectBlock());
+				}
+				else if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"PROPERTY") != NULL)
+				{
+					wstring tmp = r.GetObjectBlock()->GetImgKey();
+					size_t index = tmp.find_last_of(L'_');
+					wstring parsed = tmp.substr(index + 1);
+					target[i]->AddProperty(StringToProperty(parsed));
+				}
 			}
-			else if (_tcsstr(r.GetObjectBlock()->GetImgKey(), L"PROPERTY") != NULL)
-			{
-				wstring tmp = r.GetObjectBlock()->GetImgKey();
-				size_t index = tmp.find_last_of(L'_');
-				wstring parsed = tmp.substr(index + 1);
-				target[i]->AddProperty(StringToProperty(parsed));
-			}
-			else
-			{
-				ClearProperties();
-			}
+			r.Activate();
 		}
 	}
-	r.Activate();
+	else
+	{
+		wstring ruleKey;
+		if (r.GetSubjectBlock() != nullptr)
+		{
+			wstring tmpKey = r.GetSubjectBlock()->GetImgKey();
+			size_t index = tmpKey.find_last_of(L'_');
+			wstring parsed = tmpKey.substr(index + 1);
+			ruleKey += parsed;
+		}
+		if (r.GetVerbBlock() != nullptr)
+		{
+			wstring tmpKey = r.GetVerbBlock()->GetImgKey();
+			size_t index = tmpKey.find_last_of(L'_');
+			wstring parsed = tmpKey.substr(index + 1);
+			ruleKey += parsed;
+		}
+		if (r.GetObjectBlock() != nullptr)
+		{
+			wstring tmpKey = r.GetObjectBlock()->GetImgKey();
+			size_t index = tmpKey.find_last_of(L'_');
+			wstring parsed = tmpKey.substr(index + 1);
+			ruleKey += parsed;
+		}
+		wstring tmpKey = r.GetSubjectBlock()->GetImgKey();
+		size_t index = tmpKey.find_last_of(L'_');
+		wstring parsed = tmpKey.substr(index + 1);
+		for (int i = 0; i < target.size(); ++i)
+		{
+			target[i]->RemoveProperty(StringToProperty(parsed));
+		}
+		m_rules.erase(ruleKey);
+		//m_rules.find(ruleKey)
+	}
+	
 }
 
 void CGrid::MoveCursor(CBlock* cursor, int x, int y)

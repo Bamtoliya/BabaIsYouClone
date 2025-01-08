@@ -47,7 +47,7 @@ public:
 private:
 	void KeyInput();
 	vector<vector<CCell*>> m_grid;
-	vector<CRule> m_rules;
+	map<wstring, CRule> m_rules;
 	int m_iWidth;
 	int m_iHeight;
 	int m_TileCX;

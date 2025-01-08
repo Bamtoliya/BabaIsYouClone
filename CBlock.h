@@ -15,7 +15,7 @@ public:
     void OnCollision(CGameObject* op) override;
     void SetBlockType(BLOCKTYPE b) { m_eBlock = b; }
     void AddProperty(PROPERTY p) { m_eProperties.insert(p); }
-    //void RemoveProperty(PROPERTY p) { m_ePROPERTY.push_back(p); }
+    void RemoveProperty(PROPERTY p) { m_eProperties.erase(p); }
     BLOCKTYPE GetBlockType() { return m_eBlock; }
     set<PROPERTY> GetProperties() { return m_eProperties; }
     void Clone(CBlock& dst);
