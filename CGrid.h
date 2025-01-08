@@ -27,10 +27,11 @@ public:
 	bool CheckPush(int dx, int dy, int x, int y);
 	bool CheckMelt(int dx, int dy, int x, int y);
 	bool CheckDefeat(int dx, int dy, int x, int y);
-	void PushBlock(CBlock*b, int dx, int dy, int x, int y);
+	void PushBlock(int dx, int dy, int x, int y);
 	bool CheckMove(int dx, int dy, int x, int y);
 	void CheckWin();
-	void CheckSentence();
+	void CheckSentenceX();
+	void CheckSentenceY();
 	void ClearProperties();
 	void CheckTileNeighbor();
 	void EnterLevel(CBlock* cursor);

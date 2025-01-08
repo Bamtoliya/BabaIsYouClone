@@ -7,7 +7,7 @@
 
 void CTestScene::Initialize()
 {
-	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level_Test.dat");
+	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level_PUSH.dat");
 }
 
 void CTestScene::Update()

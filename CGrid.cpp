@@ -53,7 +53,8 @@ void CGrid::Update()
 		}
 	}
 	CheckWin();
-	CheckSentence();
+	CheckSentenceX();
+	CheckSentenceY();
 }
 
 void CGrid::LateUpdate()
@@ -138,13 +139,18 @@ void CGrid::Move(int x, int y)
 				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 				dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->Restart();
 			}
-			else
+			else if (CheckPush(x, y, index[i].second, index[i].first))
+			{
+				cout << "There is PUSH BLOCK\n";
+				PushBlock(x, y, newX, newY);
+			}
+			else 
 			{
 				wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 				m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
 				m_grid[newY][newX]->AddBlock(toMove[i]);
-				MoveBlock(toMove[i], x, y, newX, newY);
+				//MoveBlock(toMove[i], x, y, newX, newY);
 			}
 			
 		}
@@ -243,9 +249,35 @@ bool CGrid::CheckDefeat(int dx, int dy, int x, int y)
 	return false;
 }
 
-void CGrid::PushBlock(CBlock* b, int dx, int dy, int x, int y)
+void CGrid::PushBlock(int dx, int dy, int x, int y)
 {
-
+	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) return;
+	CBlock* toPush = nullptr;
+	for (auto& b : m_grid[y+dy][x+dx]->GetList())
+	{
+		for (auto& p : b->GetProperties())
+		{
+			if (p == PROPERTY::PUSH)
+			{
+				toPush = b;
+			}
+		}
+	}
+	if (toPush)	
+	{
+		if (CheckMove(dx, dy, x + dx, y + dy))
+		{
+			if (CheckPush(dx, dy, x + dx, y + dy))
+			{
+				PushBlock(dx, dy, x + dx, y + dy);
+			}
+			else
+			{
+				m_grid[y+dy][x+dx]->RemoveBlock(toPush);
+				m_grid[y+dy+dy][x+dx+dx]->AddBlock(toPush);
+			}
+		}
+	}
 }
 
 bool CGrid::CheckMove(int dx, int dy, int x, int y)
@@ -312,7 +344,69 @@ void CGrid::CheckWin()
 	}
 }
 
-void CGrid::CheckSentence()
+void CGrid::CheckSentenceX()
+{
+	vector<CBlock*> foundNouns;
+	vector<pair<int, int>> index;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (t->GetBlockType() == BLOCKTYPE::NOUN)
+				{
+					foundNouns.push_back(t);
+					index.push_back({ i, j });
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < foundNouns.size(); ++i)
+	{
+		CRule tmp;
+		vector<CBlock*> mayRule;
+		int y = index[i].first;
+		int x = index[i].second;
+		mayRule.push_back(foundNouns[i]);
+		if (x + 2 < m_iHeight)
+		{
+			for (auto& b : m_grid[y][x+1]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y][x+2]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+		}
+		if (mayRule.size() == 3)
+		{
+			tmp.SetSubject(mayRule[0]);
+			tmp.SetVerb(mayRule[1]);
+			tmp.SetObject(mayRule[2]);
+			ApplyRule(tmp);
+			mayRule.pop_back();
+			mayRule.pop_back();
+			tmp.Activate();
+		}
+		else
+		{
+			for (auto& b : mayRule)
+			{
+				b->InActive();
+			}
+		}
+	}
+}
+void CGrid::CheckSentenceY()
 {
 	vector<CBlock*> foundNouns;
 	vector<pair<int, int>> index;
@@ -357,40 +451,6 @@ void CGrid::CheckSentence()
 		}
 
 		//Simple case
-		if (mayRule.size() == 3)
-		{
-			tmp.SetSubject(mayRule[0]);
-			tmp.SetVerb(mayRule[1]);
-			tmp.SetObject(mayRule[2]);
-			ApplyRule(tmp);
-			mayRule.pop_back();
-			mayRule.pop_back();
-			tmp.Activate();
-		}
-		else
-		{
-			for (auto& b : mayRule)
-			{
-				b->InActive();
-			}
-		}
-		if (x + 2 < m_iHeight)
-		{
-			for (auto& b : m_grid[y][x+1]->GetList())
-			{
-				if (b->GetBlockType() == BLOCKTYPE::VERB)
-				{
-					mayRule.push_back(b);
-				}
-			}
-			for (auto& b : m_grid[y][x+2]->GetList())
-			{
-				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
-				{
-					mayRule.push_back(b);
-				}
-			}
-		}
 		if (mayRule.size() == 3)
 		{
 			tmp.SetSubject(mayRule[0]);
