@@ -25,9 +25,11 @@ public:
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
 	bool CheckPush(int dx, int dy, int x, int y);
+	bool CheckPushChain(int dx, int dy, int x, int y);
+	bool CheckLastBlockMove(int dx, int dy, int x, int y);
 	bool CheckMelt(int dx, int dy, int x, int y);
 	bool CheckDefeat(int dx, int dy, int x, int y);
-	void PushBlock(int dx, int dy, int x, int y);
+	bool PushBlock(int dx, int dy, int x, int y);
 	bool CheckMove(int dx, int dy, int x, int y);
 	void CheckWin();
 	void CheckSentenceX();

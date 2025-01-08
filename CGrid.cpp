@@ -142,7 +142,15 @@ void CGrid::Move(int x, int y)
 			else if (CheckPush(x, y, index[i].second, index[i].first))
 			{
 				cout << "There is PUSH BLOCK\n";
-				PushBlock(x, y, newX, newY);
+				if (CheckMove(x, y, newX, newY))
+				{
+					cout << "PUSH BLOCK CAN MOVE\n";
+					if (PushBlock(x, y, index[i].second, index[i].first))
+					{
+						m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+						m_grid[newY][newX]->AddBlock(toMove[i]);
+					}
+				}
 			}
 			else 
 			{
@@ -181,7 +189,6 @@ void CGrid::MoveBlock(CBlock* b, int dx, int dy, int x, int y)
 		int newY = index[i].first + dy;
 		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
 		m_grid[newY][newX]->AddBlock(toMove[i]);
-		//MoveBlock(toMove[i], dx, dy, newX, newY);
 	}
 }
 
@@ -211,6 +218,39 @@ bool CGrid::CheckPush(int dx, int dy, int x, int y)
 		}
 	}
 	return false;
+}
+
+bool CGrid::CheckPushChain(int dx, int dy, int x, int y)
+{
+	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) {
+		return false; // Hit a wall or boundary
+	}
+	if (!CheckMove(dx, dy, x, y)) {
+		return false; // Blocked by a STOP block
+	}
+
+	if (CheckPush(dx, dy, x, y)) {
+		// Recursive call to check the next block in the chain
+		return CheckPushChain(dx, dy, x + dx, y + dy);
+	}
+
+	return true;
+}
+
+bool CGrid::CheckLastBlockMove(int dx, int dy, int x, int y)
+{
+	if (!CheckMove(dx, dy, x, y)) {
+		return false; // Blocked by a STOP block
+	}
+
+	if (CheckPush(dx, dy, x, y)) {
+		cout << "How Many Blocks here\n";
+		// Recursively check the next block
+		return CheckLastBlockMove(dx, dy, x + dx, y + dy);
+	}
+
+	// Reached the last block, check if IT can move
+	return CheckMove(dx, dy, x, y);
 }
 
 bool CGrid::CheckMelt(int dx, int dy, int x, int y)
@@ -248,37 +288,70 @@ bool CGrid::CheckDefeat(int dx, int dy, int x, int y)
 	}
 	return false;
 }
-
-void CGrid::PushBlock(int dx, int dy, int x, int y)
+bool CGrid::PushBlock(int dx, int dy, int x, int y)
 {
-	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) return;
+	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) return false;
+
 	CBlock* toPush = nullptr;
-	for (auto& b : m_grid[y+dy][x+dx]->GetList())
-	{
-		for (auto& p : b->GetProperties())
-		{
-			if (p == PROPERTY::PUSH)
-			{
+	for (auto& b : m_grid[y + dy][x + dx]->GetList()) {
+		for (auto& p : b->GetProperties()) {
+			if (p == PROPERTY::PUSH) {
 				toPush = b;
 			}
 		}
 	}
-	if (toPush)	
-	{
-		if (CheckMove(dx, dy, x + dx, y + dy))
-		{
-			if (CheckPush(dx, dy, x + dx, y + dy))
+
+	if (toPush) {
+		// 1. Check if the LAST block in the chain can move
+		if (CheckLastBlockMove(dx, dy, x + dx, y + dy)) {
+			if (PushBlock(dx, dy, x + dx, y + dy))
 			{
-				PushBlock(dx, dy, x + dx, y + dy);
+				// 2. Move the current block
+				m_grid[y + dy][x + dx]->RemoveBlock(toPush);
+				m_grid[y + dy + dy][x + dx + dx]->AddBlock(toPush);
 			}
-			else
-			{
-				m_grid[y+dy][x+dx]->RemoveBlock(toPush);
-				m_grid[y+dy+dy][x+dx+dx]->AddBlock(toPush);
-			}
+			// 2. Move the current block
+			m_grid[y + dy][x + dx]->RemoveBlock(toPush);
+			m_grid[y + dy + dy][x + dx + dx]->AddBlock(toPush);
+			return true; // Indicate successful push
+		}
+		else {
+			return false; // Last block cannot move
 		}
 	}
+	return false; // No pushable block found
 }
+
+//void CGrid::PushBlock(int dx, int dy, int x, int y)
+//{
+//	if ((y + dy < 0 || y + dy >= m_iHeight) || (x + dx < 0 || x + dx >= m_iWidth)) return;
+//	CBlock* toPush = nullptr;
+//	for (auto& b : m_grid[y+dy][x+dx]->GetList())
+//	{
+//		for (auto& p : b->GetProperties())
+//		{
+//			if (p == PROPERTY::PUSH)
+//			{
+//				toPush = b;
+//			}
+//		}
+//	}
+//	if (toPush)	
+//	{
+//		if (CheckMove(dx, dy, x + dx, y + dy))
+//		{
+//			if (CheckPush(dx, dy, x + dx, y + dy))
+//			{
+//				cout << "There is PUSH Block After PUSH block\n";
+//				
+//				PushBlock(dx, dy, x + dx, y + dy);
+//			}
+//			m_grid[y + dy][x + dx]->RemoveBlock(toPush);
+//			m_grid[y + dy + dy][x + dx + dx]->AddBlock(toPush);
+//		}
+//		
+//	}
+//}
 
 bool CGrid::CheckMove(int dx, int dy, int x, int y)
 {
@@ -295,6 +368,10 @@ bool CGrid::CheckMove(int dx, int dy, int x, int y)
 				}
 			}
 		}
+	}
+	else
+	{
+		return false;
 	}
 	return canMove;
 }
