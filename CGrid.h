@@ -24,9 +24,14 @@ public:
 	void MoveBlock(CBlock* b, int dx, int dy, int x, int y);
 	void AddBlock(CBlock* b, int x, int y);
 	void Open();
-	bool CheckMove();
+	bool CheckPush(int dx, int dy, int x, int y);
+	bool CheckMelt(int dx, int dy, int x, int y);
+	bool CheckDefeat(int dx, int dy, int x, int y);
+	void PushBlock(CBlock*b, int dx, int dy, int x, int y);
+	bool CheckMove(int dx, int dy, int x, int y);
 	void CheckWin();
 	void CheckSentence();
+	void ClearProperties();
 	void CheckTileNeighbor();
 	void EnterLevel(CBlock* cursor);
 	void EditBlock(CBlock b, int x, int y);

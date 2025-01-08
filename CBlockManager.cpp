@@ -63,7 +63,7 @@ void CBlockManager::PickBlock(Point pt, CBlock b)
 void CBlockManager::SaveBlock()
 {
 	
-	HANDLE hFile = CreateFile(L"Data/Level_Test.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"Data/Level_Temp.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
@@ -88,7 +88,6 @@ void CBlockManager::SaveBlock()
 				VERB v = g->GetVerb();
 				PROPERTY p = g->GetProperty();*/
 
-
 				WriteFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
 				WriteFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
 				WriteFile(hFile, &nLen, sizeof(int), &dwByte, NULL);
@@ -102,7 +101,7 @@ void CBlockManager::SaveBlock()
 
 void CBlockManager::LoadBlock()
 {
-	HANDLE hFile = CreateFile(L"Data/Level_Test.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"Data/Level_Temp.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;

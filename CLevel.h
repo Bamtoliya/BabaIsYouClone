@@ -12,6 +12,7 @@ public:
 	const TCHAR* GetTitle() { return m_szTitle; }
 	bool GetCleared() { return m_bClear; }
 	void SetCleared(bool c) { m_bClear = c; }
+	virtual void Restart() PURE;
 protected:
 	stack<CGrid> m_undo;
 	const TCHAR* m_szTitle;

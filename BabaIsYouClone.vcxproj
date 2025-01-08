@@ -167,6 +167,7 @@
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CLevel.h" />
     <ClInclude Include="CLevel00.h" />
+    <ClInclude Include="CLevel01.h" />
     <ClInclude Include="CLevelBlock.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMainMenuUI.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="CInGame.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="CLevel00.cpp" />
+    <ClCompile Include="CLevel01.cpp" />
     <ClCompile Include="CLevelBlock.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMainMenuUI.cpp" />

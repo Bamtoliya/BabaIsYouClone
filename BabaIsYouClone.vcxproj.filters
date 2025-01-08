@@ -297,6 +297,9 @@
     <ClInclude Include="CObjectBlock.h">
       <Filter>01. GameObject\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CLevel01.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -424,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="CObjectBlock.cpp">
       <Filter>01. GameObject\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel01.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

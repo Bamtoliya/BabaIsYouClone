@@ -18,6 +18,7 @@ static const TCHAR* PROPERTYToString(PROPERTY p)
 	if (PROPERTY::YOU == p) return L"YOU";
 	if (PROPERTY::MELT == p) return L"MELT";
 	if (PROPERTY::FLOAT == p) return L"FLOAT";
+	if (PROPERTY::PUSH == p) return L"PUSH";
 	if (PROPERTY::STOP == p) return L"STOP";
 	if (PROPERTY::WIN == p) return L"WIN";
 	if (PROPERTY::HOT == p) return L"HOT";
@@ -42,6 +43,7 @@ static PROPERTY StringToProperty(const std::wstring& str)
 	if (str == L"DONE") return PROPERTY::DONE;
 	if (str == L"DEFEAT") return PROPERTY::DEFEAT;
 	if (str == L"SHUT") return PROPERTY::SHUT;
+	if (str == L"PUSH") return PROPERTY::PUSH;
 	if (str == L"OPEN") return PROPERTY::OPEN;
 	if (str == L"SINK") return PROPERTY::SINK;
 }

@@ -3,6 +3,7 @@
 #include "CWorldMap.h"
 #include "CCursor.h"
 #include "CLevelBlock.h"
+#include "CLevel01.h"
 
 void CWorldMap::Initialize()
 {
@@ -11,14 +12,9 @@ void CWorldMap::Initialize()
 	m_grid.SetWidth(33);
 	m_grid.SetHeight(18);
 	m_grid.SetCenter(Vector2(OCX / 2, OCY / 2));
-	m_grid.AddBlock(new CLevelBlock(), 9, 14);
-	m_grid.AddBlock(new CLevelBlock(), 10, 13);
-	m_grid.AddBlock(new CLevelBlock(), 11, 13);
-	m_grid.AddBlock(new CLevelBlock(), 10, 12);
-	m_grid.AddBlock(new CLevelBlock(), 11, 12);
-	m_grid.AddBlock(new CLevelBlock(), 12, 12);
-	m_grid.AddBlock(new CLevelBlock(), 10, 11);
-	m_grid.AddBlock(new CLevelBlock(), 11, 11);
+	m_grid.AddBlock(new CLevelBlock(new CLevel00), 9, 14);
+	m_grid.AddBlock(new CLevelBlock(new CLevel01), 10, 13);
+	//m_grid.AddBlock(new CLevelBlock(new CLevel02), 11, 13);
 	m_Cursor = new CCursor();
 	m_color = Color(255, 21, 24, 31);
 	m_grid.AddBlock(m_Cursor, 9, 14);

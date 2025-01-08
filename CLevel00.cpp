@@ -45,10 +45,17 @@ void CLevel00::Release()
 {
 }
 
+void CLevel00::Restart()
+{
+	CBlockManager::GetInstance()->LoadBlock(m_grid, L"Data/Level_Test.dat");
+	CSoundManager::GetInstance()->PlayBGM(L"baba.ogg", 0.8f);
+}
+
 void CLevel00::KeyInput()
 {
 	if (KEYIN->KeyDown(VK_ESCAPE))
 	{
+		CSoundManager::GetInstance()->PlayBGM(L"map.ogg", 0.8f);
 		CSceneManager::GetInstance()->SetStage(nullptr);
 	}
 }

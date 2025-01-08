@@ -130,11 +130,24 @@ void CGrid::Move(int x, int y)
 	for (int i = 0; i < toMove.size(); ++i) {
 		int newX = index[i].second + x;
 		int newY = index[i].first + y;
-		wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
-		CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
-		m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
-		m_grid[newY][newX]->AddBlock(toMove[i]);		
-		MoveBlock(toMove[i], x, y, newX, newY);
+		if (CheckMove(x, y, index[i].second, index[i].first))
+		{
+			if (CheckDefeat(x, y, index[i].second, index[i].first))
+			{
+				wstring t = L"DEFEAT_" + to_wstring((rand() % 5 + 1)) + L".ogg";
+				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+				dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->Restart();
+			}
+			else
+			{
+				wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
+				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+				m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
+				m_grid[newY][newX]->AddBlock(toMove[i]);
+				MoveBlock(toMove[i], x, y, newX, newY);
+			}
+			
+		}
 	}
 }
 
@@ -176,10 +189,82 @@ void CGrid::Open()
 
 }
 
-bool CGrid::CheckMove()
+bool CGrid::CheckPush(int dx, int dy, int x, int y)
+{
+	if ((y + dy >= 0 && y + dy < m_iHeight) && (x + dx >= 0 && x + dx < m_iWidth))
+	{
+		for (auto& b : m_grid[y + dy][x + dx]->GetList())
+		{
+			for (auto& p : b->GetProperties())
+			{
+				if (p == PROPERTY::PUSH)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool CGrid::CheckMelt(int dx, int dy, int x, int y)
+{
+	if ((y + dy >= 0 && y + dy < m_iHeight) && (x + dx >= 0 && x + dx < m_iWidth))
+	{
+		for (auto& b : m_grid[y + dy][x + dx]->GetList())
+		{
+			for (auto& p : b->GetProperties())
+			{
+				if (p == PROPERTY::HOT)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool CGrid::CheckDefeat(int dx, int dy, int x, int y)
+{
+	if ((y + dy >= 0 && y + dy < m_iHeight) && (x + dx >= 0 && x + dx < m_iWidth))
+	{
+		for (auto& b : m_grid[y + dy][x + dx]->GetList())
+		{
+			for (auto& p : b->GetProperties())
+			{
+				if (p == PROPERTY::DEFEAT)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+void CGrid::PushBlock(CBlock* b, int dx, int dy, int x, int y)
 {
 
-	return false;
+}
+
+bool CGrid::CheckMove(int dx, int dy, int x, int y)
+{
+	bool canMove = true;
+	if (y + dy >= 0 && y + dy < m_iHeight && x + dx >= 0 && x + dx < m_iWidth)
+	{
+		for (auto& b : m_grid[y + dy][x + dx]->GetList())
+		{
+			for (auto& p : b->GetProperties())
+			{
+				if (p == PROPERTY::STOP)
+				{
+					canMove = false;
+				}
+			}
+		}
+	}
+	return canMove;
 }
 
 void CGrid::CheckWin()
@@ -280,6 +365,7 @@ void CGrid::CheckSentence()
 			ApplyRule(tmp);
 			mayRule.pop_back();
 			mayRule.pop_back();
+			tmp.Activate();
 		}
 		else
 		{
@@ -311,14 +397,36 @@ void CGrid::CheckSentence()
 			tmp.SetVerb(mayRule[1]);
 			tmp.SetObject(mayRule[2]);
 			ApplyRule(tmp);
+			mayRule.pop_back();
+			mayRule.pop_back();
 			tmp.Activate();
-			m_rules.emplace_back(tmp);
 		}
 		else
 		{
 			for (auto& b : mayRule)
 			{
 				b->InActive();
+			}
+		}
+	}
+}
+
+void CGrid::ClearProperties()
+{
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& b : m_grid[i][j]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::VERB || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+
+				}
+				else
+				{
+					b->GetProperties().clear();
+				}
 			}
 		}
 	}
@@ -337,12 +445,6 @@ void CGrid::CheckTileNeighbor()
 				if (t->GetBlockType() == BLOCKTYPE::TILE)
 				{
 					toCheck.push_back(t);
-					/*if ((i + y >= 0 && i + y < m_iHeight) && (j + x >= 0 && j + x < m_iWidth))
-					{
-						toCheck.push_back(t);
-						index.push_back({ i, j });
-
-					}*/
 				}
 			}
 		}
@@ -483,6 +585,10 @@ void CGrid::ApplyRule(CRule& r)
 				size_t index = tmp.find_last_of(L'_');
 				wstring parsed = tmp.substr(index + 1);
 				target[i]->AddProperty(StringToProperty(parsed));
+			}
+			else
+			{
+				ClearProperties();
 			}
 		}
 	}
