@@ -24,11 +24,14 @@ public:
 	void InActive() { m_bActive = false, m_bSubject->InActive(), m_bVerb->InActive(), m_bObject->InActive(); }
 	bool IsActve() { return m_bActive; }
 	bool Find(CRule& c) { return m_bSubject == c.m_bSubject && m_bVerb == c.m_bVerb && m_bObject == m_bObject; }
+	bool GetIsHorizontal() { return m_bHorizontal; }
+	void SetIsHorizontal(bool h) { m_bHorizontal = h; }
 private:
 	CBlock* m_bSubject;
 	CBlock* m_bVerb;
 	CBlock* m_bObject;
 	RULETYPE m_eType;
 	bool m_bActive;
+	bool m_bHorizontal;
 };
 

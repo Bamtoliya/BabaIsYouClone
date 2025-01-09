@@ -84,10 +84,6 @@ void CBlockManager::SaveBlock()
 				const TCHAR* szImgKey = g->GetImgKey();
 				int nLen = _tcslen(szImgKey) + 1;
 				INFO info = g->GetInfo();
-				/*NOUN n = g->GetNoun();
-				VERB v = g->GetVerb();
-				PROPERTY p = g->GetProperty();*/
-
 				WriteFile(hFile, &info, sizeof(INFO), &dwByte, NULL);
 				WriteFile(hFile, &eType, sizeof(BLOCKTYPE), &dwByte, NULL);
 				WriteFile(hFile, &nLen, sizeof(int), &dwByte, NULL);

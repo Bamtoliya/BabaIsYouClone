@@ -53,8 +53,9 @@ void CGrid::Update()
 		}
 	}
 	CheckWin();
-	CheckSentenceX();
-	CheckSentenceY();
+	CheckSentence();
+	/*CheckSentenceX();
+	CheckSentenceY();*/
 }
 
 void CGrid::LateUpdate()
@@ -390,6 +391,175 @@ void CGrid::CheckWin()
 	}
 }
 
+void CGrid::CheckSentence()
+{
+	vector<CBlock*> foundNouns;
+	vector<pair<int, int>> index;
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			for (auto& t : m_grid[i][j]->GetList())
+			{
+				if (t->GetBlockType() == BLOCKTYPE::NOUN)
+				{
+					foundNouns.push_back(t);
+					index.push_back({ i, j });
+				}
+			}
+		}
+	}
+
+	vector<vector<CBlock*>> horizontalRules, verticalRules;
+	for (int i = 0; i < foundNouns.size(); ++i)
+	{
+		vector<CBlock*> mayRule;
+		int y = index[i].first;
+		int x = index[i].second;
+		mayRule.push_back(foundNouns[i]);
+		if (x + 2 < m_iWidth)
+		{
+			for (auto& b : m_grid[y][x + 1]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y][x + 2]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			horizontalRules.push_back(mayRule);
+		}
+
+
+		mayRule.clear();
+		mayRule.push_back(foundNouns[i]);
+
+		if (y + 2 < m_iHeight)
+		{
+			for (auto& b : m_grid[y + 1][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y + 2][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			verticalRules.push_back(mayRule);
+		}
+	}
+
+	// 가로 규칙 처리
+	for (auto& ruleBlocks : horizontalRules)
+	{
+		if (ruleBlocks.size() == 3)
+		{
+			CRule tmp;
+			tmp.SetSubject(ruleBlocks[0]);
+			tmp.SetVerb(ruleBlocks[1]);
+			tmp.SetObject(ruleBlocks[2]);
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			tmp.SetIsHorizontal(true);
+			tmp.Activate();
+			m_rules.emplace(ruleKey, tmp);
+			ApplyRule(tmp);
+		}
+		else
+		{
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
+				if (it->first.find(ruleKey) != wstring::npos) {
+					// it->first 가 ruleKey 를 포함하는 키입니다.
+					if (it->second.GetIsHorizontal())
+					{
+						it->second.InActive();
+						ApplyRule(it->second);
+						break;
+					}
+					else {
+						continue;
+					} // 첫 번째 일치하는 항목만 찾는 경우
+				}
+			}
+		}
+
+	}
+
+	// 세로 규칙 처리
+	for (auto& ruleBlocks : verticalRules)
+	{
+		if (ruleBlocks.size() == 3)
+		{
+			CRule tmp;
+			tmp.SetSubject(ruleBlocks[0]);
+			tmp.SetVerb(ruleBlocks[1]);
+			tmp.SetObject(ruleBlocks[2]);
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			tmp.SetIsHorizontal(false);
+			tmp.Activate();
+			m_rules.emplace(ruleKey, tmp);
+			ApplyRule(tmp);
+		}
+		else
+		{
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
+				if (it->first.find(ruleKey) != wstring::npos) {
+					// it->first 가 ruleKey 를 포함하는 키입니다.
+					if (!it->second.GetIsHorizontal())
+					{
+						it->second.InActive();
+						ApplyRule(it->second);
+						break;
+					} else {
+						continue;
+					}
+					; // 첫 번째 일치하는 항목만 찾는 경우
+				}
+			}
+		}
+	}
+}
+
 void CGrid::CheckSentenceX()
 {
 	vector<CBlock*> foundNouns;
@@ -409,7 +579,7 @@ void CGrid::CheckSentenceX()
 		}
 	}
 
-	vector<vector<CBlock*>> canRule;;
+	vector<vector<CBlock*>> horizontalRules, verticalRules;
 	for (int i = 0; i < foundNouns.size(); ++i)
 	{
 		vector<CBlock*> mayRule;
@@ -432,30 +602,58 @@ void CGrid::CheckSentenceX()
 					mayRule.push_back(b);
 				}
 			}
+			if (mayRule.size() == 3)
+			{
+				horizontalRules.push_back(mayRule);
+			}
 		}
-		if (mayRule.size() == 3)
+		
+
+		mayRule.clear();
+		mayRule.push_back(foundNouns[i]);
+
+		if (y + 2 < m_iHeight)
 		{
-			canRule.push_back(mayRule);
+			for (auto& b : m_grid[y + 1][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::VERB)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			for (auto& b : m_grid[y + 2][x]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::NOUN || b->GetBlockType() == BLOCKTYPE::PROPERTY)
+				{
+					mayRule.push_back(b);
+				}
+			}
+			if (mayRule.size() == 3)
+			{
+				verticalRules.push_back(mayRule);
+			}
 		}
+		
 	}
 
-	for (int i = 0; i < canRule.size(); ++i)
+	// 가로 규칙 처리
+	for (auto& ruleBlocks : horizontalRules) 
 	{
-		CRule tmp;
-		//Simple case
-		if (canRule[i].size() == 3)
+		if (ruleBlocks.size() == 3)
 		{
-			tmp.SetSubject(canRule[i][0]);
-			tmp.SetVerb(canRule[i][1]);
-			tmp.SetObject(canRule[i][2]);
+			CRule tmp;
+			tmp.SetSubject(ruleBlocks[0]);
+			tmp.SetVerb(ruleBlocks[1]);
+			tmp.SetObject(ruleBlocks[2]);
 			wstring ruleKey;
-			for (auto& p : canRule[i])
+			for (auto& p : ruleBlocks)
 			{
 				wstring tmpKey = p->GetImgKey();
 				size_t index = tmpKey.find_last_of(L'_');
 				wstring parsed = tmpKey.substr(index + 1);
 				ruleKey += parsed;
 			}
+			tmp.SetIsHorizontal(true);
 			tmp.Activate();
 			m_rules.emplace(ruleKey, tmp);
 			ApplyRule(tmp);
@@ -463,7 +661,7 @@ void CGrid::CheckSentenceX()
 		else
 		{
 			wstring ruleKey;
-			for (auto& p : canRule[i])
+			for (auto& p : ruleBlocks)
 			{
 				wstring tmpKey = p->GetImgKey();
 				size_t index = tmpKey.find_last_of(L'_');
@@ -473,8 +671,58 @@ void CGrid::CheckSentenceX()
 			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
 				if (it->first.find(ruleKey) != wstring::npos) {
 					// it->first 가 ruleKey 를 포함하는 키입니다.
-					it->second.InActive();
-					ApplyRule(it->second);
+					if (it->second.GetIsHorizontal())
+					{
+						it->second.InActive();
+						ApplyRule(it->second);
+					}
+					break; // 첫 번째 일치하는 항목만 찾는 경우
+				}
+			}
+		}
+		
+	}
+
+	// 세로 규칙 처리
+	for (auto& ruleBlocks : verticalRules) 
+	{
+		if (ruleBlocks.size() == 3)
+		{
+			CRule tmp;
+			tmp.SetSubject(ruleBlocks[0]);
+			tmp.SetVerb(ruleBlocks[1]);
+			tmp.SetObject(ruleBlocks[2]);
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			tmp.SetIsHorizontal(false);
+			tmp.Activate();
+			m_rules.emplace(ruleKey, tmp);
+			ApplyRule(tmp);
+		}
+		else
+		{
+			wstring ruleKey;
+			for (auto& p : ruleBlocks)
+			{
+				wstring tmpKey = p->GetImgKey();
+				size_t index = tmpKey.find_last_of(L'_');
+				wstring parsed = tmpKey.substr(index + 1);
+				ruleKey += parsed;
+			}
+			for (auto it = m_rules.begin(); it != m_rules.end(); ++it) {
+				if (it->first.find(ruleKey) != wstring::npos) {
+					// it->first 가 ruleKey 를 포함하는 키입니다.
+					if (!it->second.GetIsHorizontal())
+					{
+						it->second.InActive();
+						ApplyRule(it->second);
+					}
 					break; // 첫 번째 일치하는 항목만 찾는 경우
 				}
 			}
@@ -778,7 +1026,7 @@ void CGrid::ApplyRule(CRule& r)
 			wstring parsed = tmpKey.substr(index + 1);
 			ruleKey += parsed;
 		}
-		wstring tmpKey = r.GetSubjectBlock()->GetImgKey();
+		wstring tmpKey = r.GetObjectBlock()->GetImgKey();
 		size_t index = tmpKey.find_last_of(L'_');
 		wstring parsed = tmpKey.substr(index + 1);
 		for (int i = 0; i < target.size(); ++i)

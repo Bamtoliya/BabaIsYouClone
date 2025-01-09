@@ -32,6 +32,7 @@ public:
 	bool PushBlock(int dx, int dy, int x, int y);
 	bool CheckMove(int dx, int dy, int x, int y);
 	void CheckWin();
+	void CheckSentence();
 	void CheckSentenceX();
 	void CheckSentenceY();
 	void ClearProperties();
