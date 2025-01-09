@@ -12,8 +12,8 @@ void CWorldMap::Initialize()
 	m_grid.SetWidth(33);
 	m_grid.SetHeight(18);
 	m_grid.SetCenter(Vector2(OCX / 2, OCY / 2));
-	m_grid.AddBlock(new CLevelBlock(new CLevel00), 9, 14);
-	m_grid.AddBlock(new CLevelBlock(new CLevel01), 10, 13);
+	m_grid.AddBlock(new CLevelBlock(new CLevel00, L"LEVEL_00"), 9, 14);
+	m_grid.AddBlock(new CLevelBlock(new CLevel01, L"LEVEL_01"), 10, 13);
 	//m_grid.AddBlock(new CLevelBlock(new CLevel02), 11, 13);
 	m_Cursor = new CCursor();
 	m_color = Color(255, 21, 24, 31);
@@ -98,7 +98,7 @@ void CWorldMap::MoveCursor(int x, int y)
 
 void CWorldMap::EnterLevel()
 {
-	//Transition(g);
+	
 }
 
 void CWorldMap::KeyInput()
@@ -126,7 +126,7 @@ void CWorldMap::KeyInput()
 			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(0, 1);
 		}
-		if (CKeyManager::GetInstance()->KeyPressing(VK_RETURN))
+		if (CKeyManager::GetInstance()->KeyDown(VK_RETURN))
 		{
 			if (m_bTransition)
 			{

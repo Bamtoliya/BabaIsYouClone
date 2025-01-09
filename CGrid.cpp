@@ -383,8 +383,10 @@ void CGrid::CheckWin()
 			{
 				if (youIndex[i].second == winIndex[j].second)
 				{
-					CSoundManager::GetInstance()->PlaySound(L"TRANSITION_WIN.ogg", CHANNELID::SOUND_EFFECT, 0.8f);
-					CSceneManager::GetInstance()->SetStage(nullptr);
+					if (dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel())
+					{
+						dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->SetCleared(true);
+					}
 				}
 			}
 		}
@@ -883,6 +885,7 @@ void CGrid::EnterLevel(CBlock* cursor)
 		if (l->GetBlockType() == BLOCKTYPE::LEVEL)
 		{
 			dynamic_cast<CLevelBlock*>(l)->Enter();
+			return;
 		}
 	}
 }

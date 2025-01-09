@@ -3,7 +3,7 @@
 class CLevel00 : public CLevel
 {
 public:
-    CLevel00() { m_szTitle = L"BABA IS YOU"; }
+    CLevel00() { m_szTitle = L"BABA IS YOU"; m_color = Color(255, 21, 24, 31); }
     void Initialize() override;
     void Update() override;
     void LateUpdate() override;
@@ -11,6 +11,7 @@ public:
     void Render(HDC hDC) override;
     void Release() override;
     void Restart() override;
+    void WinTransition(Graphics* g);
 private:
     void KeyInput();
     Color m_color;

@@ -63,7 +63,7 @@ void CBlockManager::PickBlock(Point pt, CBlock b)
 void CBlockManager::SaveBlock()
 {
 	
-	HANDLE hFile = CreateFile(L"Data/Level_PUSH.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"Data/Level_Temp1.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;
@@ -97,7 +97,7 @@ void CBlockManager::SaveBlock()
 
 void CBlockManager::LoadBlock()
 {
-	HANDLE hFile = CreateFile(L"Data/Level_PUSH.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(L"Data/Level_Temp1.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return;

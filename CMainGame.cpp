@@ -13,10 +13,10 @@ CMainGame::CMainGame()
 
 void CMainGame::Initialize()
 {
-	g_bAnimate = false;
+	g_bAnimate = true;
 	InsertResources();
 	cout << "CMainGame Initialized\n";
-	CSceneManager::GetInstance()->SetScene(SCENEID::Test);
+	CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
 	//CSoundManager::GetInstance();
 }
 

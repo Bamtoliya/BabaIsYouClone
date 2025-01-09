@@ -7,7 +7,7 @@ class CLevelBlock : public CBlock
 {
 public:
 	CLevelBlock() { m_level = new CLevel00; m_tInfo = { 0, 0, 24, 24 }; m_szTitle = L"BABA IS YOU"; m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
-	CLevelBlock(CLevel* l) { m_level = l; m_tInfo = { 0, 0, 24, 24 }; m_szTitle = l->GetTitle(); m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = {0, 0, 2, 0, 200, GetTickCount64()}; }
+	CLevelBlock(CLevel* l, const TCHAR* imgKey) { m_pImgKey = imgKey; m_level = l; m_tInfo = { 0, 0, 24, 24 }; m_szTitle = l->GetTitle(); m_eBlock = BLOCKTYPE::LEVEL; m_tFrame = { 0, 0, 2, 0, 200, GetTickCount64() }; }
 	~CLevelBlock() {}
 	virtual void Initialize();
 	virtual void Update();

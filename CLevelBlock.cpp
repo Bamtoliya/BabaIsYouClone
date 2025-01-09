@@ -21,8 +21,16 @@ void CLevelBlock::LateUpdate()
 
 void CLevelBlock::Render(Graphics* g)
 {
-	SolidBrush brush(Color::Red);
-	g->FillRectangle(&brush, m_tRect);
+	Image* image = CResourceManager::GetInstance()->FindImage(m_pImgKey);
+	if (image)
+	{
+		g->DrawImage(image, m_tRect, 1, 1, 24, 24, UnitPixel);
+	}
+	else
+	{
+		SolidBrush brush(Color::Red);
+		g->FillRectangle(&brush, m_tRect);
+	}
 }
 
 void CLevelBlock::Render(HDC hDC)
