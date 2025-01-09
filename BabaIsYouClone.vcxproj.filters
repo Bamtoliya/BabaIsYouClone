@@ -300,6 +300,18 @@
     <ClInclude Include="CLevel01.h">
       <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
     </ClInclude>
+    <ClInclude Include="CLevel02.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel03.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel04.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel05.h">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BabaIsYouClone.cpp">
@@ -430,6 +442,21 @@
     </ClCompile>
     <ClCompile Include="CLevel01.cpp">
       <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel02.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel03.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel05.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel04.cpp">
+      <Filter>99. Managers\SceneManager\Scene\InGame\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

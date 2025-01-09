@@ -101,6 +101,7 @@ void CMainGame::InsertResources()
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"NOUN_OBJECT_SKULL.png", L"NOUN_OBJECT_SKULL");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"NOUN_OBJECT_STAR.png", L"NOUN_OBJECT_STAR");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"NOUN_OBJECT_STAR2.png", L"NOUN_OBJECT_STAR2");
+	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"NOUN_OBJECT_TILE.png", L"NOUN_OBJECT_TILE");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"CONNECTOR_AND.png", L"CONNECTOR_AND");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"PROPERTY_DEFEAT.png", L"PROPERTY_DEFEAT");
 	CResourceManager::GetInstance()->InsertImage(SPRITEPATH L"PROPERTY_END.png", L"PROPERTY_END");

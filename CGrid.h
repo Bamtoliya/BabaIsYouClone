@@ -6,6 +6,7 @@ class CGrid
 {
 public:
 	CGrid();
+	CGrid(const CGrid& other);
 	~CGrid() {}
 	void Initialize();
 	void Update();
@@ -32,6 +33,7 @@ public:
 	bool PushBlock(int dx, int dy, int x, int y);
 	bool CheckMove(int dx, int dy, int x, int y);
 	void CheckWin();
+	void CheckSink();
 	void CheckSentence();
 	void CheckSentenceX();
 	void CheckSentenceY();
@@ -45,6 +47,10 @@ public:
 	void ApplyRule(CRule& r);
 	void ApplyRule();
 	void MoveCursor(CBlock* cursor, int x, int y);
+	void CopyFrom(const CGrid& other);
+	void CopyGrid(CGrid& leftGrid, CGrid& rightGrid); 
+
+	
 private:
 	void KeyInput();
 	vector<vector<CCell*>> m_grid;

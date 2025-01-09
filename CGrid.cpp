@@ -24,6 +24,19 @@ CGrid::CGrid() : m_iWidth(33), m_iHeight(18), m_vCenter(OCX / 2, OCY / 2)
 	m_ullLastInput = GetTickCount64();
 }
 
+CGrid::CGrid(const CGrid& other) : m_iWidth(other.m_iWidth), m_iHeight(other.m_iHeight), m_vCenter(OCX / 2, OCY / 2)
+{
+	m_grid.resize(other.m_grid.size());
+	for (size_t i = 0; i < other.m_grid.size(); ++i) {
+		m_grid[i].resize(other.m_grid[i].size());
+		for (size_t j = 0; j < other.m_grid[i].size(); ++j) {
+			m_grid[i][j] = new CCell(*other.m_grid[i][j]); // CCell 깊은 복사
+		}
+	}
+	m_ullDelay = 200;
+	m_ullLastInput = GetTickCount64();
+}
+
 void CGrid::Initialize()
 {
 	m_grid = vector<vector<CCell*>>(m_iHeight, vector<CCell*>(m_iWidth));
@@ -52,16 +65,16 @@ void CGrid::Update()
 			m_grid[i][j]->Update();
 		}
 	}
+	CheckTileNeighbor();
 	CheckWin();
+	CheckSink();
 	CheckSentence();
-	/*CheckSentenceX();
-	CheckSentenceY();*/
 }
 
 void CGrid::LateUpdate()
 {
 	for (int i = 0; i < m_iHeight; ++i)
-	{	
+	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
 			m_grid[i][j]->LateUpdate();
@@ -129,7 +142,13 @@ void CGrid::Move(int x, int y)
 			}
 		}
 	}
+	if (dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer()) != nullptr)
+	{
+		if(dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel())
+			dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->SaveMove();
+	}
 	for (int i = 0; i < toMove.size(); ++i) {
+		
 		int newX = index[i].second + x;
 		int newY = index[i].first + y;
 		if (CheckMove(x, y, index[i].second, index[i].first))
@@ -138,7 +157,8 @@ void CGrid::Move(int x, int y)
 			{
 				wstring t = L"DEFEAT_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
-				dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->Restart();
+				m_grid[newY][newX]->GetList().remove(toMove[i]);
+				if(toMove.size() == 0) dynamic_cast<CInGame*>(CSceneManager::GetInstance()->GetCurrentScenePointer())->GetLevel()->Restart();
 			}
 			else if (CheckPush(x, y, index[i].second, index[i].first))
 			{
@@ -148,6 +168,28 @@ void CGrid::Move(int x, int y)
 					cout << "PUSH BLOCK CAN MOVE\n";
 					if (PushBlock(x, y, index[i].second, index[i].first))
 					{
+						if (toMove[i]->GetBlockType() == BLOCKTYPE::CHARACTER)
+						{
+							if (x == -1)
+							{
+								toMove[i]->SetDirection(DIRECTION::LEFT);
+							}
+							else if (x == 1)
+							{
+								toMove[i]->SetDirection(DIRECTION::RIGHT);
+							}
+							else if (y == -1)
+							{
+								toMove[i]->SetDirection(DIRECTION::UP);
+							}
+							else if (y == 1)
+							{
+								toMove[i]->SetDirection(DIRECTION::DOWN);
+							}
+							toMove[i]->IncreaseFrameAnimation();
+						}
+						wstring t = L"PUSH_" + to_wstring((rand() % 4 + 1)) + L".ogg";
+						CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 						m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
 						m_grid[newY][newX]->AddBlock(toMove[i]);
 					}
@@ -155,6 +197,26 @@ void CGrid::Move(int x, int y)
 			}
 			else 
 			{
+				if (toMove[i]->GetBlockType() == BLOCKTYPE::CHARACTER)
+				{
+					if (x == -1)
+					{
+						toMove[i]->SetDirection(DIRECTION::LEFT);
+					}
+					else if (x == 1)
+					{
+						toMove[i]->SetDirection(DIRECTION::RIGHT);
+					}
+					else if (y == -1)
+					{
+						toMove[i]->SetDirection(DIRECTION::UP);
+					}
+					else if (y == 1)
+					{
+						toMove[i]->SetDirection(DIRECTION::DOWN);
+					}
+					toMove[i]->IncreaseFrameAnimation();
+				}
 				wstring t = L"WALK_" + to_wstring((rand() % 5 + 1)) + L".ogg";
 				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 				m_grid[index[i].first][index[i].second]->RemoveBlock(toMove[i]);
@@ -287,6 +349,8 @@ bool CGrid::CheckDefeat(int dx, int dy, int x, int y)
 			}
 		}
 	}
+
+
 	return false;
 }
 bool CGrid::PushBlock(int dx, int dy, int x, int y)
@@ -393,6 +457,40 @@ void CGrid::CheckWin()
 	}
 }
 
+void CGrid::CheckSink()
+{
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			if (!m_grid[i][j]->GetList().empty())
+			{
+				bool sinked = false;
+				for (auto& b : m_grid[i][j]->GetList())
+				{
+					for (auto& p : b->GetProperties())
+					{
+						if (p == PROPERTY::SINK)
+						{
+							if (m_grid[i][j]->GetList().size() != 1)
+							{
+								wstring t = L"SINK_" + to_wstring((rand() % 4 + 1)) + L".ogg";
+								CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+								m_grid[i][j]->GetList().clear();
+								sinked = true;
+								break;
+							}
+						}
+					}
+					if (sinked) break;
+				}
+
+			}
+			
+		}
+	}
+}
+
 void CGrid::CheckSentence()
 {
 	vector<CBlock*> foundNouns;
@@ -481,7 +579,13 @@ void CGrid::CheckSentence()
 			}
 			tmp.SetIsHorizontal(true);
 			tmp.Activate();
-			m_rules.emplace(ruleKey, tmp);
+			if(m_rules.find(ruleKey) == m_rules.end())
+			{
+				wstring t = L"CONNECT_" + to_wstring((rand() % 5 + 1)) + L".ogg";
+				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+				m_rules.emplace(ruleKey, tmp); 
+			}
+			
 			ApplyRule(tmp);
 		}
 		else
@@ -531,7 +635,12 @@ void CGrid::CheckSentence()
 			}
 			tmp.SetIsHorizontal(false);
 			tmp.Activate();
-			m_rules.emplace(ruleKey, tmp);
+			if (m_rules.find(ruleKey) == m_rules.end())
+			{
+				wstring t = L"CONNECT_" + to_wstring((rand() % 5 + 1)) + L".ogg";
+				CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
+				m_rules.emplace(ruleKey, tmp);
+			}
 			ApplyRule(tmp);
 		}
 		else
@@ -857,6 +966,79 @@ void CGrid::CheckTileNeighbor()
 				if (t->GetBlockType() == BLOCKTYPE::TILE)
 				{
 					toCheck.push_back(t);
+					index.push_back({ i, j });
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < toCheck.size(); ++i)
+	{	
+		//LEFT
+		if (index[i].second - 1 >= 0)
+		{
+			for (auto& b : m_grid[index[i].first][index[i].second -1]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::TILE && _tcscmp(toCheck[i]->GetImgKey(), b->GetImgKey()) == 0)
+				{
+					toCheck[i]->GetTileNeihbor()[0] = true;
+					b->GetTileNeihbor()[1] = true;
+				}
+				else
+				{
+					toCheck[i]->GetTileNeihbor()[0] = false;
+					b->GetTileNeihbor()[1] = false;
+				}
+			}
+		}
+		//RIGHT
+		if (index[i].second + 1 < m_iWidth)
+		{
+			for (auto& b : m_grid[index[i].first][index[i].second + 1]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::TILE && _tcscmp(toCheck[i]->GetImgKey(), b->GetImgKey()) == 0)
+				{
+					toCheck[i]->GetTileNeihbor()[1] = true;
+					b->GetTileNeihbor()[0] = true;
+				}
+				else
+				{
+					toCheck[i]->GetTileNeihbor()[1] = false;
+					b->GetTileNeihbor()[0] = false;
+				}
+			}
+		}
+		//UP
+		if (index[i].first - 1 >= 0)
+		{
+			for (auto& b : m_grid[index[i].first -1][index[i].second]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::TILE && _tcscmp(toCheck[i]->GetImgKey(), b->GetImgKey()) == 0)
+				{
+					toCheck[i]->GetTileNeihbor()[2] = true;
+					b->GetTileNeihbor()[3] = true;
+				}
+				else
+				{
+					toCheck[i]->GetTileNeihbor()[2] = false;
+					b->GetTileNeihbor()[3] = false;
+				}
+			}
+		}
+		//DOWN
+		if (index[i].first + 1 < m_iHeight)
+		{
+			for (auto& b : m_grid[index[i].first + 1][index[i].second]->GetList())
+			{
+				if (b->GetBlockType() == BLOCKTYPE::TILE && _tcscmp(toCheck[i]->GetImgKey(), b->GetImgKey()) == 0)
+				{
+					toCheck[i]->GetTileNeihbor()[3] = true;
+					b->GetTileNeihbor()[2] = true;
+				}
+				else
+				{
+					toCheck[i]->GetTileNeihbor()[3] = false;
+					b->GetTileNeihbor()[2] = false;
 				}
 			}
 		}
@@ -1071,6 +1253,40 @@ void CGrid::MoveCursor(CBlock* cursor, int x, int y)
 		m_grid[newY][newX]->AddBlock(toMove[i]);
 	}
 }
+
+void CGrid::CopyFrom(const CGrid& other)
+{
+	m_grid.resize(other.m_grid.size());
+	for (size_t i = 0; i < other.m_grid.size(); ++i) {
+		m_grid[i].resize(other.m_grid[i].size());
+		for (size_t j = 0; j < other.m_grid[i].size(); ++j) {
+			// 기존 CCell 객체 삭제 (메모리 누수 방지)
+			delete m_grid[i][j];
+			m_grid[i][j] = new CCell(*other.m_grid[i][j]); // CCell 깊은 복사
+		}
+	}
+}
+
+void CGrid::CopyGrid(CGrid& leftGrid, CGrid& rightGrid)
+{
+	// 2. 셀 정보 복사
+	for (int y = 0; y < leftGrid.GetHeight(); ++y) {
+		for (int x = 0; x < leftGrid.GetWidth(); ++x) {
+			CCell* leftCell = leftGrid.GetGrid()[y][x];
+			CCell* rightCell = rightGrid.GetGrid()[y][x];
+
+			// 기존 블록 제거 (필요한 경우)
+			rightCell->ClearBlocks();
+
+			// 왼쪽 셀의 블록들을 오른쪽 셀에 복사
+			for (auto& block : leftCell->GetList()) {
+				rightCell->AddBlock(block); // 블록 복사 생성
+			}
+		}
+	}
+}
+
+
 
 void CGrid::KeyInput()
 {

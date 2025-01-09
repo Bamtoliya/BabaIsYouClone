@@ -70,3 +70,8 @@ void CCell::RemoveBlock(CBlock* b)
 {
 	m_blocks.remove_if([b](CBlock* block) { return block == b; });
 }
+
+void CCell::ClearBlocks()
+{
+	m_blocks.clear();
+}

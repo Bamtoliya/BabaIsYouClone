@@ -11,11 +11,8 @@ public:
     void Render(HDC hDC) override;
     void Release() override;
     void Restart() override;
-    void WinTransition(Graphics* g);
 private:
     void KeyInput();
-    Color m_color;
-    float m_fTime;
     bool m_bTransition;
 };
 

@@ -24,16 +24,17 @@ public:
     void Activate() { m_bActive = true; }
     void InActive() { m_bActive = false; }
     void Apply(CBlock* b);
-    /*NOUN GetNoun() { return m_eNoun; }
-    VERB GetVerb() { return m_eVerb; }
-    PROPERTY GetProperty() { return m_eProperty; }
-    void SetWordType(GAMEWORD w) { m_eWord = w; }
-    void SetNoun(NOUN n) { m_eNoun = n; }
-    void SetVerb(VERB v) { m_eVerb = v; }
-    void SetProperty(PROPERTY p) { m_eProperty = p; }*/
+    bool* GetTileNeihbor() { return m_bNeighbor; }
+    void TileAssign(int& x);
+    void IncreaseFrameAnimation() 
+    { 
+        ++m_tFrame.iFrameAnimation;
+        if (m_tFrame.iFrameAnimation > 3)
+            m_tFrame.iFrameAnimation = 0;
+    }
 protected:
     BLOCKTYPE		m_eBlock;
-    bool            m_bProperty[static_cast<int>(PROPERTY::END)];
     set<PROPERTY>   m_eProperties;
+    bool            m_bNeighbor[4];
 };
 

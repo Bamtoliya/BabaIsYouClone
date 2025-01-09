@@ -13,7 +13,12 @@ public:
 	bool GetCleared() { return m_bClear; }
 	void SetCleared(bool c) { m_bClear = c; }
 	virtual void Restart() PURE;
+	virtual void SaveMove();
+	virtual void Undo();
+	virtual void WinTransition(Graphics* g);
 protected:
+	Color m_color;
+	float m_fTime;
 	stack<CGrid> m_undo;
 	const TCHAR* m_szTitle;
 	CGrid m_grid;

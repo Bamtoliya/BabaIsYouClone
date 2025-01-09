@@ -4,6 +4,10 @@
 #include "CCursor.h"
 #include "CLevelBlock.h"
 #include "CLevel01.h"
+#include "CLevel02.h"
+#include "CLevel03.h"
+#include "CLevel04.h"
+#include "CLevel05.h"
 
 void CWorldMap::Initialize()
 {
@@ -14,7 +18,10 @@ void CWorldMap::Initialize()
 	m_grid.SetCenter(Vector2(OCX / 2, OCY / 2));
 	m_grid.AddBlock(new CLevelBlock(new CLevel00, L"LEVEL_00"), 9, 14);
 	m_grid.AddBlock(new CLevelBlock(new CLevel01, L"LEVEL_01"), 10, 13);
-	//m_grid.AddBlock(new CLevelBlock(new CLevel02), 11, 13);
+	m_grid.AddBlock(new CLevelBlock(new CLevel02, L"LEVEL_02"), 11, 13);
+	m_grid.AddBlock(new CLevelBlock(new CLevel03, L"LEVEL_03"), 10, 12);
+	m_grid.AddBlock(new CLevelBlock(new CLevel04, L"LEVEL_04"), 11, 12);
+	m_grid.AddBlock(new CLevelBlock(new CLevel05, L"LEVEL_05"), 12, 12);
 	m_Cursor = new CCursor();
 	m_color = Color(255, 21, 24, 31);
 	m_grid.AddBlock(m_Cursor, 9, 14);
@@ -110,21 +117,25 @@ void CWorldMap::KeyInput()
 		{
 			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(-1, 0);
+			m_ullLastInput = GetTickCount64();
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_RIGHT))
 		{
 			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(1, 0);
+			m_ullLastInput = GetTickCount64();
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_UP))
 		{
 			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(0, -1);
+			m_ullLastInput = GetTickCount64();
 		}
 		if (CKeyManager::GetInstance()->KeyPressing(VK_DOWN))
 		{
 			CSoundManager::GetInstance()->PlaySound(t.c_str(), CHANNELID::SOUND_EFFECT, 0.8f);
 			MoveCursor(0, 1);
+			m_ullLastInput = GetTickCount64();
 		}
 		if (CKeyManager::GetInstance()->KeyDown(VK_RETURN))
 		{
@@ -137,13 +148,15 @@ void CWorldMap::KeyInput()
 				CSoundManager::GetInstance()->PlaySound(L"TRANSITION_ENTER.ogg", CHANNELID::SOUND_EFFECT, 0.8f);
 				m_bTransition = true;
 			}
+			m_ullLastInput = GetTickCount64();
 			
 		}
 		if (CKeyManager::GetInstance()->KeyDown(VK_ESCAPE))
 		{
 			CSceneManager::GetInstance()->SetScene(SCENEID::Menu);
+			m_ullLastInput = GetTickCount64();
 		}
-		m_ullLastInput = GetTickCount64();
+		
 	}
 }
 

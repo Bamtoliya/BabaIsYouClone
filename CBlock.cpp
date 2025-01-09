@@ -9,6 +9,7 @@ CBlock::CBlock(float fX, float fY, const TCHAR* pImgKey, BLOCKTYPE b) :
 	m_tRect = { (INT)fX, (INT)fY, 24, 24 };
 	this->SetImgKey(pImgKey);
 
+	m_tFrame.iFrameAnimation = 0;
 	m_tFrame.iFrameStart = 0;
 	m_tFrame.iFrameEnd = 2;
 	m_tFrame.iMotion = 1;
@@ -21,6 +22,7 @@ void CBlock::Initialize()
 	m_tInfo = { 240, 240, 24, 24 };
 	m_eBlock = BLOCKTYPE::NONE;
 
+	m_tFrame.iFrameAnimation = 0;
 	m_tFrame.iFrameStart = 0;
 	m_tFrame.iFrameEnd = 2;
 	m_tFrame.iMotion = 1;
@@ -71,13 +73,28 @@ void CBlock::Render(Graphics* graphic)
 		case BLOCKTYPE::CHARACTER:
 			x = 51;
 			y = 1 + m_tFrame.iFrameStart * 25;
+			switch (m_eDir)
+			{
+			case DIRECTION::LEFT:
+				x = 251;
+				break;
+			case DIRECTION::RIGHT:
+				x = 51;
+				break;
+			case DIRECTION::UP:
+				x = 151;
+				break;
+			case DIRECTION::DOWN:
+				x = 351;
+				break;
+			}
 			break;
 		case BLOCKTYPE::OBJECT:
 			x = 51;
 			y = 1 + m_tFrame.iFrameStart * 25;
 			break;
 		case BLOCKTYPE::TILE:
-			x = 51;
+			TileAssign(x);
 			y = 1 + m_tFrame.iFrameStart * 25;
 			break;
 		default:
@@ -85,7 +102,12 @@ void CBlock::Render(Graphics* graphic)
 			y = 1;
 			break;
 		}
-		if (m_pImgKey != L"TEXT_TILE_X")
+		
+		if (m_eBlock == BLOCKTYPE::CHARACTER)
+		{
+			graphic->DrawImage(image, m_tRect, x + m_tFrame.iFrameAnimation * 25, y, 23, 24, UnitPixel);
+		}
+		else if (m_pImgKey != L"TEXT_TILE_X")
 		{
 			graphic->DrawImage(image, m_tRect, x, y, 24, 24, UnitPixel);
 		}
@@ -190,6 +212,30 @@ void CBlock::Apply(CBlock* b)
 {
 	m_eBlock = b->m_eBlock;
 	m_pImgKey = b->m_pImgKey;
+}
+
+void CBlock::TileAssign(int& x)
+{
+	bool l = m_bNeighbor[0];
+	bool r = m_bNeighbor[1];
+	bool u = m_bNeighbor[2];
+	bool d = m_bNeighbor[3];
+	if (!l && !r && !u && !d) x = 51;
+	else if (!l && r && !u && !d) x = 76;
+	else if (!l && !r && u && !d) x = 101;
+	else if (!l && r && u && !d) x = 126;
+	else if (l && !r && !u && !d) x = 151;
+	else if (l && r && !u && !d) x = 176;
+	else if (l && !r && u && !d) x = 201;
+	else if (l && r && u && !d) x = 226;
+	else if (!l && !r && !u && d) x = 251;
+	else if (!l && r && !u && d) x = 276;
+	else if (!l && !r && u && d) x = 301;
+	else if (!l && r && u && d) x = 326;
+	else if (l && !r && !u && d) x = 351;
+	else if (l && r && !u && d) x = 376;
+	else if (l && !r && u && d) x = 401;
+	else if (l && r && u && d) x = 426;
 }
 
 

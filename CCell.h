@@ -24,9 +24,11 @@ public:
 	void AddBlock(CBlock* b);
 	void RemoveBlock(CBlock* b);
 	void ChangeBlock(CBlock* src);
-	list<CBlock*> GetList() { return m_blocks; }
+	list<CBlock*>& GetList() { return m_blocks; }
 	bool GetCanMove() { return m_bCanMove; }
 	bool GetCanPush() { return m_bCanMove; }
+
+	void ClearBlocks();
 
 private:
 	list<CBlock*> m_blocks;
